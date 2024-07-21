@@ -4,29 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:path_provider/path_provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await Permission.camera.request();
-  //await Permission.location.request();
-  //await Permission.storage.request();
-  //await Permission.mediaLibrary.request();
-
-  await FlutterDownloader.initialize(
-      debug:
-          true // optional: set to false to disable printing logs to console (default: true)
-      );
-
-  //void callbackDownloader(String id, DownloadTaskStatus status, int progress) {}
-  //FlutterDownloader.registerCallback(DownloadClass.callback);
-
-  if (Platform.isAndroid) {
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(false);
-  }
-
   runApp(MaterialApp(home: new MyApp()));
 }
 
@@ -44,16 +24,12 @@ class SplashScreen extends StatelessWidget {
               height: 200, // Adjust the height as needed
             ),
             SizedBox(height: 20),
-            Text('From DEGIS', style: TextStyle(fontSize: 20)),
+            Text('Smart Pilam', style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
     );
   }
-}
-
-class DownloadClass {
-  static void callback(String id, DownloadTaskStatus status, int progress) {}
 }
 
 class MyApp extends StatefulWidget {
@@ -147,13 +123,36 @@ class _WebViewScreenState extends State<WebViewScreen> {
     print(cookiesString);
   }
 
+  Future<bool> _onWillPop() async {
+    if (await webViewController?.canGoBack() ?? false) {
+      webViewController?.goBack();
+      return Future.value(false);
+    } else {
+      return await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Konfirmasi'),
+              content: Text('Anda ingin keluar dari aplikasi?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text('Tidak'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: Text('Ya'),
+                ),
+              ],
+            ),
+          ) ??
+          false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () {
-          webViewController?.goBack();
-          return Future.value(false);
-        },
+        onWillPop: _onWillPop,
         child: Scaffold(
             //appBar: AppBar(title: Text("Official InAppWebView website")),
             body: SafeArea(
@@ -163,8 +162,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
               children: [
                 InAppWebView(
                   key: webViewKey,
-                  initialUrlRequest:
-                      URLRequest(url: WebUri('https://tds.automart.id/')),
+                  initialUrlRequest: URLRequest(
+                      url: WebUri(
+                          'https://sites.google.com/view/satgas-kelas-digital')),
                   //url: Uri.parse("https://browserleaks.com/geo")), //test
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
@@ -174,14 +174,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   onDownloadStartRequest: (controller, url) async {
                     var urls = url.url.toString();
                     print("onDownloadStart $urls");
-                    await FlutterDownloader.enqueue(
-                        url: urls,
-                        savedDir:
-                            (await getApplicationDocumentsDirectory()).path,
-                        fileName: "SimpegReport.pdf",
-                        showNotification: true,
-                        openFileFromNotification: true,
-                        saveInPublicStorage: true);
                   },
                   onLoadStart: (controller, url) {
                     setState(() {
