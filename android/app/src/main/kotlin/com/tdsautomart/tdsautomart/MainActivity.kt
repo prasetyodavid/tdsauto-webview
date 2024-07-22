@@ -1,4 +1,4 @@
-package com.tuman1kotasemarang
+package com.man1kotasemarangibs
 
 import io.flutter.embedding.android.FlutterActivity
 

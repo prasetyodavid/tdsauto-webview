@@ -4,6 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
+import 'dart:io';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +27,7 @@ class SplashScreen extends StatelessWidget {
               height: 200, // Adjust the height as needed
             ),
             SizedBox(height: 20),
-            Text('Smart Pilam', style: TextStyle(fontSize: 20)),
+            Text('SMART BOARDING', style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
@@ -73,6 +76,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
           useOnDownloadStart: true),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
+        builtInZoomControls: false,
+        displayZoomControls: false,
       ),
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,
@@ -163,8 +168,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 InAppWebView(
                   key: webViewKey,
                   initialUrlRequest: URLRequest(
-                      url: WebUri(
-                          'https://sites.google.com/view/satgas-kelas-digital')),
+                      url:
+                          WebUri('https://man1kotasemarang.belajarku.id/ibs/')),
                   //url: Uri.parse("https://browserleaks.com/geo")), //test
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
@@ -174,6 +179,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   onDownloadStartRequest: (controller, url) async {
                     var urls = url.url.toString();
                     print("onDownloadStart $urls");
+                    await downloadFile(urls);
                   },
                   onLoadStart: (controller, url) {
                     setState(() {
@@ -260,6 +266,26 @@ class _WebViewScreenState extends State<WebViewScreen> {
             ),
           ),
         ]))));
+  }
+
+  Future<void> downloadFile(String url) async {
+    Dio dio = Dio();
+    try {
+      // Get the application's documents directory
+      var dir = await getApplicationDocumentsDirectory();
+      String fileName = url.split('/').last;
+      String filePath = "${dir.path}/$fileName";
+
+      await dio.download(url, filePath, onReceiveProgress: (received, total) {
+        if (total != -1) {
+          print((received / total * 100).toStringAsFixed(0) + "%");
+        }
+      });
+
+      print("File saved to $filePath");
+    } catch (e) {
+      print("Download failed: $e");
+    }
   }
 
   Widget _buildProgressBar() {
