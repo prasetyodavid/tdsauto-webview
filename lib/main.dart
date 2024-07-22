@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:dio/dio.dart';
-import 'dart:io';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Permission.storage.request();
   runApp(MaterialApp(home: new MyApp()));
 }
 
@@ -178,8 +179,20 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   },
                   onDownloadStartRequest: (controller, url) async {
                     var urls = url.url.toString();
+                    String file_Name = urls.split('/').last;
                     print("onDownloadStart $urls");
-                    await downloadFile(urls);
+                    print("onDownloadStart $file_Name");
+
+                    if (await _requestPermissions()) {
+                      await FlutterDownloader.enqueue(
+                          url: urls,
+                          savedDir:
+                              (await getApplicationDocumentsDirectory()).path,
+                          fileName: file_Name,
+                          showNotification: true,
+                          openFileFromNotification: true,
+                          saveInPublicStorage: true);
+                    }
                   },
                   onLoadStart: (controller, url) {
                     setState(() {
@@ -268,24 +281,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
         ]))));
   }
 
-  Future<void> downloadFile(String url) async {
-    Dio dio = Dio();
-    try {
-      // Get the application's documents directory
-      var dir = await getApplicationDocumentsDirectory();
-      String fileName = url.split('/').last;
-      String filePath = "${dir.path}/$fileName";
-
-      await dio.download(url, filePath, onReceiveProgress: (received, total) {
-        if (total != -1) {
-          print((received / total * 100).toStringAsFixed(0) + "%");
-        }
-      });
-
-      print("File saved to $filePath");
-    } catch (e) {
-      print("Download failed: $e");
+  Future<bool> _requestPermissions() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      status = await Permission.storage.request();
     }
+    return status.isGranted;
   }
 
   Widget _buildProgressBar() {
