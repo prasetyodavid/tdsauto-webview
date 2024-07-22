@@ -11,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.storage.request();
+  await Permission.photos.request();
   runApp(MaterialApp(home: new MyApp()));
 }
 
@@ -183,16 +184,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     print("onDownloadStart $urls");
                     print("onDownloadStart $file_Name");
 
-                    if (await _requestPermissions()) {
-                      await FlutterDownloader.enqueue(
-                          url: urls,
-                          savedDir:
-                              (await getApplicationDocumentsDirectory()).path,
-                          fileName: file_Name,
-                          showNotification: true,
-                          openFileFromNotification: true,
-                          saveInPublicStorage: true);
-                    }
+                    await FlutterDownloader.enqueue(
+                        url: urls,
+                        savedDir:
+                            (await getApplicationDocumentsDirectory()).path,
+                        fileName: file_Name,
+                        showNotification: true,
+                        openFileFromNotification: true,
+                        saveInPublicStorage: true);
                   },
                   onLoadStart: (controller, url) {
                     setState(() {
@@ -279,14 +278,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
             ),
           ),
         ]))));
-  }
-
-  Future<bool> _requestPermissions() async {
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      status = await Permission.storage.request();
-    }
-    return status.isGranted;
   }
 
   Widget _buildProgressBar() {
