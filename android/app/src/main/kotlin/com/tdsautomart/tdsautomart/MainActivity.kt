@@ -1,4 +1,4 @@
-package com.man1kotasemarangibs
+package com.smartschoolcdksmg
 
 import io.flutter.embedding.android.FlutterActivity
 

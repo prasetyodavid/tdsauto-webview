@@ -18,6 +18,12 @@ Future main() async {
   runApp(MaterialApp(home: new MyApp()));
 }
 
+// change com.package
+// D:\Projects\FL\tdsauto-webview\android\app\build.gradle
+// flutter pub run flutter_launcher_icons:main
+var MAIN_HOME_URL = "https://smpitinsancendekia.belajarku.id/app/";
+var MAIN_TITLE = "SMART SCHOOL";
+
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,7 @@ class SplashScreen extends StatelessWidget {
               height: 200, // Adjust the height as needed
             ),
             SizedBox(height: 20),
-            Text('SMART BOARDING', style: TextStyle(fontSize: 20)),
+            Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
@@ -172,9 +178,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               children: [
                 InAppWebView(
                   key: webViewKey,
-                  initialUrlRequest: URLRequest(
-                      url:
-                          WebUri('https://man1kotasemarang.belajarku.id/ibs/')),
+                  initialUrlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
                   //url: Uri.parse("https://browserleaks.com/geo")), //test
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
@@ -188,13 +192,15 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     print("onDownloadStart $file_Name");
 
                     await FlutterDownloader.enqueue(
-                        url: urls,
-                        savedDir:
-                            (await getApplicationDocumentsDirectory()).path,
-                        fileName: file_Name,
-                        showNotification: true,
-                        openFileFromNotification: true,
-                        saveInPublicStorage: true);
+                      url: urls,
+                      savedDir: (await getApplicationDocumentsDirectory()).path,
+                      fileName: file_Name,
+                      showNotification: true,
+                      openFileFromNotification: true,
+                      saveInPublicStorage: true,
+                    ).catchError((error) {
+                      print("Download failed: $error");
+                    });
                   },
                   onLoadStart: (controller, url) {
                     setState(() {
