@@ -12,6 +12,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.storage.request();
   await Permission.photos.request();
+  await Permission.camera.request();
   await Permission.notification.request();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
@@ -202,17 +203,38 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       print("Download failed: $error");
                     });
                   },
+                  onReceivedServerTrustAuthRequest:
+                      (controller, challenge) async {
+                    return ServerTrustAuthResponse(
+                        action: ServerTrustAuthResponseAction.PROCEED);
+                  },
                   onLoadStart: (controller, url) {
                     setState(() {
                       this.url = url.toString();
                       urlController.text = this.url;
                     });
                   },
-                  androidOnPermissionRequest:
-                      (controller, origin, resources) async {
-                    return PermissionRequestResponse(
-                        resources: resources,
-                        action: PermissionRequestResponseAction.GRANT);
+                  onPermissionRequest: (controller, request) async {
+                    // checking this to get permission on specific URL
+                    if (true) {
+                      try {
+                        var cameraStatus = await Permission.camera.request();
+                        if (cameraStatus.isDenied) {
+                          await Permission.camera.request();
+                        }
+                        return PermissionResponse(
+                            action: PermissionResponseAction.GRANT,
+                            resources: [
+                              PermissionResourceType.CAMERA_AND_MICROPHONE,
+                            ]);
+                      } catch (e) {
+                        return PermissionResponse(
+                            action: PermissionResponseAction.PROMPT,
+                            resources: [
+                              PermissionResourceType.CAMERA_AND_MICROPHONE,
+                            ]);
+                      }
+                    }
                   },
                   androidOnGeolocationPermissionsShowPrompt:
                       (InAppWebViewController controller, String origin) async {
