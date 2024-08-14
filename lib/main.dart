@@ -12,8 +12,10 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.storage.request();
   await Permission.photos.request();
-  await Permission.camera.request();
+  await Permission.videos.request();
+  await Permission.manageExternalStorage.request();
   await Permission.notification.request();
+  await Permission.camera.request();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
   runApp(MaterialApp(home: new MyApp()));
