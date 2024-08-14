@@ -1,4 +1,4 @@
-package com.smartschoolcdksmg
+package com.goyalla.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -10,10 +10,10 @@ import 'package:permission_handler/permission_handler.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Permission.storage.request();
-  await Permission.photos.request();
-  await Permission.notification.request();
-  await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
+  //await Permission.storage.request();
+  //await Permission.photos.request();
+  //await Permission.notification.request();
+  //await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
   runApp(MaterialApp(home: new MyApp()));
 }
@@ -21,8 +21,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://smpitinsancendekia.belajarku.id/app/";
-var MAIN_TITLE = "SMART SCHOOL";
+var MAIN_HOME_URL = "https://goyalla.id";
+var MAIN_TITLE = "Goyalla";
 
 class SplashScreen extends StatelessWidget {
   @override
