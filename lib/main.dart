@@ -21,6 +21,7 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
+
 var MAIN_HOME_URL = "https://goyalla.id";
 var MAIN_TITLE = "Goyalla";
 
@@ -78,6 +79,7 @@ class WebViewScreen extends StatefulWidget {
 
 class _WebViewScreenState extends State<WebViewScreen> {
   final GlobalKey webViewKey = GlobalKey();
+  Timer? _pageLoadTimer;
 
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -123,7 +125,16 @@ class _WebViewScreenState extends State<WebViewScreen> {
   @override
   void dispose() {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
+    _pageLoadTimer?.cancel();
     super.dispose();
+  }
+
+  Future<void> _startPageLoadTimeout() async {
+    _pageLoadTimer?.cancel(); // Cancel any existing timer
+    _pageLoadTimer = Timer(Duration(seconds: 20), () {
+      _showWebPageNotAvailablePopup("The webpage took too long to load.");
+      pullToRefreshController.endRefreshing();
+    });
   }
 
   Future<void> updateCookies(Uri url) async {
@@ -170,7 +181,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return WillPopScope(
         onWillPop: _onWillPop,
         child: Scaffold(
-            //appBar: AppBar(title: Text("Official InAppWebView website")),
             body: SafeArea(
                 child: Column(children: <Widget>[
           Expanded(
@@ -179,7 +189,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 InAppWebView(
                   key: webViewKey,
                   initialUrlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
-                  //url: Uri.parse("https://browserleaks.com/geo")), //test
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
@@ -206,15 +215,15 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     setState(() {
                       this.url = url.toString();
                       urlController.text = this.url;
+                      _startPageLoadTimeout(); // Start the timeout
                     });
                   },
-                  androidOnPermissionRequest:
-                      (controller, origin, resources) async {
-                    return PermissionRequestResponse(
-                        resources: resources,
-                        action: PermissionRequestResponseAction.GRANT);
+                  onPermissionRequest: (controller, request) async {
+                    return PermissionResponse(
+                        resources: request.resources,
+                        action: PermissionResponseAction.GRANT);
                   },
-                  androidOnGeolocationPermissionsShowPrompt:
+                  onGeolocationPermissionsShowPrompt:
                       (InAppWebViewController controller, String origin) async {
                     return GeolocationPermissionShowPromptResponse(
                         origin: origin, allow: true, retain: true);
@@ -245,7 +254,10 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     return NavigationActionPolicy.ALLOW;
                   },
                   onLoadStop: (controller, url) async {
+                    progress = 1.0;
                     pullToRefreshController.endRefreshing();
+                    _pageLoadTimer
+                        ?.cancel(); // Cancel the timer if load succeeds
                     if (url != null) {
                       await updateCookies(url);
                     }
@@ -254,12 +266,19 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       urlController.text = this.url;
                     });
                   },
-                  onLoadError: (controller, url, code, message) {
+                  onReceivedError: (controller, request, error) {
+                    progress = 1.0;
                     pullToRefreshController.endRefreshing();
+                    _pageLoadTimer
+                        ?.cancel(); // Cancel the timer if there's an error
+                    _showWebPageNotAvailablePopup(
+                        "Something went wrong. Please try again later.");
                   },
                   onProgressChanged: (controller, progress) {
-                    if (progress == 100) {
+                    if (progress == 1.0) {
                       pullToRefreshController.endRefreshing();
+                      _pageLoadTimer
+                          ?.cancel(); // Cancel the timer when load completes
                     }
                     setState(() {
                       this.progress = progress / 100;
@@ -277,7 +296,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   },
                 ),
                 Align(alignment: Alignment.center, child: _buildProgressBar()),
-                progress < 1.0
+                progress < 0.6
                     ? LinearProgressIndicator(
                         value: progress,
                         color: Color.fromRGBO(0, 124, 135, 1),
@@ -289,8 +308,28 @@ class _WebViewScreenState extends State<WebViewScreen> {
         ]))));
   }
 
+  void _showWebPageNotAvailablePopup(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildProgressBar() {
-    if (progress != 1.0) {
+    if (progress < 0.6) {
       return CircularProgressIndicator(
         color: Color.fromRGBO(0, 124, 135, 1),
       );
