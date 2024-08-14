@@ -22,7 +22,7 @@ Future main() async {
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
 
-var MAIN_HOME_URL = "https://goyalla.id";
+var MAIN_HOME_URL = "https://goyalla.id?app=1";
 var MAIN_TITLE = "Goyalla";
 
 class SplashScreen extends StatelessWidget {
@@ -82,22 +82,32 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Timer? _pageLoadTimer;
 
   InAppWebViewController? webViewController;
+
+  bool showHomeButton = false; // To control the visibility of the FAB
+
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
+          cacheEnabled: true,
           useShouldOverrideUrlLoading: true,
           mediaPlaybackRequiresUserGesture: false,
+          javaScriptEnabled: true,
+          javaScriptCanOpenWindowsAutomatically: true,
           useOnDownloadStart: true),
       android: AndroidInAppWebViewOptions(
+        cacheMode: AndroidCacheMode.LOAD_DEFAULT,
+        allowFileAccess: true,
         useHybridComposition: true,
         builtInZoomControls: false,
         displayZoomControls: false,
+        domStorageEnabled: true,
+        databaseEnabled: true,
       ),
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,
       ));
 
   late PullToRefreshController pullToRefreshController;
-  String url = "";
+  String url = MAIN_HOME_URL;
   double progress = 0;
   final urlController = TextEditingController();
 
@@ -131,9 +141,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   Future<void> _startPageLoadTimeout() async {
     _pageLoadTimer?.cancel(); // Cancel any existing timer
-    _pageLoadTimer = Timer(Duration(seconds: 20), () {
-      _showWebPageNotAvailablePopup("The webpage took too long to load.");
-      pullToRefreshController.endRefreshing();
+    _pageLoadTimer = Timer(Duration(seconds: 30), () {
+      if (mounted) {
+        setState(() {
+          progress = 1.0;
+        });
+        _showWebPageNotAvailablePopup("The application took too long to load.");
+        pullToRefreshController.endRefreshing();
+      }
     });
   }
 
@@ -215,8 +230,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     setState(() {
                       this.url = url.toString();
                       urlController.text = this.url;
-                      _startPageLoadTimeout(); // Start the timeout
                     });
+                    _startPageLoadTimeout();
                   },
                   onPermissionRequest: (controller, request) async {
                     return PermissionResponse(
@@ -261,6 +276,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     if (url != null) {
                       await updateCookies(url);
                     }
+
+                    if (url != null) {
+                      String currentUrl = url.toString();
+                      setState(() {
+                        showHomeButton = !currentUrl.contains("goyalla.id");
+                      });
+                    }
+
                     setState(() {
                       this.url = url.toString();
                       urlController.text = this.url;
@@ -269,10 +292,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   onReceivedError: (controller, request, error) {
                     progress = 1.0;
                     pullToRefreshController.endRefreshing();
+
                     _pageLoadTimer
                         ?.cancel(); // Cancel the timer if there's an error
-                    _showWebPageNotAvailablePopup(
-                        "Something went wrong. Please try again later.");
                   },
                   onProgressChanged: (controller, progress) {
                     if (progress == 1.0) {
@@ -286,6 +308,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     });
                   },
                   onUpdateVisitedHistory: (controller, url, androidIsReload) {
+                    if (url != null) {
+                      String currentUrl = url.toString();
+                      setState(() {
+                        // Check if the URL is within the goyalla.id domain
+                        showHomeButton = !currentUrl.contains("goyalla.id");
+                      });
+                    }
+
                     setState(() {
                       this.url = url.toString();
                       urlController.text = this.url;
@@ -295,6 +325,26 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     print(consoleMessage);
                   },
                 ),
+                if (showHomeButton)
+                  Positioned(
+                    right: 5, // Positioned to the center right
+                    top: MediaQuery.of(context).size.height / 2 -
+                        30, // Adjust for centering vertically
+                    child: Transform.scale(
+                      scale: 0.7, // Makes the button smaller
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          webViewController?.loadUrl(
+                            urlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
+                          );
+                        },
+                        child: Icon(Icons.home),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        tooltip: 'Go to Home',
+                      ),
+                    ),
+                  ),
                 Align(alignment: Alignment.center, child: _buildProgressBar()),
                 progress < 0.6
                     ? LinearProgressIndicator(
