@@ -131,9 +131,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   Future<void> _startPageLoadTimeout() async {
     _pageLoadTimer?.cancel(); // Cancel any existing timer
-    _pageLoadTimer = Timer(Duration(seconds: 20), () {
-      _showWebPageNotAvailablePopup("The webpage took too long to load.");
-      pullToRefreshController.endRefreshing();
+    _pageLoadTimer = Timer(Duration(seconds: 15), () {
+      if (mounted) {
+        setState(() {
+          progress = 1.0;
+        });
+        _showWebPageNotAvailablePopup("The application took too long to load.");
+        pullToRefreshController.endRefreshing();
+      }
     });
   }
 
@@ -215,8 +220,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     setState(() {
                       this.url = url.toString();
                       urlController.text = this.url;
-                      _startPageLoadTimeout(); // Start the timeout
                     });
+                    _startPageLoadTimeout();
                   },
                   onPermissionRequest: (controller, request) async {
                     return PermissionResponse(
@@ -269,10 +274,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   onReceivedError: (controller, request, error) {
                     progress = 1.0;
                     pullToRefreshController.endRefreshing();
+
                     _pageLoadTimer
                         ?.cancel(); // Cancel the timer if there's an error
-                    _showWebPageNotAvailablePopup(
-                        "Something went wrong. Please try again later.");
+
+                    if (error.description != "net::ERR_FAILED") {
+                      _showWebPageNotAvailablePopup(
+                          "Something went wrong. Please try again later.");
+                    }
                   },
                   onProgressChanged: (controller, progress) {
                     if (progress == 1.0) {
