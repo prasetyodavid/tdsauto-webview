@@ -9,7 +9,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
     
     <application
-        android:label="SMART CLINIC"
+        android:label="SMART IBS"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
