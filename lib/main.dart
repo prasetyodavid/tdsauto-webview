@@ -22,7 +22,7 @@ Future main() async {
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
 var MAIN_HOME_URL = "https://lancarin.my.id/";
-var MAIN_TITLE = "BAS TB";
+var MAIN_TITLE = "NOR TBC";
 
 class SplashScreen extends StatelessWidget {
   @override

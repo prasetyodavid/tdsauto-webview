@@ -1,4 +1,4 @@
-package com.bastb.app
+package com.nortbc.app
 
 import io.flutter.embedding.android.FlutterActivity
 
