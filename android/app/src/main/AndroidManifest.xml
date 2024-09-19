@@ -9,7 +9,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
     
     <application
-        android:label="SMART IBS"
+        android:label="SMART PILAM"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

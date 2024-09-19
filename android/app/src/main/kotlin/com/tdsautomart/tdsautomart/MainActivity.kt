@@ -1,4 +1,4 @@
-package com.man1kotasemarang.ibs
+package com.man1karanganyar.pilam
 
 import io.flutter.embedding.android.FlutterActivity
 

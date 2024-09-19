@@ -24,8 +24,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://man1kotasemarang.belajarku.id/ibs";
-var MAIN_TITLE = "SMART IBS";
+var MAIN_HOME_URL = "https://man1karanganyar.belajarku.id/_pilam/";
+var MAIN_TITLE = "SMART PILAM";
 
 class SplashScreen extends StatelessWidget {
   @override
