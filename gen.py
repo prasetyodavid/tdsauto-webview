@@ -1,12 +1,18 @@
 import re
 import subprocess
 
+def to_pascal_case(s):
+    """Convert a string to PascalCase."""
+    return ''.join(word.capitalize() for word in s.split())
+
 def replace_content_in_files(main_dart_path, manifest_path, gradle_path, kt_path):
     # Ask for new values from the user
     new_home_url = input("Enter new MAIN_HOME_URL: ")
     new_title = input("Enter new MAIN_TITLE: ")
     new_package_name = input("Enter new package name (e.g., com.example.myapp): ")
 
+    apk_name = to_pascal_case(new_title) + ".apk"
+    
     # 1. Update main.dart file
     with open(main_dart_path, 'r') as file:
         content = file.read()
@@ -39,6 +45,10 @@ def replace_content_in_files(main_dart_path, manifest_path, gradle_path, kt_path
     # Replace applicationId and namespace in build.gradle
     gradle_content = re.sub(r'applicationId ".*?"', f'applicationId "{new_package_name}"', gradle_content)
     gradle_content = re.sub(r'namespace ".*?"', f'namespace "{new_package_name}"', gradle_content)
+
+    # Replace newApkName
+    gradle_content = re.sub(r'def newApkName = ".*?"', f'def newApkName = "{apk_name}"', gradle_content)
+
 
     with open(gradle_path, 'w') as file:
         file.write(gradle_content)
