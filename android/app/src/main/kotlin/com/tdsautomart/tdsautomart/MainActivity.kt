@@ -1,4 +1,4 @@
-package com.man1karanganyar.pilam
+package com.mtsn1klaten.appguru
 
 import io.flutter.embedding.android.FlutterActivity
 
