@@ -141,7 +141,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   Future<void> _startPageLoadTimeout() async {
     _pageLoadTimer?.cancel(); // Cancel any existing timer
+<<<<<<< HEAD
     _pageLoadTimer = Timer(Duration(seconds: 30), () {
+=======
+    _pageLoadTimer = Timer(Duration(seconds: 15), () {
+>>>>>>> b4d727ae937931437e2ac480e0a5ffecec3ac202
       if (mounted) {
         setState(() {
           progress = 1.0;
@@ -295,6 +299,14 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
                     _pageLoadTimer
                         ?.cancel(); // Cancel the timer if there's an error
+<<<<<<< HEAD
+=======
+
+                    if (error.description != "net::ERR_FAILED") {
+                      _showWebPageNotAvailablePopup(
+                          "Something went wrong. Please try again later.");
+                    }
+>>>>>>> b4d727ae937931437e2ac480e0a5ffecec3ac202
                   },
                   onProgressChanged: (controller, progress) {
                     if (progress == 1.0) {
