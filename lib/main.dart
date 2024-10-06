@@ -22,8 +22,8 @@ Future main() async {
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
 
-var MAIN_HOME_URL = "https://goyalla.id?app=1";
-var MAIN_TITLE = "Goyalla";
+var MAIN_HOME_URL = "https://waferpakan.com?app=1";
+var MAIN_TITLE = "Wafer Pakan";
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -280,7 +280,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     if (url != null) {
                       String currentUrl = url.toString();
                       setState(() {
-                        showHomeButton = !currentUrl.contains("goyalla.id");
+                        showHomeButton = !currentUrl.contains("waferpakan.com");
                       });
                     }
 
@@ -311,8 +311,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     if (url != null) {
                       String currentUrl = url.toString();
                       setState(() {
-                        // Check if the URL is within the goyalla.id domain
-                        showHomeButton = !currentUrl.contains("goyalla.id");
+                        // Check if the URL is within the waferpakan.com domain
+                        showHomeButton = !currentUrl.contains("waferpakan.com");
                       });
                     }
 
