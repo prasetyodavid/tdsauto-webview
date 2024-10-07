@@ -349,7 +349,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 progress < 0.6
                     ? LinearProgressIndicator(
                         value: progress,
-                        color: Color.fromRGBO(0, 124, 135, 1),
+                        color: Color.fromRGBO(132, 80, 208, 1),
                       )
                     : Container(),
               ],
@@ -381,7 +381,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget _buildProgressBar() {
     if (progress < 0.6) {
       return CircularProgressIndicator(
-        color: Color.fromRGBO(0, 124, 135, 1),
+        color: Color.fromRGBO(132, 80, 208, 1),
       );
     }
     return Container();
