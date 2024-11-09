@@ -1,4 +1,4 @@
-package com.mtsn1klaten.appguru
+package com.mimuhkra.icp
 
 import io.flutter.embedding.android.FlutterActivity
 
