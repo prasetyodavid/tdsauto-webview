@@ -1,4 +1,4 @@
-package com.goyalla.app
+package com.donasias.app
 
 import io.flutter.embedding.android.FlutterActivity
 
