@@ -8,7 +8,7 @@
 PRODUCT_NAME = tdsautomart
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.donasias.app
+PRODUCT_BUNDLE_IDENTIFIER = com.donasiasahabah
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 com.tdsautomart. All rights reserved.
