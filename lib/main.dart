@@ -25,8 +25,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://bk.smamuha1kra.belajarku.id/apk/";
-var MAIN_TITLE = "SMART BK";
+var MAIN_HOME_URL = "https://exam.man1kra.belajarku.id/";
+var MAIN_TITLE = "SMART EXAM";
 
 final GlobalKey webViewKey = GlobalKey();
 late InAppWebViewController webViewController;
@@ -275,16 +275,23 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   alignment: Alignment.center,
                   child: _buildProgressBar(),
                 ),
-              Positioned(
-                bottom: 20,
-                right: 20,
-                child: FloatingActionButton(
-                  onPressed: () => _toggleKioskMode(context),
-                  child: Icon(isKioskMode
-                      ? Icons.lock
-                      : Icons.lock_open), // Toggle icon
-                ),
-              )
+              Align(
+                  alignment: Alignment.centerRight, // Center-right position
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        right: 10), // Add some spacing from the edge
+                    child: SizedBox(
+                      height: 40, // Smaller size
+                      width: 40, // Smaller size
+                      child: FloatingActionButton(
+                        onPressed: () => _toggleKioskMode(context),
+                        child: Icon(
+                          isKioskMode ? Icons.lock : Icons.lock_open,
+                          size: 20, // Smaller icon
+                        ),
+                      ),
+                    ),
+                  ))
             ],
           ),
         ),

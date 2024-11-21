@@ -1,4 +1,4 @@
-package com.smamuha1kra.bk
+package com.man1kra.exam
 
 import io.flutter.embedding.android.FlutterActivity
 
