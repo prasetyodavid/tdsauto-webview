@@ -201,14 +201,21 @@ class _WebViewScreenState extends State<WebViewScreen> {
     );
   }
 
-  void _exitKioskMode(context) async {
+  void _exitKioskMode(BuildContext context) async {
+    final TextEditingController _passwordController = TextEditingController();
+    const String correctPassword = "exit123"; // Define your password here
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Buka kunci"),
+        title: Text("Buka Kunci"),
         content: TextField(
-          obscureText: true,
-          decoration: InputDecoration(labelText: "Password"),
+          controller: _passwordController, // Attach controller
+          obscureText: true, // Hide password input
+          decoration: InputDecoration(
+            labelText: "Password",
+            border: OutlineInputBorder(),
+          ),
         ),
         actions: [
           TextButton(
@@ -217,18 +224,18 @@ class _WebViewScreenState extends State<WebViewScreen> {
           ),
           TextButton(
             onPressed: () async {
-              // Check password here
-              if ("exit123" == "exit123") {
-                await _flutterKioskMode.stop();
+              // Check the entered password
+              if (_passwordController.text == correctPassword) {
+                await _flutterKioskMode.stop(); // Stop kiosk mode
                 setState(() {
-                  isKioskMode = false;
+                  isKioskMode = false; // Update state
                 });
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Kunci terbuka')),
                 );
 
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close dialog
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Salah Password!")),
