@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_kiosk_mode/flutter_kiosk_mode.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,18 @@ Future main() async {
 // flutter pub run flutter_launcher_icons:main
 var MAIN_HOME_URL = "https://bk.smamuha1kra.belajarku.id/apk/";
 var MAIN_TITLE = "SMART BK";
+
+final GlobalKey webViewKey = GlobalKey();
+late InAppWebViewController webViewController;
+
+double progress = 0;
+String url = "";
+late TextEditingController urlController;
+bool isKioskMode = true;
+bool _isLocked = isKioskMode;
+
+final TextEditingController passwordController = TextEditingController();
+final _flutterKioskMode = FlutterKioskMode.instance();
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -56,6 +69,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Future<void> _loadWebView() async {
+    await _flutterKioskMode.start();
     await Future.delayed(Duration(seconds: 3)); // Simulate splash screen delay
   }
 
@@ -81,6 +95,14 @@ class WebViewScreen extends StatefulWidget {
 
 class _WebViewScreenState extends State<WebViewScreen> {
   final GlobalKey webViewKey = GlobalKey();
+
+  void _toggleKioskMode(BuildContext context) {
+    if (isKioskMode) {
+      _exitKioskMode(context);
+    } else {
+      _startKioskMode(context);
+    }
+  }
 
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
@@ -168,149 +190,106 @@ class _WebViewScreenState extends State<WebViewScreen> {
     }
   }
 
+  void _startKioskMode(context) async {
+    await _flutterKioskMode.start();
+    setState(() {
+      isKioskMode = true;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Aplikasi terkunci')),
+    );
+  }
+
+  void _exitKioskMode(context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Buka kunci"),
+        content: TextField(
+          obscureText: true,
+          decoration: InputDecoration(labelText: "Password"),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("Batal"),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Check password here
+              if ("exit123" == "exit123") {
+                await _flutterKioskMode.stop();
+                setState(() {
+                  isKioskMode = false;
+                });
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Kunci terbuka')),
+                );
+
+                Navigator.of(context).pop();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Salah Password!")),
+                );
+              }
+            },
+            child: Text("Konfirmasi"),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: _onWillPop,
-        child: Scaffold(
-            //appBar: AppBar(title: Text("Official InAppWebView website")),
-            body: SafeArea(
-                child: Column(children: <Widget>[
-          Expanded(
-            child: Stack(
-              children: [
-                InAppWebView(
-                  key: webViewKey,
-                  initialUrlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
-                  //url: Uri.parse("https://browserleaks.com/geo")), //test
-                  initialOptions: options,
-                  pullToRefreshController: pullToRefreshController,
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
-                  },
-                  onDownloadStartRequest: (controller, url) async {
-                    var urls = url.url.toString();
-                    String file_Name = urls.split('/').last;
-                    print("onDownloadStart $urls");
-                    print("onDownloadStart $file_Name");
-
-                    await FlutterDownloader.enqueue(
-                      url: urls,
-                      savedDir: (await getApplicationDocumentsDirectory()).path,
-                      fileName: file_Name,
-                      showNotification: true,
-                      openFileFromNotification: true,
-                      saveInPublicStorage: true,
-                    ).catchError((error) {
-                      print("Download failed: $error");
-                    });
-                  },
-                  onReceivedServerTrustAuthRequest:
-                      (controller, challenge) async {
-                    return ServerTrustAuthResponse(
-                        action: ServerTrustAuthResponseAction.PROCEED);
-                  },
-                  onLoadStart: (controller, url) {
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  onPermissionRequest: (controller, request) async {
-                    // checking this to get permission on specific URL
-                    if (true) {
-                      try {
-                        var cameraStatus = await Permission.camera.request();
-                        if (cameraStatus.isDenied) {
-                          await Permission.camera.request();
-                        }
-                        return PermissionResponse(
-                            action: PermissionResponseAction.GRANT,
-                            resources: [
-                              PermissionResourceType.CAMERA_AND_MICROPHONE,
-                            ]);
-                      } catch (e) {
-                        return PermissionResponse(
-                            action: PermissionResponseAction.PROMPT,
-                            resources: [
-                              PermissionResourceType.CAMERA_AND_MICROPHONE,
-                            ]);
-                      }
-                    }
-                  },
-                  androidOnGeolocationPermissionsShowPrompt:
-                      (InAppWebViewController controller, String origin) async {
-                    return GeolocationPermissionShowPromptResponse(
-                        origin: origin, allow: true, retain: true);
-                  },
-                  shouldOverrideUrlLoading:
-                      (controller, navigationAction) async {
-                    var uri = navigationAction.request.url!;
-
-                    if (![
-                      "http",
-                      "https",
-                      "file",
-                      "chrome",
-                      "data",
-                      "javascript",
-                      "about"
-                    ].contains(uri.scheme)) {
-                      if (await canLaunch(url)) {
-                        // Launch the App
-                        await launch(
-                          url,
-                        );
-                        // and cancel the request
-                        return NavigationActionPolicy.CANCEL;
-                      }
-                    }
-
-                    return NavigationActionPolicy.ALLOW;
-                  },
-                  onLoadStop: (controller, url) async {
-                    pullToRefreshController.endRefreshing();
-                    if (url != null) {
-                      await updateCookies(url);
-                    }
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  onLoadError: (controller, url, code, message) {
-                    pullToRefreshController.endRefreshing();
-                  },
-                  onProgressChanged: (controller, progress) {
-                    if (progress == 100) {
-                      pullToRefreshController.endRefreshing();
-                    }
-                    setState(() {
-                      this.progress = progress / 100;
-                      urlController.text = this.url;
-                    });
-                  },
-                  onUpdateVisitedHistory: (controller, url, androidIsReload) {
-                    setState(() {
-                      this.url = url.toString();
-                      urlController.text = this.url;
-                    });
-                  },
-                  onConsoleMessage: (controller, consoleMessage) {
-                    print(consoleMessage);
-                  },
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              InAppWebView(
+                key: webViewKey,
+                initialUrlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
+                initialOptions: InAppWebViewGroupOptions(),
+                pullToRefreshController: pullToRefreshController,
+                onWebViewCreated: (controller) {
+                  webViewController = controller;
+                },
+                onLoadStop: (controller, url) {
+                  pullToRefreshController.endRefreshing();
+                  setState(() {
+                    this.url = url.toString();
+                  });
+                },
+                onProgressChanged: (controller, progress) {
+                  setState(() {
+                    this.progress = progress / 100;
+                  });
+                },
+              ),
+              if (isKioskMode)
+                Align(
+                  alignment: Alignment.center,
+                  child: _buildProgressBar(),
                 ),
-                Align(alignment: Alignment.center, child: _buildProgressBar()),
-                progress < 1.0
-                    ? LinearProgressIndicator(
-                        value: progress,
-                        color: Color.fromRGBO(0, 124, 135, 1),
-                      )
-                    : Container(),
-              ],
-            ),
+              Positioned(
+                bottom: 20,
+                right: 20,
+                child: FloatingActionButton(
+                  onPressed: () => _toggleKioskMode(context),
+                  child: Icon(isKioskMode
+                      ? Icons.lock
+                      : Icons.lock_open), // Toggle icon
+                ),
+              )
+            ],
           ),
-        ]))));
+        ),
+      ),
+    );
   }
 
   Widget _buildProgressBar() {

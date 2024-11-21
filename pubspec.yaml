@@ -41,6 +41,7 @@ dependencies:
   flutter_downloader: ^1.11.7
   path_provider: ^2.0.11
   dio: ^5.0.3
+  flutter_kiosk_mode: ^0.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
