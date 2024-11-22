@@ -1,4 +1,4 @@
-package com.medankrio.app
+package com.hafalanku.app
 
 import io.flutter.embedding.android.FlutterActivity
 
