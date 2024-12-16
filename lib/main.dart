@@ -300,6 +300,24 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     print(consoleMessage);
                   },
                 ),
+                Positioned(
+                  right: 5, // Positioned to the center right
+                  bottom: 5, // Adjust for centering vertically
+                  child: Transform.scale(
+                    scale: 0.7, // Makes the button smaller
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        webViewController?.loadUrl(
+                          urlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
+                        );
+                      },
+                      child: Icon(Icons.home),
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      tooltip: 'Go to Home',
+                    ),
+                  ),
+                ),
                 Align(alignment: Alignment.center, child: _buildProgressBar()),
                 progress < 1.0
                     ? LinearProgressIndicator(
