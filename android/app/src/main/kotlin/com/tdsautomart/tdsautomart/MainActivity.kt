@@ -1,4 +1,4 @@
-package com.mimurub.kamad
+package com.jajanaja.dash
 
 import io.flutter.embedding.android.FlutterActivity
 

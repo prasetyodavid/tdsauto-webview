@@ -24,24 +24,23 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://bk.smamuha1kra.belajarku.id/apk/";
-var MAIN_TITLE = "SMART BK";
+var MAIN_HOME_URL = "https://dashboard.jajanaja.com/";
+var MAIN_TITLE = "JAJAN'S OUTLET";
 
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF0B7B31), // Set background color to #0b7b31
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/icon/icon.png',
-              width: 200, // Adjust the width as needed
-              height: 200, // Adjust the height as needed
+              'assets/icon/loader.png',
+              width: 350,
+              height: 350,
             ),
-            SizedBox(height: 20),
-            Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
