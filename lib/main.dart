@@ -23,7 +23,7 @@ Future main() async {
 // flutter pub run flutter_launcher_icons:main
 
 var MAIN_HOME_URL = "https://simdes.xyz/desa/medankrio";
-var MAIN_TITLE = "Desa Mekro";
+var MAIN_TITLE = "Simdes Mekro";
 
 class SplashScreen extends StatelessWidget {
   @override
