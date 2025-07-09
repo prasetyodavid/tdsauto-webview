@@ -24,8 +24,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://bk.smamuha1kra.belajarku.id/apk/";
-var MAIN_TITLE = "SMART BK";
+var MAIN_HOME_URL = "https://jodohkita.com";
+var MAIN_TITLE = "Jodoh Kita";
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -40,8 +40,8 @@ class SplashScreen extends StatelessWidget {
               width: 200, // Adjust the width as needed
               height: 200, // Adjust the height as needed
             ),
-            SizedBox(height: 20),
-            Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
+            //SizedBox(height: 20),
+            //Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
@@ -110,7 +110,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
-        color: Colors.blue,
+        color: const Color.fromARGB(255, 244, 46, 46),
       ),
       onRefresh: () async {
         if (Platform.isAndroid) {
@@ -300,6 +300,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     print(consoleMessage);
                   },
                 ),
+                /*
                 Positioned(
                   right: 5, // Positioned to the center right
                   bottom: 5, // Adjust for centering vertically
@@ -312,17 +313,18 @@ class _WebViewScreenState extends State<WebViewScreen> {
                         );
                       },
                       child: Icon(Icons.home),
-                      backgroundColor: Colors.blue,
+                      backgroundColor: const Color.fromARGB(255, 246, 34, 34),
                       foregroundColor: Colors.white,
                       tooltip: 'Go to Home',
                     ),
                   ),
                 ),
+                */
                 Align(alignment: Alignment.center, child: _buildProgressBar()),
                 progress < 1.0
                     ? LinearProgressIndicator(
                         value: progress,
-                        color: Color.fromRGBO(0, 124, 135, 1),
+                        color: Color.fromRGBO(176, 50, 31, 1),
                       )
                     : Container(),
               ],
@@ -334,7 +336,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget _buildProgressBar() {
     if (progress != 1.0) {
       return CircularProgressIndicator(
-        color: Color.fromRGBO(0, 124, 135, 1),
+        color: Color.fromRGBO(160, 23, 23, 1),
       );
     }
     return Container();
