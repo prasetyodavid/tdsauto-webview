@@ -1,4 +1,4 @@
-package com.mimurub.kamad
+package com.sfssfsf.sfs
 
 import io.flutter.embedding.android.FlutterActivity
 

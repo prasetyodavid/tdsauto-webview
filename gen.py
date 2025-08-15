@@ -70,7 +70,8 @@ def replace_content_in_files(main_dart_path, manifest_path, gradle_path, kt_path
     # 5. Run Flutter commands
     try:
         print("Running Flutter commands...")
-        subprocess.run(["cmd", "/c", ".\\gen.bat"], check=True)
+        #subprocess.run(["cmd", "/c", ".\\gen.bat"], check=True)
+        subprocess.run(["bash", "./genlx.sh"], check=True)
 
         print("Flutter commands executed successfully!")
     except subprocess.CalledProcessError as e:
