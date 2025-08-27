@@ -1,4 +1,4 @@
-package com.mimurub.kamad
+package com.siber.app
 
 import io.flutter.embedding.android.FlutterActivity
 

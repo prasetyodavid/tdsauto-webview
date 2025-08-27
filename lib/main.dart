@@ -24,8 +24,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://bk.smamuha1kra.belajarku.id/apk/";
-var MAIN_TITLE = "SMART BK";
+var MAIN_HOME_URL = "https://polrisiber.id";
+var MAIN_TITLE = "Siber";
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -40,8 +40,8 @@ class SplashScreen extends StatelessWidget {
               width: 200, // Adjust the width as needed
               height: 200, // Adjust the height as needed
             ),
-            SizedBox(height: 20),
-            Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
+            //SizedBox(height: 20),
+            //Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
@@ -301,20 +301,23 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   },
                 ),
                 Positioned(
-                  right: 5, // Positioned to the center right
-                  bottom: 5, // Adjust for centering vertically
-                  child: Transform.scale(
-                    scale: 0.7, // Makes the button smaller
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        webViewController?.loadUrl(
-                          urlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
-                        );
-                      },
-                      child: Icon(Icons.home),
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      tooltip: 'Go to Home',
+                  right: 5,
+                  top: 0,
+                  bottom: 0,
+                  child: Center(
+                    child: Transform.scale(
+                      scale: 0.7,
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          webViewController?.loadUrl(
+                            urlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
+                          );
+                        },
+                        child: Icon(Icons.home),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        tooltip: 'Go to Home',
+                      ),
                     ),
                   ),
                 ),
