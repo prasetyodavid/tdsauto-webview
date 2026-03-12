@@ -1,4 +1,4 @@
-package com.mimurub.kamad
+package com.prediksiwla.dev
 
 import io.flutter.embedding.android.FlutterActivity
 
