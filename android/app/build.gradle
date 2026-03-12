@@ -54,9 +54,9 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('izzystock.keystore')
+            storeFile file('yoman.keystore')
             storePassword "bootstrap911"
-            keyAlias "izzystockkey"
+            keyAlias "yomankey"
             keyPassword "bootstrap911"
         }
     }
