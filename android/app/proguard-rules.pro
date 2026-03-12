@@ -1,0 +1,5 @@
+-keep class com.pichillilorenzo.flutter_inappwebview.** { *; }
+-keep class androidx.webkit.** { *; }
+-dontwarn com.pichillilorenzo.flutter_inappwebview.**
+-dontwarn androidx.webkit.**
+-dontwarn android.window.BackEvent

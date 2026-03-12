@@ -7,10 +7,14 @@ allprojects {
 
 rootProject.buildDir = '../build'
 subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(':app')
+}
+gradle.projectsEvaluated {
+    subprojects.each { project ->
+        if (project.plugins.hasPlugin('com.android.library')) {
+            project.android.buildTypes.release.minifyEnabled = false
+        }
+    }
 }
 
 tasks.register("clean", Delete) {
