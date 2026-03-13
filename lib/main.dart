@@ -11,11 +11,11 @@ import 'package:permission_handler/permission_handler.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Permission.storage.request();
-  await Permission.photos.request();
-  await Permission.videos.request();
+  //await Permission.photos.request();
+  //await Permission.videos.request();
   await Permission.manageExternalStorage.request();
-  await Permission.notification.request();
-  await Permission.camera.request();
+  //await Permission.notification.request();
+  //await Permission.camera.request();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
   runApp(MaterialApp(home: new MyApp()));
@@ -26,6 +26,8 @@ Future main() async {
 // flutter pub run flutter_launcher_icons:main
 var MAIN_HOME_URL = "https://prediksiwla.pages.dev/";
 var MAIN_TITLE = "PrediksiWLA";
+// Local HTML from assets (used when loading offline)
+const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -40,8 +42,8 @@ class SplashScreen extends StatelessWidget {
               width: 200, // Adjust the width as needed
               height: 200, // Adjust the height as needed
             ),
-            SizedBox(height: 20),
-            Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
+            //SizedBox(height: 20),
+            //Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
           ],
         ),
       ),
@@ -181,8 +183,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               children: [
                 InAppWebView(
                   key: webViewKey,
-                  initialUrlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
-                  //url: Uri.parse("https://browserleaks.com/geo")), //test
+                  initialFile: LOCAL_INDEX_ASSET,
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
@@ -300,6 +301,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     print(consoleMessage);
                   },
                 ),
+                /*
                 Positioned(
                   right: 5, // Positioned to the center right
                   bottom: 5, // Adjust for centering vertically
@@ -307,8 +309,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     scale: 0.7, // Makes the button smaller
                     child: FloatingActionButton(
                       onPressed: () {
-                        webViewController?.loadUrl(
-                          urlRequest: URLRequest(url: WebUri(MAIN_HOME_URL)),
+                        webViewController?.loadFile(
+                          assetFilePath: LOCAL_INDEX_ASSET,
                         );
                       },
                       child: Icon(Icons.home),
@@ -318,11 +320,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     ),
                   ),
                 ),
+                */
                 Align(alignment: Alignment.center, child: _buildProgressBar()),
                 progress < 1.0
                     ? LinearProgressIndicator(
                         value: progress,
-                        color: Color.fromRGBO(0, 124, 135, 1),
+                        color: Color.fromRGBO(233, 78, 7, 1),
                       )
                     : Container(),
               ],
@@ -333,9 +336,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   Widget _buildProgressBar() {
     if (progress != 1.0) {
-      return CircularProgressIndicator(
-        color: Color.fromRGBO(0, 124, 135, 1),
-      );
+      return CircularProgressIndicator(color: Color.fromRGBO(233, 78, 7, 1));
     }
     return Container();
   }

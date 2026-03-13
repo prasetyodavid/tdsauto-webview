@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PREDIKSIWLA - Buku Mimpi 2D</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Transisi halus untuk sidebar */
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Efek Gradien Kustom */
+        .bg-gradient-gold {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+        }
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        /* Mencegah scroll saat sidebar terbuka */
+        .no-scroll {
+            overflow: hidden;
+        }
+        /* Animasi rotasi untuk ikon dropdown */
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            margin: 0;
+            padding: 0;
+            color: #f1f5f9;
+        }
+
+        /* Efek Gradien untuk Teks Judul */
+        .gradient-text {
+            background: linear-gradient(to right, #fbbf24, #f59e0b, #ea580c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+
+        /* Container galeri dirampingkan untuk mobile */
+        .gallery-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            background-color: #000;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        /* Menghilangkan celah antar gambar */
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-section {
+            background-color: #020617;
+            width: 100%;
+            text-align: center;
+            padding: 2rem 1rem;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .footer {
+            padding: 30px 20px;
+            color: #475569;
+            text-align: center;
+            font-size: 0.75rem;
+            background-color: #020617;
+            width: 100%;
+        }
+
+        /* Custom scrollbar lebih tipis */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #f59e0b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-[#121212] text-gray-100 flex flex-col min-h-screen font-sans">
+
+    <!-- Overlay Sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar (Laci Navigasi) -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-[#1e1e1e] border-r border-gray-800 shadow-2xl z-50 transform -translate-x-full sidebar-transition overflow-y-auto">
+        <div class="p-6">
+            <!-- Logo: PREDIKSIWLA -->
+            <a href="index.html" class="flex items-center justify-center mb-8 border-b border-gray-800 pb-6 hover:opacity-80 transition-opacity">
+                <div class="text-2xl font-black tracking-tighter italic">
+                    <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
+                </div>
+            </a>
+
+            <nav class="space-y-1">
+                <!-- Buku Mimpi (With Submenu) -->
+                <div>
+                    <button onclick="toggleSubmenu('bukuMimpi')" class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <span class="font-medium">Buku Mimpi</span>
+                        </div>
+                        <svg id="arrow-bukuMimpi" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="submenu-bukuMimpi" class="hidden pl-14 pr-4 py-2 space-y-2">
+                        <a href="buku-mimpi-2d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 2D</a>
+                        <a href="buku-mimpi-3d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 3D</a>
+                        <a href="buku-mimpi-4d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 4D</a>
+                    </div>
+                </div>
+
+                <!-- Paito -->
+                <a href="index.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Paito</span>
+                </a>
+
+                <!-- Tabel Shio -->
+                <a href="tabel-shio.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Tabel Shio</span>
+                </a>
+
+                <!-- Generator 4D -->
+                <a href="generator4d.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Generator 4D</span>
+                </a>
+
+                <!-- BBFS -->
+                <a href="bbfs.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">BBFS</span>
+                </a>
+
+                <!-- Jadwal -->
+                <a href="jadwal.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Jadwal</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Header Atas -->
+    <header class="bg-[#1e1e1e] border-b border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md">
+        <div class="flex items-center">
+            <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-800 rounded-lg focus:outline-none transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <a href="index.html" class="ml-3 text-lg font-black tracking-tighter italic leading-none hover:opacity-80 transition-opacity">
+                <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
+            </a>
+        </div>
+
+        <!-- Tombol LINK JP di Kanan Atas -->
+        <a href="https://prediksiwla.pages.dev" class="bg-gradient-gold text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg shadow-orange-500/20 active:scale-95 transition-transform uppercase tracking-wider">
+            LINK JP
+        </a>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="flex-grow flex flex-col items-center">
+        <!-- Judul Halaman -->
+        <div class="header-section">
+            <h1 class="text-3xl md:text-4xl font-black tracking-tighter gradient-text">BUKU MIMPI 2D</h1>
+            <p class="text-slate-500 mt-2 font-semibold text-xs md:text-sm uppercase tracking-widest">Koleksi Gambar Tafsir Lengkap</p>
+        </div>
+
+        <!-- Galeri Gambar -->
+        <div class="gallery-container" id="gif-gallery">
+            <!-- Gambar dimuat via JavaScript -->
+        </div>
+
+    </main>
+
+    <!-- Navigasi Bawah -->
+    <nav class="bg-[#1e1e1e]/80 backdrop-blur-lg border-t border-gray-800 flex items-center justify-around py-4 sticky bottom-0 z-30">
+        <!-- BBFS -->
+        <a href="bbfs.html" class="flex flex-col items-center group">
+            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">BBFS</span>
+        </a>
+        
+        <!-- Beranda -->
+        <a href="index.html" class="flex flex-col items-center group relative">
+            <div class="absolute -top-10 bg-gradient-gold p-4 rounded-full shadow-lg shadow-orange-500/30 text-white border-4 border-[#121212] transition-transform active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-8 font-bold uppercase tracking-widest text-yellow-500">Beranda</span>
+        </a>
+
+        <!-- Chat -->
+        <a href="chat.html" class="flex flex-col items-center group">
+            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">Chat</span>
+        </a>
+    </nav>
+
+    <script>
+        /* Fungsi Bawaan UI */
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.classList.add('no-scroll');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.classList.remove('no-scroll');
+                document.querySelectorAll('[id^="submenu-"]').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('[id^="arrow-"]').forEach(el => el.classList.remove('rotate-180'));
+            }
+        }
+
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById('submenu-' + id);
+            const arrow = document.getElementById('arrow-' + id);
+            const isHidden = submenu.classList.contains('hidden');
+            
+            if (isHidden) {
+                submenu.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                submenu.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+        /* Logika Galeri Gambar */
+        const baseUrl = "https://galpagehoki.com/05/";
+        const gallery = document.getElementById('gif-gallery');
+
+        function loadImages() {
+            for (let i = 0; i <= 99; i++) {
+                const id = i.toString().padStart(2, '0');
+                const fileName = id + ".gif";
+                
+                const img = document.createElement('img');
+                img.src = baseUrl + fileName;
+                img.alt = "Buku Mimpi 2D No " + id;
+                img.loading = "lazy";
+                
+                gallery.appendChild(img);
+            }
+        }
+
+        window.onload = loadImages;
+    </script>
+</body>
+</html>
