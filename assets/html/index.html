@@ -1,550 +1,376 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREDIKSIWLA - Dark Mode</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Transisi halus untuk sidebar */
-        .sidebar-transition {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        /* Efek Gradien Kustom */
-        .bg-gradient-gold {
-            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
-        }
-        .text-gradient-gold {
-            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        /* Mencegah scroll saat sidebar terbuka */
-        .no-scroll {
-            overflow: hidden;
-        }
-        /* Animasi rotasi untuk ikon dropdown */
-        .rotate-180 {
-            transform: rotate(180deg);
-        }
 
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap');
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #0f172a;
+<!doctype html>
+<html class="no-js" lang="id">
+
+<head>
+	<!--<base href="/dewasejati/">-->
+    <meta name="robots" content="noindex"> 
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Kumpulan Slot Gacor RTP Tinggi</title>
+    <meta name="description" content="menyediakan semua game slot gacor dengan rtp paling tinggi"/>
+    <meta name="keywords" content="">
+    <meta name="author" content="Code Carnival">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Add site Favicon -->
+    <link rel="shortcut icon" href="assets/img/favicon.ico" type="image/png">
+
+    <!-- CSS 
+    ========================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Metal+Mania&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="assets/css/icofont.min.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <!-- Main Style CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    
+    <style>
+        /* Mobile-first responsive styles */
+        body {
+            background: linear-gradient(135deg, #040404 0%, #000208 50%, #000000 100%);
+            margin: 0;
+            padding: 0;
+            font-family: 'Exo', sans-serif;
         }
-        .gradient-accent { 
-            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%); 
+        
+        .mobile-header {
+            background: rgba(0,0,0,0.3);
+            padding: 15px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
         }
-        .text-gradient {
-            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        
+        .mobile-header .logo {
+            max-width: 150px;
+            height: auto;
         }
-        .header-gradient {
-            background: linear-gradient(to right, #f97316, #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
+        
+        .games-grid {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
         }
-        .green-gradient {
-            background: linear-gradient(to right, #10b981, #34d399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
+        
+        .game-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .divider-gradient {
-            height: 2px;
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .game-image {
             width: 100%;
-            background: linear-gradient(to right, transparent, #fbbf24, #f97316, transparent);
-            border-radius: 999px;
-            margin: 0.75rem 0;
-            opacity: 0.6;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 10px;
+            display: block;
         }
-        .card-dark {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .bb-preview-container {
+        
+        .game-image-container {
+            width: 100%;
+            height: 160px;
+            overflow: visible;
+            border-radius: 10px;
+            margin-bottom: 10px;
             position: relative;
-            background: rgba(15, 23, 42, 0.3);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            overflow: hidden;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 75px; 
-        }
-        .bb-preview-container.expanded {
-            max-height: 1200px; 
-            background: rgba(15, 23, 42, 0.85);
-            border-color: rgba(249, 115, 22, 0.4);
-        }
-        .peek-gradient-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, transparent 0%, rgba(30, 41, 59, 0.9) 75%, #1e293b 100%);
-            pointer-events: none;
-            transition: opacity 0.4s ease;
+            background: rgba(0,0,0,0.1);
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
-            padding-bottom: 10px;
-            z-index: 10;
         }
-        .expanded .peek-gradient-overlay {
-            opacity: 0;
+        
+        .game-title {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
-        .glow-arrow {
-            filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.7));
+        
+        .play-button {
+            background: linear-gradient(45deg, #000000 0%, #5a61ad 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
-        @keyframes bounce-subtle {
-            0%, 100% { transform: translateY(0); opacity: 0.7; }
-            50% { transform: translateY(4px); opacity: 1; }
+        
+        .play-button:hover {
+            background: linear-gradient(45deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+            color: white;
+            text-decoration: none;
         }
-        .animate-bounce-subtle {
-            animation: bounce-subtle 2s infinite ease-in-out;
+        
+        .footer-mobile {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
         }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .card-dark {
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
+        
+        .footer-mobile .logo {
+            max-width: 120px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-mobile p {
+            color: #cccccc;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .footer-mobile a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        /* Responsive grid */
+        @media (min-width: 768px) {
+            .games-grid {
+                max-width: 800px;
+            }
+            
+            .game-card {
+                margin-bottom: 30px;
+            }
+            
+            .game-image-container {
+                height: 200px;
+            }
+            
+            .game-title {
+                font-size: 18px;
+            }
+            
+            .play-button {
+                padding: 15px 40px;
+                font-size: 16px;
+            }
+        }
+        
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            .games-grid {
+                padding: 15px;
+            }
+            
+            .game-card {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .game-image-container {
+                height: 140px;
+            }
+            
+            .game-title {
+                font-size: 14px;
+                margin-bottom: 12px;
+            }
+            
+            .play-button {
+                padding: 10px 25px;
+                font-size: 13px;
+            }
+        }
+        
+        /* Star background effect */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
     </style>
 </head>
-<body class="bg-[#121212] text-gray-100 flex flex-col min-h-screen font-sans">
 
-    <!-- Overlay Sidebar -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>
+<body>
+    <!-- Star background -->
+    <div class="stars" id="stars"></div>
 
-    <!-- Sidebar (Laci Navigasi) -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-[#1e1e1e] border-r border-gray-800 shadow-2xl z-50 transform -translate-x-full sidebar-transition overflow-y-auto">
-        <div class="p-6">
-            <!-- Logo: PREDIKSIWLA (Link ke indvtes.com) -->
-            <a href="index.html" class="flex items-center justify-center mb-8 border-b border-gray-800 pb-6 hover:opacity-80 transition-opacity">
-                <div class="text-2xl font-black tracking-tighter italic">
-                    <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
-                </div>
-            </a>
-
-            <nav class="space-y-1">
-                <!-- Buku Mimpi (With Submenu) -->
-                <div>
-                    <button onclick="toggleSubmenu('bukuMimpi')" class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
-                        <div class="flex items-center">
-                            <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                            </div>
-                            <span class="font-medium">Buku Mimpi</span>
-                        </div>
-                        <svg id="arrow-bukuMimpi" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div id="submenu-bukuMimpi" class="hidden pl-14 pr-4 py-2 space-y-2">
-                        <a href="buku-mimpi-2d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 2D</a>
-                        <a href="buku-mimpi-3d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 3D</a>
-                        <a href="buku-mimpi-4d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 4D</a>
-                    </div>
-                </div>
-
-                <!-- Paito -->
-                <a href="index.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
-                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">Paito</span>
-                </a>
-
-                <!-- Tabel Shio -->
-                <a href="tabel-shio.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
-                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">Tabel Shio</span>
-                </a>
-
-                <!-- Generator 4D -->
-                <a href="generator4d.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
-                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">Generator 4D</span>
-                </a>
-
-                <!-- BBFS -->
-                <a href="bbfs.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
-                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">BBFS</span>
-                </a>
-
-                <!-- Jadwal -->
-                <a href="jadwal.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
-                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">Jadwal</span>
-                </a>
-            </nav>
-        </div>
-    </aside>
-
-    <!-- Header Atas -->
-    <header class="bg-[#1e1e1e] border-b border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md">
-        <div class="flex items-center">
-            <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-800 rounded-lg focus:outline-none transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-            <a href="index.html" class="ml-3 text-lg font-black tracking-tighter italic leading-none hover:opacity-80 transition-opacity">
-                <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
-            </a>
-        </div>
-
-        <!-- Tombol LINK JP di Kanan Atas -->
-        <a href="https://prediksiwla.pages.dev" class="bg-gradient-gold text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg shadow-orange-500/20 active:scale-95 transition-transform uppercase tracking-wider">
-            LINK JP
-        </a>
-    </header>
-
-    <!-- Konten Utama -->
-    <main class="flex-grow container mx-auto p-6 flex flex-col items-center justify-center">
-        
-        <body class="text-gray-200 min-h-screen p-4">
-
-    <div class="max-w-md mx-auto">
-        <header class="text-center mb-10 pt-6">
-            <h1 class="text-4xl font-extrabold text-gradient mb-3 uppercase tracking-[0.15em]">
-                Prediksi Jitu WLA
-            </h1>
-            <p class="text-gray-400 text-sm tracking-widest font-medium opacity-80 uppercase">
-                Akurasi Tinggi • Pasaran Terlengkap
-            </p>
-            <div class="h-1 w-20 gradient-accent mx-auto mt-4 rounded-full"></div>
-        </header>
-
-        <div class="mb-8">
-            <div class="relative">
-                <input type="text" id="searchInput" placeholder="Cari pasaran..." 
-                    class="w-full p-4 pl-12 rounded-2xl bg-slate-800 border border-slate-700 text-white shadow-lg focus:ring-2 focus:ring-orange-500 outline-none transition-all text-sm tracking-wide text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-4 top-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </div>
-        </div>
-
-        <div id="marketGrid" class="grid grid-cols-1 gap-6 pb-12">
-            <!-- Market Cards injected here -->
-        </div>
-
-        <footer class="text-center pb-12 border-t border-slate-800 pt-8">
-            <p class="text-[10px] text-gray-500 italic uppercase tracking-[0.4em] mb-2">Peringatan Penting</p>
-            <p class="text-xs text-gray-400 px-4">Tetap Utamakan Prediksi Anda Sendiri. Rumusan Hanya Rekomendasi Tim Prediksi WLA.</p>
-        </footer>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <img src="assets/img/logo.png" alt="Logo" class="logo">
     </div>
-        
-    </main>
 
-    <!-- Navigasi Bawah -->
-    <nav class="bg-[#1e1e1e]/80 backdrop-blur-lg border-t border-gray-800 flex items-center justify-around py-4 sticky bottom-0 z-30">
-        <!-- BBFS -->
-        <a href="bbfs.html" class="flex flex-col items-center group">
-            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
-                </svg>
+    <!-- Games Grid Section -->
+    <div class="games-grid">
+        <div class="row">
+            <!-- Game 1: Gates of Olympus -->
+            <div class="col-6 mb-3">
+                <div class="game-card">
+                    <div class="game-image-container">
+                        <img src="assets/img/zeus.jpg" alt="Gates of Olympus" class="game-image">
+                    </div>
+                    <h3 class="game-title">Gates of OLYMPUS™</h3>
+                    <a href="zeus.html" class="play-button">Mainkan</a>
+                </div>
             </div>
-            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">BBFS</span>
-        </a>
-        
-        <!-- Beranda -->
-        <a href="index.html" class="flex flex-col items-center group relative">
-            <div class="absolute -top-10 bg-gradient-gold p-4 rounded-full shadow-lg shadow-orange-500/30 text-white border-4 border-[#121212] transition-transform active:scale-90">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
+            
+            <!-- Game 2: Sword of Ares -->
+            <div class="col-6 mb-3">
+                <div class="game-card">
+                    <div class="game-image-container">
+                        <img src="assets/img/sw.png" alt="Sword of Ares" class="game-image">
+                    </div>
+                    <h3 class="game-title">SWORD OF ARES</h3>
+                    <a href="sw.html" class="play-button">Mainkan</a>
+                </div>
             </div>
-            <span class="text-[11px] mt-8 font-bold uppercase tracking-widest text-yellow-500">Beranda</span>
-        </a>
+            
+            <!-- Game 3: Mahjong Ways -->
+            <div class="col-6 mb-3">
+                <div class="game-card">
+                    <div class="game-image-container">
+                        <img src="assets/img/mh.png" alt="Mahjong Ways" class="game-image">
+                    </div>
+                    <h3 class="game-title">MAHJONG WAYS</h3>
+                    <a href="mh.html" class="play-button">Mainkan</a>
+                </div>
+            </div>
+            
+            <!-- Game 4: Sweet Bonanza -->
+            <div class="col-6 mb-3">
+                <div class="game-card">
+                    <div class="game-image-container">
+                        <img src="assets/img/sp.png" alt="Sweet Bonanza" class="game-image">
+                    </div>
+                    <h3 class="game-title">SWEET BONANZA</h3>
+                    <a href="sp.html" class="play-button">Mainkan</a>
+                </div>
+            </div>
+            
+            <!-- Game 5: Candy Blitz -->
+            <div class="col-6 mb-3">
+                <div class="game-card">
+                    <div class="game-image-container">
+                        <img src="assets/img/candy.webp" alt="Candy Blitz" class="game-image">
+                    </div>
+                    <h3 class="game-title">CANDY BLITZ</h3>
+                    <a href="candy.html" class="play-button">Mainkan</a>
+                </div>
+            </div>
+            
+            <!-- Game 6: Forge of Olympus -->
+            <div class="col-6 mb-3">
+                <div class="game-card">
+                    <div class="game-image-container">
+                        <img src="assets/img/forge.webp" alt="Forge of Olympus" class="game-image">
+                    </div>
+                    <h3 class="game-title">FORGE OF OLYMPUS</h3>
+                    <a href="forge.html" class="play-button">Mainkan</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Chat -->
-        <a href="chat.html" class="flex flex-col items-center group">
-            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-            </div>
-            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">Chat</span>
-        </a>
-    </nav>
+    <!-- Mobile Footer -->
+    <footer class="footer-mobile">
+        <img src="assets/img/logo.png" alt="Logo" class="logo">
+        <p>Mainkan Semua Game Pilihan dan terpopuler yang pasti gacor.</p>
+        <p><a href="policy.html">Privacy Policy</a></p>
+        <p>© 2026. All Right Reserved.</p>
+    </footer>
 
+    <!-- JS
+    ============================================ -->
+    <!--modernizr min js here-->
+    <script src="assets/js/vendor/modernizr-3.7.1.min.js"></script>
+
+    <!-- Vendor JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-3.3.2.min.js"></script>
+    <script src="assets/js/vendor/popper.js"></script>
+    <script src="assets/js/vendor/bootstrap.min.js"></script>
+    <script src="assets/js/slick.min.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/jquery.nice-select.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <script src="assets/js/jquery-waypoints.js"></script>
+
+    <!-- Main JS -->
+    <script src="assets/js/main.js"></script>
+    
     <script>
-        /* Fungsi Bawaan UI */
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isClosed = sidebar.classList.contains('-translate-x-full');
-
-            if (isClosed) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                document.body.classList.add('no-scroll');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-                document.body.classList.remove('no-scroll');
-                document.querySelectorAll('[id^="submenu-"]').forEach(el => el.classList.add('hidden'));
-                document.querySelectorAll('[id^="arrow-"]').forEach(el => el.classList.remove('rotate-180'));
-            }
-        }
-
-        function toggleSubmenu(id) {
-            const submenu = document.getElementById('submenu-' + id);
-            const arrow = document.getElementById('arrow-' + id);
-            const isHidden = submenu.classList.contains('hidden');
+        // Create star background effect
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 100;
             
-            if (isHidden) {
-                submenu.classList.remove('hidden');
-                arrow.classList.add('rotate-180');
-            } else {
-                submenu.classList.add('hidden');
-                arrow.classList.remove('rotate-180');
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starsContainer.appendChild(star);
             }
         }
-
-                const markets = [
-            { name: "TOTOMACAU (00.15)", time: "Setiap Hari 00:15 (WIB)", hour: 0, min: 15 },
-            { name: "INDIA49", time: "Setiap Hari 01:30 (WIB)", hour: 1, min: 30 },
-            { name: "KSPO 4D", time: "Setiap Hari 10:00 (WIB)", hour: 10, min: 0 },
-            { name: "JAPAN 4D", time: "Setiap Hari 10:00 (WIB)", hour: 10, min: 0 },
-            { name: "JAKTIM", time: "Setiap Hari 11:30 (WIB)", hour: 11, min: 30 },
-            { name: "PCSTOTO 45", time: "Setiap Hari 12:00 (WIB)", hour: 12, min: 0 },
-            { name: "CHINA", time: "Setiap Hari 12:30 (WIB)", hour: 12, min: 30 },
-            { name: "TOTOMACAU (13.15)", time: "Setiap Hari 13:15 (WIB)", hour: 13, min: 15 },
-            { name: "INDIA 45", time: "Setiap Hari 13:30 (WIB)", hour: 13, min: 30 },
-            { name: "SRILANKA TOTO", time: "Setiap Hari 13:30 (WIB)", hour: 13, min: 30 },
-            { name: "THAI TOTO", time: "Setiap Hari 13:45 (WIB)", hour: 13, min: 45 },
-            { name: "SYDNEY", time: "Setiap Hari 13:50 (WIB)", hour: 13, min: 50 },
-            { name: "AUS 4D", time: "Setiap Hari 14:15 (WIB)", hour: 14, min: 15 },
-            { name: "JAKBAR", time: "Setiap Hari 14:45 (WIB)", hour: 14, min: 45 },
-            { name: "TOTOMACAU 5D (15.15)", time: "Setiap Hari 15:15 (WIB)", hour: 15, min: 15 },
-            { name: "KSPO LOTTERY 6D", time: "Setiap Hari 16:00 (WIB)", hour: 16, min: 0 },
-            { name: "JAPAN 6D", time: "Selasa s/d Minggu 16:00 (WIB)", hour: 16, min: 0 },
-            { name: "AUS 6D", time: "Setiap Hari 16:00 (WIB)", hour: 16, min: 0 },
-            { name: "TOTOMACAU (16.15)", time: "Setiap Hari 16:15 (WIB)", hour: 16, min: 15 },
-            { name: "PCSOTOTO 49", time: "Setiap Hari 17:00 (WIB)", hour: 17, min: 0 },
-            { name: "KINGKONG4D (Sore)", time: "Setiap Hari 17:00 (WIB)", hour: 17, min: 0 },
-            { name: "JAKUT", time: "Setiap Hari 17:15 (WIB)", hour: 17, min: 15 },
-            { name: "SINGAPORE", time: "Selasa & Jumat (Libur) 17:50 (WIB)", hour: 17, min: 50 },
-            { name: "VIETNAM", time: "Setiap Hari 18:45 (WIB)", hour: 18, min: 45 },
-            { name: "TOTOMACAU (19.15)", time: "Setiap Hari 19:15 (WIB)", hour: 19, min: 15 },
-            { name: "TAIWAN 4D", time: "Setiap Hari 19:30 (WIB)", hour: 19, min: 30 },
-            { name: "MALAYSIA SUPER", time: "Setiap Hari 19:30 (WIB)", hour: 19, min: 30 },
-            { name: "TAIWAN 6D", time: "Setiap Hari 20:00 (WIB)", hour: 20, min: 0 },
-            { name: "TAIWAN TOTO", time: "Setiap Hari 20:30 (WIB)", hour: 20, min: 30 },
-            { name: "JAKSEL", time: "Setiap Hari 20:45 (WIB)", hour: 20, min: 45 },
-            { name: "AUSTRALIA TOTO", time: "Setiap Hari 21:15 (WIB)", hour: 21, min: 15 },
-            { name: "TOTOMACAU 5D (21.15)", time: "Setiap Hari 21:15 (WIB)", hour: 21, min: 15 },
-            { name: "KSPOLOTTERY TOTO", time: "Setiap Hari 22:00 (WIB)", hour: 22, min: 0 },
-            { name: "TOTOMACAU (22.15)", time: "Setiap Hari 22:15 (WIB)", hour: 22, min: 15 },
-            { name: "HKJC (GMT+8)", time: "Setiap Hari 22:30 (WIB)", hour: 22, min: 30 },
-            { name: "HONGKONG", time: "Setiap Hari 23:00 (WIB)", hour: 23, min: 0 },
-            { name: "KINGKONG4D (Malam)", time: "Setiap Hari 23:30 (WIB)", hour: 23, min: 30 },
-            { name: "JAKPUS", time: "Setiap Hari 00:00 (WIB)", hour: 24, min: 0 } // Diberi 24 agar berada di paling bawah
-        ];
-
-        const shioList = ["Naga", "Ular", "Kuda", "Kambing", "Monyet", "Ayam", "Anjing", "Babi", "Tikus", "Kerbau", "Macan", "Kelinci"];
-
-        function seededRandom(seed) {
-            let x = Math.sin(seed++) * 10000;
-            return x - Math.floor(x);
-        }
-
-        function getSeed(marketName) {
-            const d = new Date();
-            const dateStr = `${d.getFullYear()}${d.getMonth()}${d.getDate()}`;
-            const combined = marketName + dateStr;
-            let hash = 0;
-            for (let i = 0; i < combined.length; i++) {
-                hash = ((hash << 5) - hash) + combined.charCodeAt(i);
-                hash |= 0; 
-            }
-            return Math.abs(hash);
-        }
-
-        function getCombinedPool(amArr, aiArr) {
-            return [...new Set([...amArr, ...aiArr])];
-        }
-
-        function getSeededDigitsArray(count, seed) {
-            let digits = [];
-            let currentSeed = seed;
-            while(digits.length < count) {
-                let r = Math.floor(seededRandom(currentSeed++) * 10);
-                if(digits.indexOf(r) === -1) digits.push(r);
-            }
-            return digits;
-        }
-
-        function getSeededNumber(min, max, seed) {
-            return Math.floor(seededRandom(seed) * (max - min + 1)) + min;
-        }
-
-        function generateLinesFromPool(lineCount, setsPerLine, digitCount, seed, pool) {
-            let html = '';
-            let currentSeed = seed;
-            for(let i=0; i<lineCount; i++) {
-                let sets = [];
-                for(let j=0; j<setsPerLine; j++) {
-                    let num = "";
-                    for(let k=0; k<digitCount; k++) {
-                        let index = Math.floor(seededRandom(currentSeed++) * pool.length);
-                        num += pool[index];
-                    }
-                    sets.push(num);
-                }
-                html += `<div class="text-sm font-bold text-white tracking-widest ${i !== lineCount -1 ? 'mb-1' : ''}">${sets.join(' • ')}</div>`;
-            }
-            return html;
-        }
-
-        function getTodayDate() {
-            const date = new Date();
-            return date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
-        }
-
-        function togglePeek(index) {
-            const container = document.getElementById(`bb-peek-${index}`);
-            container.classList.toggle('expanded');
-        }
-
-        function renderMarkets(filter = "") {
-            const grid = document.getElementById('marketGrid');
-            grid.innerHTML = "";
-            const todayStr = getTodayDate();
-            
-            // Pengurutan berdasarkan waktu (hour & min)
-            const filtered = markets.filter(m => m.name.toLowerCase().includes(filter.toLowerCase()))
-                                    .sort((a, b) => (a.hour * 60 + a.min) - (b.hour * 60 + b.min));
-            
-            filtered.forEach((m, index) => {
-                const dailySeed = getSeed(m.name);
-                const amArray = getSeededDigitsArray(4, dailySeed);
-                const aiArray = getSeededDigitsArray(2, dailySeed + 100);
-                const combinedPool = getCombinedPool(amArray, aiArray);
-
-                const cb1 = amArray[0];
-                const cb2 = amArray[1];
-                const cm1 = `${amArray[0]}${amArray[2]}`;
-                const cm2 = `${amArray[1]}${amArray[3]}`;
-                const shio = shioList[getSeededNumber(0, 11, dailySeed + 400)];
-                
-                const bb2dLines = generateLinesFromPool(2, 4, 2, dailySeed + 500, combinedPool);
-                const bb3dLines = generateLinesFromPool(3, 3, 3, dailySeed + 600, combinedPool);
-                const bb4dLines = generateLinesFromPool(4, 2, 4, dailySeed + 700, combinedPool);
-
-                const card = document.createElement('div');
-                card.className = "card-dark p-6 rounded-[2.5rem] shadow-xl flex flex-col gap-2";
-                card.onclick = () => togglePeek(index);
-                
-                card.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h3 class="font-black text-xl tracking-wider header-gradient">${m.name}</h3>
-                            <p class="text-[10px] italic font-bold uppercase tracking-[0.2em] text-slate-100 mt-1 opacity-70">${m.time}</p>
-                        </div>
-                        <div class="text-right shrink-0 bg-slate-900/50 p-2 rounded-xl border border-slate-700/30">
-                            <span class="block text-[7px] font-black text-orange-500 uppercase tracking-[0.3em] mb-1 text-center">PREDIKSI</span>
-                            <span class="text-xs font-bold text-white font-mono tracking-tighter">${todayStr}</span>
-                        </div>
-                    </div>
-
-                    <div class="divider-gradient"></div>
-
-                    <div class="grid grid-cols-2 gap-4 mt-2">
-                        <div class="bg-emerald-950/20 p-4 rounded-2xl border border-emerald-500/30 text-center shadow-inner">
-                            <span class="block text-[10px] green-gradient mb-2">ANGKA MAIN</span>
-                            <span class="text-2xl font-black text-white tracking-[0.3em]">${amArray.join('')}</span>
-                        </div>
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-700/50 text-center shadow-inner">
-                            <span class="block text-[10px] header-gradient mb-2">ANGKA IKUT</span>
-                            <span class="text-2xl font-black text-white tracking-[0.3em]">${aiArray.join('')}</span>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="bg-slate-900/40 p-3 rounded-2xl border border-slate-700/30 text-center">
-                            <span class="block text-[8px] header-gradient mb-1">COLOK BEBAS</span>
-                            <span class="text-base font-bold text-white">${cb1} • ${cb2}</span>
-                        </div>
-                        <div class="bg-slate-900/40 p-3 rounded-2xl border border-slate-700/30 text-center">
-                            <span class="block text-[8px] header-gradient mb-1">COLOK MACAU</span>
-                            <span class="text-base font-bold text-white">${cm1}/${cm2}</span>
-                        </div>
-                        <div class="bg-slate-900/40 p-3 rounded-2xl border border-slate-700/30 text-center">
-                            <span class="block text-[8px] header-gradient mb-1">SHIO</span>
-                            <span class="text-base font-bold text-white uppercase text-[13px]">${shio}</span>
-                        </div>
-                    </div>
-
-                    <div id="bb-peek-${index}" class="bb-preview-container px-6 pt-6 pb-2">
-                        <div class="peek-gradient-overlay">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500 glow-arrow animate-bounce-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        
-                        <div class="flex flex-col gap-8">
-                            <div class="text-center">
-                                <span class="block text-[10px] header-gradient mb-3">TOP BB 2D</span>
-                                ${bb2dLines}
-                            </div>
-                            <div class="text-center">
-                                <span class="block text-[10px] header-gradient mb-3">TOP BB 3D</span>
-                                ${bb3dLines}
-                            </div>
-                            <div class="text-center">
-                                <span class="block text-[10px] header-gradient mb-3">TOP BB 4D</span>
-                                ${bb4dLines}
-                            </div>
-                            <div class="flex justify-center pb-2">
-                                <div class="bg-slate-800/50 p-2 rounded-full border border-slate-700/50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-orange-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
+        
+        // Initialize stars when page loads
+        document.addEventListener('DOMContentLoaded', createStars);
+        
+        // Add touch feedback for mobile
+        document.querySelectorAll('.game-card').forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
             });
-        }
-
-        document.getElementById('searchInput').oninput = (e) => renderMarkets(e.target.value);
-        window.onload = () => renderMarkets();
+            
+            card.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
     </script>
+
 </body>
+
 </html>

@@ -1,4 +1,4 @@
-package com.prediksiwla.dev
+package com.mahjongway.pdev
 
 import io.flutter.embedding.android.FlutterActivity
 

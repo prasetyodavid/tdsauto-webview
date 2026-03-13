@@ -1,0 +1,85 @@
+
+
+<!DOCTYPE HTML>
+<html lang="id">
+<head>
+    <meta name="robots" content="noindex"> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+<title>Sweet Bonanza</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+/* Reset Box Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Reset dan Atur ulang Body dan HTML */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Menyembunyikan semua scroll bar */
+}
+
+/* Menambahkan padding ke bawah body untuk memastikan konten iframe tidak tertutup footer */
+body {
+    padding-bottom: 60px; /* Sesuaikan ini sesuai dengan tinggi footer Anda */
+}
+
+/* Style untuk Iframe */
+iframe.mbl {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 60px); /* Mengurangi tinggi iframe agar footer terlihat */
+    border: none;
+}
+
+/* Styling Footer Menu dan Tombol */
+.footer-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #333; /* Ganti dengan warna yang sesuai */
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+    height: 60px; /* Menetapkan tinggi footer, sesuaikan jika perlu */
+}
+
+.footer-btn {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-btn i {
+    margin-bottom: 5px;
+}
+</style>
+</head>
+<body>
+<iframe class="mbl" src="https://demogamesfree.pragmaticplay.net/gs2c/openGame.do?gameSymbol=vs20fruitswx&websiteUrl=https%3A%2F%2Fdemogamesfree.pragmaticplay.net&jurisdiction=99&lobby_url=https%3A%2F%2Fwww.pragmaticplay.com%2Fen%2F&lang=ID&cur=USD"></iframe>
+
+<!-- Footer Menu 
+<div class="footer-menu">
+    <a href="/" class="footer-btn">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+    </a>
+    <a href="/daftar" class="footer-btn">
+        <i class="fas fa-user-plus"></i>
+        <span>Daftar</span>
+    </a>
+</div>
+-->
+</body>
+</html>

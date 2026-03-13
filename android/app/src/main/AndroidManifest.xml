@@ -9,9 +9,10 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
     
     <application
-        android:label="PrediksiWLA"
+        android:label="MahjongWays2"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/launcher_icon"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"

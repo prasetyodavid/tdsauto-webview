@@ -2,11 +2,49 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:mime/mime.dart';
+
+HttpServer? _assetServer;
+
+Future<void> _startAssetServer() async {
+  _assetServer = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
+  _assetServer!.listen((HttpRequest request) async {
+    var path = request.uri.path;
+    if (path.isEmpty || path == '/') {
+      path = '/index.html';
+    }
+    final assetKey = 'assets/html$path';
+
+    try {
+      final data = await rootBundle.load(assetKey);
+      final bytes = data.buffer.asUint8List();
+      final isJs = path.endsWith('.js');
+      final mimeType = lookupMimeType(path) ??
+          (isJs ? 'application/javascript' : 'text/plain');
+
+      if (isJs) {
+        request.response.headers.contentType =
+            ContentType('application', 'javascript');
+      } else {
+        request.response.headers.contentType = ContentType.parse(mimeType);
+      }
+      request.response.add(bytes);
+      await request.response.close();
+    } catch (e) {
+      print('Asset server: failed to load $assetKey: $e');
+      request.response.statusCode = HttpStatus.notFound;
+      request.response.headers.contentType = ContentType.text;
+      request.response.write('404 - asset not found: $assetKey');
+      await request.response.close();
+    }
+  });
+}
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,14 +56,16 @@ Future main() async {
   //await Permission.camera.request();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
+  await _startAssetServer();
+
   runApp(MaterialApp(home: new MyApp()));
 }
 
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://prediksiwla.pages.dev/";
-var MAIN_TITLE = "PrediksiWLA";
+var MAIN_HOME_URL = "https://mahjong-way.page.dev";
+var MAIN_TITLE = "MahjongWays2";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
@@ -85,6 +125,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   final GlobalKey webViewKey = GlobalKey();
 
   InAppWebViewController? webViewController;
+
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
           useShouldOverrideUrlLoading: true,
@@ -183,7 +224,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
               children: [
                 InAppWebView(
                   key: webViewKey,
-                  initialFile: LOCAL_INDEX_ASSET,
+                  initialUrlRequest: URLRequest(
+                    url: WebUri("http://localhost:8080/index.html"),
+                  ),
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
@@ -204,6 +247,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                       saveInPublicStorage: true,
                     ).catchError((error) {
                       print("Download failed: $error");
+                      return null;
                     });
                   },
                   onReceivedServerTrustAuthRequest:
