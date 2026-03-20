@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PREDIKSIWLA - Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Transisi halus untuk sidebar */
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Efek Gradien Kustom */
+        .bg-gradient-gold {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+        }
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Mencegah scroll saat sidebar terbuka */
+        .no-scroll {
+            overflow: hidden;
+        }
+        /* Animasi rotasi untuk ikon dropdown */
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .grad-text {
+            background: linear-gradient(to right, #fbbf24, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .grad-bg {
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+        }
+
+        .input-dark {
+            background-color: #1e293b;
+            border-color: #334155;
+            color: #fbbf24;
+        }
+
+        .card-dark {
+            background-color: #1e293b;
+            border-color: #334155;
+        }
+    </style>
+</head>
+<body class="bg-[#121212] text-gray-100 flex flex-col min-h-screen font-sans">
+
+    <!-- Overlay Sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar (Laci Navigasi) -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-[#1e1e1e] border-r border-gray-800 shadow-2xl z-50 hidden transform -translate-x-full sidebar-transition overflow-y-auto">
+        <div class="p-6">
+            <!-- Logo: PREDIKSIWLA (Link ke indvtes.com) -->
+            <a href="/index.html" class="flex items-center justify-center mb-8 border-b border-gray-800 pb-6 hover:opacity-80 transition-opacity">
+                <div class="text-2xl font-black tracking-tighter italic">
+                    <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
+                </div>
+            </a>
+
+            <nav class="space-y-1">
+                <!-- Buku Mimpi (With Submenu) -->
+                <div>
+                    <button onclick="toggleSubmenu('bukuMimpi')" class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <span class="font-medium">Buku Mimpi</span>
+                        </div>
+                        <svg id="arrow-bukuMimpi" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="submenu-bukuMimpi" class="hidden pl-14 pr-4 py-2 space-y-2">
+                        <a href="/buku-mimpi-2d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 2D</a>
+                        <a href="/buku-mimpi-3d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 3D</a>
+                        <a href="/buku-mimpi-4d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 4D</a>
+                    </div>
+                </div>
+
+                <!-- Paito -->
+                <a href="/index.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Paito</span>
+                </a>
+
+                <!-- Tabel Shio -->
+                <a href="/tabel-shio.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Tabel Shio</span>
+                </a>
+
+                <!-- Generator 4D -->
+                <a href="/generator4d.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Generator 4D</span>
+                </a>
+
+                <!-- BBFS -->
+                <a href="/bbfs.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">BBFS</span>
+                </a>
+
+                <!-- Jadwal -->
+                <a href="/jadwal.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Jadwal</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Header Atas -->
+    <header class="bg-[#1e1e1e] border-b border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-30 hidden shadow-md">
+        <div class="flex items-center">
+            <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-800 rounded-lg focus:outline-none transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <a href="/index.html" class="ml-3 text-lg font-black tracking-tighter italic leading-none hover:opacity-80 transition-opacity">
+                <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
+            </a>
+        </div>
+
+        <!-- Tombol LINK JP di Kanan Atas -->
+        <a href="https://prediksiwla.pages.dev" class="bg-gradient-gold text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg shadow-orange-500/20 active:scale-95 transition-transform uppercase tracking-wider">
+            LINK JP
+        </a>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="flex-grow container mx-auto p-6 flex flex-col items-center justify-center">
+        
+<body class="p-4 md:p-8 min-h-screen">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header Konten -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold tracking-tight grad-text uppercase">Generator BBFS</h1>
+            <p class="text-slate-400 mt-2 text-sm font-medium uppercase tracking-widest">Premium Dark Edition</p>
+        </div>
+
+        <!-- Kartu Utama -->
+        <div class="card-dark rounded-3xl shadow-2xl border p-6 md:p-8 mb-6">
+            
+            <!-- Area Input -->
+            <div class="mb-8">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Masukkan Angka (0-9):</label>
+                <input type="text" id="inputAngka" placeholder="012345" 
+                    class="w-full text-3xl tracking-[0.5em] font-bold text-center py-6 input-dark border-2 border-dashed rounded-2xl focus:border-amber-500 focus:ring-4 focus:ring-amber-500/10 transition-all outline-none"
+                    maxlength="10">
+                <div class="flex justify-between items-center mt-3">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">* Angka duplikat diperbolehkan</p>
+                    <p id="digitCount" class="text-xs font-bold text-amber-400 bg-amber-400/10 px-3 py-1 rounded-md border border-amber-400/20 uppercase">0 Digit</p>
+                </div>
+            </div>
+
+            <!-- Seleksi Tipe -->
+            <div class="grid grid-cols-3 gap-3 mb-8">
+                <button onclick="setTipe(4)" id="btn4D" class="tipe-btn py-4 rounded-xl border-2 border-amber-500 grad-bg text-slate-900 font-black transition-all shadow-lg shadow-amber-500/20">
+                    4D
+                </button>
+                <button onclick="setTipe(3)" id="btn3D" class="tipe-btn py-4 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-black hover:border-slate-600 transition-all">
+                    3D
+                </button>
+                <button onclick="setTipe(2)" id="btn2D" class="tipe-btn py-4 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-black hover:border-slate-600 transition-all">
+                    2D
+                </button>
+            </div>
+
+            <!-- Tombol Kontrol -->
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="generateBBFS()" class="flex-[2] grad-bg hover:opacity-90 text-slate-900 font-black py-5 rounded-2xl shadow-xl shadow-amber-500/20 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 uppercase">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.047a1 1 0 01.897.95V4.25h2.556a2.125 2.125 0 012.125 2.125v4.5a2.125 2.125 0 01-2.125 2.125h-2.556v2.253a1 1 0 01-1.897.45L7.403 11H2.125A2.125 2.125 0 010 8.875v-4.5A2.125 2.125 0 012.125 2.25h5.278l3.897-1.203zM4.25 7.5a.75.75 0 000 1.5h.005a.75.75 0 000-1.5H4.25zm3 0a.75.75 0 000 1.5h.005a.75.75 0 000-1.5H7.25z" clip-rule="evenodd" /></svg>
+                    Generate Sekarang
+                </button>
+                <button onclick="resetAll()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-5 rounded-2xl border border-slate-700 transition-all uppercase">
+                    Reset
+                </button>
+            </div>
+        </div>
+
+        <!-- Container Hasil -->
+        <div id="resultContainer" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div class="flex justify-between items-center mb-4 px-2">
+                <h3 class="font-extrabold text-slate-300 flex items-center gap-2 uppercase">
+                    Hasil Kombinasi <span id="labelHasil" class="grad-text">4D</span>
+                </h3>
+                <span id="totalLine" class="text-[10px] grad-bg text-slate-900 px-3 py-1.5 rounded-full font-black uppercase tracking-widest">0 Line</span>
+            </div>
+            
+            <div class="card-dark rounded-3xl shadow-2xl border p-2 relative">
+                <textarea id="outputResult" readonly 
+                    class="w-full h-64 bg-slate-900/50 rounded-2xl p-6 text-amber-400 font-mono text-base leading-relaxed border-none focus:ring-0 resize-none no-scrollbar"></textarea>
+                
+                <div class="absolute bottom-6 right-6 flex gap-2">
+                    <button onclick="copyResult()" id="copyBtn" class="grad-bg text-slate-900 px-6 py-3 rounded-xl text-sm font-bold hover:opacity-90 shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2 uppercase">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                        Salin Angka
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Notifikasi -->
+    <div id="msgBox" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-slate-800 rounded-3xl p-8 max-w-sm w-full text-center border border-slate-700 shadow-2xl">
+            <div class="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <p id="msgText" class="text-slate-200 font-bold text-lg mb-6 leading-tight uppercase"></p>
+            <button onclick="closeMsg()" class="w-full grad-bg text-slate-900 py-4 rounded-2xl font-black transition-all uppercase">Tutup</button>
+        </div>
+    </div>
+
+    </main>
+
+    <!-- Navigasi Bawah -->
+    <nav class="bg-[#1e1e1e]/80 backdrop-blur-lg border-t border-gray-800 flex items-center justify-around py-4 sticky bottom-0 z-30">
+        <!-- BBFS -->
+        <a href="/bbfs.html" class="flex flex-col items-center group">
+            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">BBFS</span>
+        </a>
+        
+        <!-- Beranda -->
+        <a href="/index.html" class="flex flex-col items-center group relative">
+            <div class="absolute -top-10 bg-gradient-gold p-4 rounded-full shadow-lg shadow-orange-500/30 text-white border-4 border-[#121212] transition-transform active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-8 font-bold uppercase tracking-widest text-yellow-500">Beranda</span>
+        </a>
+
+        <!-- Chat -->
+        <a href="/chat.html" class="flex flex-col items-center group">
+            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">Chat</span>
+        </a>
+    </nav>
+
+    <script>
+        /* Fungsi Bawaan UI */
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.classList.add('no-scroll');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.classList.remove('no-scroll');
+                document.querySelectorAll('[id^="submenu-"]').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('[id^="arrow-"]').forEach(el => el.classList.remove('rotate-180'));
+            }
+        }
+
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById('submenu-' + id);
+            const arrow = document.getElementById('arrow-' + id);
+            const isHidden = submenu.classList.contains('hidden');
+            
+            if (isHidden) {
+                submenu.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                submenu.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+        let currentTipe = 4;
+        const inputMain = document.getElementById('inputAngka');
+        const output = document.getElementById('outputResult');
+        const resultDiv = document.getElementById('resultContainer');
+        const digitCounter = document.getElementById('digitCount');
+
+        inputMain.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            digitCounter.innerText = `${e.target.value.length} DIGIT`;
+        });
+
+        function setTipe(n) {
+            currentTipe = n;
+            document.querySelectorAll('.tipe-btn').forEach(btn => {
+                btn.className = "tipe-btn py-4 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-black hover:border-slate-600 transition-all";
+            });
+            const activeBtn = document.getElementById(`btn${n}D`);
+            activeBtn.className = "tipe-btn py-4 rounded-xl border-2 border-amber-500 grad-bg text-slate-900 font-black transition-all shadow-lg shadow-amber-500/20";
+            document.getElementById('labelHasil').innerText = `${n}D`;
+        }
+
+        function generateBBFS() {
+            let angkaStr = inputMain.value;
+            if (angkaStr.length < currentTipe) {
+                showMsg(`MINIMAL BUTUH ${currentTipe} DIGIT ANGKA UNTUK TIPE ${currentTipe}D!`);
+                return;
+            }
+
+            let pool = angkaStr.split('');
+            const results = getPermutations(pool, currentTipe);
+            const uniqueResults = [...new Set(results)];
+            
+            output.value = uniqueResults.join(' ');
+            document.getElementById('totalLine').innerText = `${uniqueResults.length} LINE`;
+            resultDiv.classList.remove('hidden');
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function getPermutations(arr, length) {
+            let res = [];
+            let used = new Array(arr.length).fill(false);
+
+            function backtrack(current) {
+                if (current.length === length) {
+                    res.push(current.join(''));
+                    return;
+                }
+                for (let i = 0; i < arr.length; i++) {
+                    if (used[i]) continue;
+                    used[i] = true;
+                    current.push(arr[i]);
+                    backtrack(current);
+                    current.pop();
+                    used[i] = false;
+                }
+            }
+            backtrack([]);
+            return res;
+        }
+
+        function copyResult() {
+            if (!output.value) return;
+            output.select();
+            document.execCommand('copy');
+            
+            const btn = document.getElementById('copyBtn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = ` TERSALIN!`;
+            btn.classList.replace('grad-bg', 'bg-emerald-500');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-emerald-500', 'grad-bg');
+            }, 2000);
+        }
+
+        function resetAll() {
+            inputMain.value = '';
+            output.value = '';
+            digitCounter.innerText = '0 DIGIT';
+            resultDiv.classList.add('hidden');
+        }
+
+        function showMsg(text) {
+            document.getElementById('msgText').innerText = text;
+            document.getElementById('msgBox').classList.replace('hidden', 'flex');
+        }
+
+        function closeMsg() {
+            document.getElementById('msgBox').classList.replace('flex', 'hidden');
+        }
+    </script>
+</body>
+</html>

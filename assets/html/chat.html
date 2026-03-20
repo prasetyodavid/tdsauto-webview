@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PREDIKSIWLA - Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Transisi halus untuk sidebar */
+        .sidebar-transition {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Efek Gradien Kustom */
+        .bg-gradient-gold {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+        }
+        .text-gradient-gold {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Mencegah scroll saat sidebar terbuka */
+        .no-scroll {
+            overflow: hidden;
+        }
+        /* Animasi rotasi untuk ikon dropdown */
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+        }
+
+        .bg-gradient-animate {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #111827);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .contact-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            background-color: rgba(30, 41, 59, 0.8);
+        }
+
+        /* Gradien teks khusus untuk judul */
+        .text-gradient-yellow-orange {
+            background: linear-gradient(to right, #facc15, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#121212] text-gray-100 flex flex-col min-h-screen font-sans">
+
+    <!-- Overlay Sidebar -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar (Laci Navigasi) -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-[#1e1e1e] border-r border-gray-800 shadow-2xl z-50 hidden transform -translate-x-full sidebar-transition overflow-y-auto">
+        <div class="p-6">
+            <!-- Logo: PREDIKSIWLA (Link ke indvtes.com) -->
+            <a href="/index.html" class="flex items-center justify-center mb-8 border-b border-gray-800 pb-6 hover:opacity-80 transition-opacity">
+                <div class="text-2xl font-black tracking-tighter italic">
+                    <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
+                </div>
+            </a>
+
+            <nav class="space-y-1">
+                <!-- Buku Mimpi (With Submenu) -->
+                <div>
+                    <button onclick="toggleSubmenu('bukuMimpi')" class="w-full flex items-center justify-between px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                        <div class="flex items-center">
+                            <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <span class="font-medium">Buku Mimpi</span>
+                        </div>
+                        <svg id="arrow-bukuMimpi" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div id="submenu-bukuMimpi" class="hidden pl-14 pr-4 py-2 space-y-2">
+                        <a href="/buku-mimpi-2d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 2D</a>
+                        <a href="/buku-mimpi-3d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 3D</a>
+                        <a href="/buku-mimpi-4d.html" class="block text-sm text-gray-400 hover:text-yellow-500 transition">Buku Mimpi 4D</a>
+                    </div>
+                </div>
+
+                <!-- Paito -->
+                <a href="/index.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Paito</span>
+                </a>
+
+                <!-- Tabel Shio -->
+                <a href="/tabel-shio.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Tabel Shio</span>
+                </a>
+
+                <!-- Generator 4D -->
+                <a href="/generator4d.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Generator 4D</span>
+                </a>
+
+                <!-- BBFS -->
+                <a href="/bbfs.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">BBFS</span>
+                </a>
+
+                <!-- Jadwal -->
+                <a href="/jadwal.html" class="flex items-center px-4 py-3 text-gray-300 hover:bg-gray-800 hover:text-yellow-500 rounded-xl transition group">
+                    <div class="p-2 bg-gray-800 group-hover:bg-yellow-500/10 rounded-lg mr-3 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="font-medium">Jadwal</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Header Atas -->
+    <header class="bg-[#1e1e1e] border-b border-gray-800 px-4 py-3 flex items-center justify-between sticky top-0 z-30 hidden shadow-md">
+        <div class="flex items-center">
+            <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-800 rounded-lg focus:outline-none transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <a href="/index.html" class="ml-3 text-lg font-black tracking-tighter italic leading-none hover:opacity-80 transition-opacity">
+                <span class="text-white">PREDIKSI</span><span class="text-gradient-gold">WLA</span>
+            </a>
+        </div>
+
+        <!-- Tombol LINK JP di Kanan Atas -->
+        <a href="https://prediksiwla.pages.dev" class="bg-gradient-gold text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg shadow-orange-500/20 active:scale-95 transition-transform uppercase tracking-wider">
+            LINK JP
+        </a>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="flex-grow container mx-auto p-6 flex flex-col items-center justify-center">
+        
+<body class="bg-gradient-animate min-h-screen flex items-center justify-center p-4">
+
+    <main class="w-full max-w-md mx-auto">
+        <!-- Judul Konten -->
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-black tracking-tighter uppercase text-gradient-yellow-orange">
+                SUPPORT AKTIF 24 JAM
+            </h1>
+            <p class="text-slate-400 mt-2 font-medium">Pilih saluran komunikasi yang nyaman bagi Anda.</p>
+        </div>
+
+        <!-- Daftar Kontak -->
+        <div class="grid grid-cols-1 gap-4">
+	
+
+            <!-- WhatsApp Card -->
+            <a href="https://rebrand.ly/wapwla" target="_blank" class="contact-card group flex items-center gap-4 p-5 bg-slate-800/50 rounded-3xl border border-slate-700 shadow-xl hover:border-green-500/50 no-underline">
+                <div class="w-14 h-14 bg-green-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-green-900/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.672 1.433 5.66 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-slate-100 text-lg">WhatsApp</h3>
+                    <p class="text-slate-400 text-sm">Chat personal melalui WhatsApp</p>
+                </div>
+                <div class="text-slate-500 group-hover:text-green-400 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </a>
+
+            <!-- Telegram Card -->
+            <a href="https://t.me/prediksiwlabot" target="_blank" class="contact-card group flex items-center gap-4 p-5 bg-slate-800/50 rounded-3xl border border-slate-700 shadow-xl hover:border-blue-500/50 no-underline">
+                <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-900/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M11.944 0C5.344 0 0 5.344 0 11.944c0 6.6 5.344 11.944 11.944 11.944 6.6 0 11.944-5.344 11.944-11.944C23.888 5.344 18.544 0 11.944 0zm5.556 8.333l-1.896 8.941c-.144.637-.52.793-1.05.496l-2.885-2.126-1.392 1.339c-.154.154-.284.284-.582.284l.207-2.941 5.352-4.834c.233-.207-.05-.322-.361-.115L8.232 13.06l-2.852-.892c-.62-.193-.632-.62.13-.916l11.144-4.293c.516-.186.966.126.846.107z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-slate-100 text-lg">Telegram</h3>
+                    <p class="text-slate-400 text-sm">Chat dan Join ke channel kami</p>
+                </div>
+                <div class="text-slate-500 group-hover:text-blue-400 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </a>
+        </div>
+    </main>
+
+</body>
+</html>
+
+    </main>
+
+    <!-- Navigasi Bawah -->
+    <nav class="bg-[#1e1e1e]/80 backdrop-blur-lg border-t border-gray-800 flex items-center justify-around py-4 sticky bottom-0 z-30">
+        <!-- BBFS -->
+        <a href="/bbfs.html" class="flex flex-col items-center group">
+            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">BBFS</span>
+        </a>
+        
+        <!-- Beranda -->
+        <a href="/index.html" class="flex flex-col items-center group relative">
+            <div class="absolute -top-10 bg-gradient-gold p-4 rounded-full shadow-lg shadow-orange-500/30 text-white border-4 border-[#121212] transition-transform active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-8 font-bold uppercase tracking-widest text-yellow-500">Beranda</span>
+        </a>
+
+        <!-- Chat -->
+        <a href="/chat.html" class="flex flex-col items-center group">
+            <div class="p-1 rounded-lg text-gray-500 group-hover:text-yellow-500 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+            </div>
+            <span class="text-[11px] mt-1 font-bold uppercase tracking-widest text-gray-500 group-hover:text-yellow-500">Chat</span>
+        </a>
+    </nav>
+
+    <script>
+        /* Fungsi Bawaan UI */
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isClosed = sidebar.classList.contains('-translate-x-full');
+
+            if (isClosed) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                document.body.classList.add('no-scroll');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                document.body.classList.remove('no-scroll');
+                document.querySelectorAll('[id^="submenu-"]').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('[id^="arrow-"]').forEach(el => el.classList.remove('rotate-180'));
+            }
+        }
+
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById('submenu-' + id);
+            const arrow = document.getElementById('arrow-' + id);
+            const isHidden = submenu.classList.contains('hidden');
+            
+            if (isHidden) {
+                submenu.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                submenu.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+    </script>
+</body>
+</html>
