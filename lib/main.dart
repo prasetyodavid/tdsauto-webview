@@ -66,7 +66,7 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://prediksiwla.pages.dev";
+var MAIN_HOME_URL = "https://wla.wuaze.com";
 var MAIN_TITLE = "Prediksi WLA";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
@@ -360,7 +360,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                           }
                         },
                         androidOnGeolocationPermissionsShowPrompt:
-                            (InAppWebViewController controller, String origin) async {
+                            (InAppWebViewController controller,
+                                String origin) async {
                           return GeolocationPermissionShowPromptResponse(
                               origin: origin, allow: true, retain: true);
                         },

@@ -1,4 +1,4 @@
-package com.prediksiwla.app
+package com.wlaprediksi.app
 
 import io.flutter.embedding.android.FlutterActivity
 
