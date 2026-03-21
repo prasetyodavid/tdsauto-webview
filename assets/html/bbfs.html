@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBFS Generator</title>
+
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+.generator-box{
+    background:linear-gradient(145deg,#111,#1c1c1c);
+    padding:25px;
+    border-radius:20px;
+    border:1px solid rgba(255,215,0,0.3);
+    box-shadow:0 0 15px rgba(255,215,0,0.1);
+}
+
+.generator-box input,
+.generator-box select{
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    background:#000;
+    color:gold;
+    border:1px solid rgba(255,215,0,0.3);
+    margin:5px;
+}
+
+.generator-box button{
+    padding:10px 18px;
+    border-radius:8px;
+    border:none;
+    background:gold;
+    color:#000;
+    font-weight:600;
+    cursor:pointer;
+    margin:5px;
+    transition:.3s;
+}
+
+.generator-box button:hover{
+    box-shadow:0 0 10px gold;
+}
+
+textarea{
+    width:100%;
+    height:180px;
+    margin-top:15px;
+    border-radius:10px;
+    background:#000;
+    color:gold;
+    border:1px solid rgba(255,215,0,0.3);
+    padding:10px;
+}
+</style>
+</head>
+<body>
+
+    <div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+    <div class="header-title">BBFS Generator</div>
+    <a href="https://wla.wuaze.com/angkajitu/index.php" class="login-btn">Link JP</a>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <ul>
+        <li>
+            <a href="/index.html">Home</a>
+        </li>
+        <li>
+            <a href="/prediksi/index.html">Prediksi</a>
+        </li>
+        <li>
+            <a href="/buku_mimpi.html">Buku Mimpi</a>
+        </li>
+        <li>
+            <a href="/bbfs.html">BBFS Generator</a>
+        </li>
+        <li>
+            <a href="/shio.html">Shio</a>
+        </li>
+        <li>
+            <a href="/lucky.html">Angka Keberuntungan</a>
+        </li>
+        <li>
+            <a href="https://wla.wuaze.com/angkajitu/index.php">Link JP</a>
+        </li>
+    </ul>
+</div>
+
+<div class="content">
+
+<div class="generator-box">
+
+    <h2 style="color:gold; margin-bottom:15px;">BBFS Generator</h2>
+
+    <label>Angka tarung dalam:</label><br>
+
+    <input type="text" id="bbfsInput" placeholder="Contoh: 123456">
+
+    <div id="bbfsResult"></div>
+
+    <select id="digitType">
+        <option value="2">2D</option>
+        <option value="3">3D</option>
+        <option value="4">4D</option>
+        <option value="5">5D</option>
+    </select>
+
+    <select id="separator">
+        <option value="*">*</option>
+        <option value="#">#</option>
+    </select>
+
+    <br>
+
+    <button onclick="generateBBFS()">Generate</button>
+    <button onclick="clearBBFS()">Bersihkan</button>
+
+    <textarea id="resultArea" rows="8"></textarea>
+    <br>
+<button onclick="copyResult()" class="copy-btn">
+📋 Copy Hasil
+</button>
+
+</div>
+
+<div class="back">
+<a href="index.html">← Kembali</a>
+</div>
+
+</div>
+
+<script src="js/app.js"></script>
+
+<script>
+function generateBBFS(){
+
+    const startTime = performance.now();
+
+    let input = document.getElementById("bbfsInput").value;
+    let digit = parseInt(document.getElementById("digitType").value);
+    let separator = document.getElementById("separator").value;
+
+    input = input.replace(/[^0-9]/g, '');
+
+    if(input.length < digit){
+        alert("Jumlah angka tidak cukup!");
+        return;
+    }
+
+    // Hitung stok angka
+    let count = {};
+    for(let num of input){
+        count[num] = (count[num] || 0) + 1;
+    }
+
+    let uniqueNumbers = Object.keys(count);
+    let results = [];
+
+    function permute(temp = [], localCount = {...count}){
+
+        if(temp.length === digit){
+            results.push(temp.join(''));
+            return;
+        }
+
+        for(let num of uniqueNumbers){
+
+            if(localCount[num] > 0){
+
+                localCount[num]--;
+                temp.push(num);
+
+                permute(temp, localCount);
+
+                temp.pop();
+                localCount[num]++;
+            }
+        }
+    }
+
+    permute();
+
+    let finalResult = results.join(separator) + separator;
+
+    const endTime = performance.now();
+
+    document.getElementById("resultArea").value = finalResult;
+
+    // Optional: tampilkan jumlah & waktu
+    console.log("Jumlah LN:", results.length);
+    console.log("Waktu:", (endTime - startTime).toFixed(2), "ms");
+}
+
+function copyResult(){
+
+let textArea = document.getElementById("resultArea");
+
+if(textArea.value === ""){
+alert("Belum ada hasil untuk disalin!");
+return;
+}
+
+textArea.select();
+textArea.setSelectionRange(0, 99999);
+
+document.execCommand("copy");
+
+alert("Hasil BBFS berhasil disalin!");
+
+}
+</script>
+
+</body>
+</html>

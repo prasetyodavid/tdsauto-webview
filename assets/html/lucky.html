@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+body{
+margin:0;
+background:#000;
+font-family:Arial;
+color:white;
+text-align:center;
+overflow:hidden;
+}
+
+/* star background */
+
+.stars{
+position:fixed;
+width:100%;
+height:100%;
+background:url("https://www.transparenttextures.com/patterns/stardust.png");
+opacity:.35;
+animation:starsMove 80s linear infinite;
+}
+
+
+@keyframes starsMove{
+from{background-position:0 0;}
+to{background-position:1000px 1000px;}
+}
+
+.container{
+position:relative;
+z-index:2;
+padding-top:80px;
+}
+
+.title{
+font-size:30px;
+color:gold;
+margin-bottom:10px;
+}
+
+.subtitle{
+color:#aaa;
+margin-bottom:40px;
+}
+
+/* SLOT FRAME */
+
+.slot-frame{
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+border-radius:20px;
+position:relative;
+border:3px solid var(--purple);
+box-shadow:
+0 0 25px var(--pink),
+0 0 40px var(--cyan);
+background:#160a30;
+
+width:100%;
+max-width:420px;
+margin:auto;
+}
+
+.spark{
+position:absolute;
+width:6px;
+height:6px;
+background:gold;
+border-radius:50%;
+pointer-events:none;
+animation:sparkFly 0.8s linear forwards;
+}
+
+@keyframes sparkFly{
+
+to{
+transform:translateY(-40px) scale(0);
+opacity:0;
+}
+
+}
+
+/* LED LIGHT */
+
+.slot-frame:before{
+
+content:"";
+position:absolute;
+top:-10px;
+left:-10px;
+right:-10px;
+bottom:-10px;
+
+border-radius:25px;
+
+background:linear-gradient(90deg,
+rgb(217, 0, 255),
+white,
+gold);
+
+z-index:-1;
+
+filter:blur(20px);
+opacity:.5;
+animation:led 2s linear infinite;
+
+}
+
+@keyframes led{
+
+0%{opacity:.3;}
+50%{opacity:.8;}
+100%{opacity:.3;}
+
+}
+
+/* SLOT */
+
+.slot-area{
+display:flex;
+gap:10px;
+justify-content:center;
+width:100%;
+}
+
+.reel{
+width:70px;
+height:90px;
+background:#000;
+border-radius:12px;
+overflow:hidden;
+border:2px solid gold;
+box-shadow:0 0 15px gold inset;
+}
+
+.reel-inner{
+position:relative;
+}
+
+.number{
+height:90px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:36px;
+font-weight:bold;
+color:var(--yellow);
+text-shadow:
+0 0 10px var(--yellow);
+}
+
+/* glow */
+
+.stop-glow{
+box-shadow:0 0 20px gold inset,0 0 40px gold;
+}
+
+/* bounce */
+
+.bounce{
+animation:bounce .4s ease;
+}
+
+@keyframes bounce{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
+}
+
+/* spin button */
+
+.spin{
+margin-top:40px;
+background:gold;
+color:black;
+border:none;
+padding:15px 40px;
+border-radius:40px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.spin:hover{
+transform:scale(1.05);
+}
+
+/* back button */
+
+.back{
+margin-top:20px;
+}
+
+.back a{
+color:gold;
+text-decoration:none;
+padding:10px 20px;
+border:1px solid gold;
+border-radius:30px;
+}
+
+/* jackpot */
+
+.jackpot{
+position:fixed;
+top:45%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:48px;
+color:gold;
+font-weight:bold;
+display:none;
+animation:jackpotGlow 1s infinite alternate;
+}
+
+@keyframes jackpotGlow{
+from{text-shadow:0 0 10px gold;}
+to{text-shadow:0 0 60px gold;}
+}
+
+/* confetti */
+
+.confetti{
+position:fixed;
+width:8px;
+height:8px;
+top:-10px;
+animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(100vh) rotate(720deg);
+opacity:0;
+}
+}
+
+.header{
+z-index:9999 !important;
+position:relative;
+}
+
+.sidebar{
+z-index:9998 !important;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+    <div class="header-title">ANGKA KEBERUNTUNGAN</div>
+        <a href="https://wla.wuaze.com/angkajitu/index.php" class="login-btn">Link JP</a>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <ul>
+        <li>
+            <a href="/index.html">Home</a>
+        </li>
+        <li>
+            <a href="/prediksi/index.html">Prediksi</a>
+        </li>
+        <li>
+            <a href="/buku_mimpi.html">Buku Mimpi</a>
+        </li>
+        <li>
+            <a href="/bbfs.html">BBFS Generator</a>
+        </li>
+        <li>
+            <a href="/shio.html">Shio</a>
+        </li>
+        <li>
+            <a href="/lucky.html">Angka Keberuntungan</a>
+        </li>
+        <li>
+            <a href="https://wla.wuaze.com/angkajitu/index.php">Link JP</a>
+        </li>
+    </ul>
+</div>
+
+<div class="stars"></div>
+
+<div class="container">
+
+<div class="title">🍀 Lucky Number</div>
+<div class="subtitle">Putar dan temukan angka keberuntunganmu</div>
+
+<div class="slot-frame">
+
+<div class="slot-area">
+
+<div class="reel"><div class="reel-inner"></div></div>
+<div class="reel"><div class="reel-inner"></div></div>
+<div class="reel"><div class="reel-inner"></div></div>
+<div class="reel"><div class="reel-inner"></div></div>
+<div class="reel"><div class="reel-inner"></div></div>
+
+</div>
+
+</div>
+
+<br>
+
+<button class="spin" onclick="spin()">PUTAR ANGKA</button>
+
+<div class="back">
+<a href="index.html">← Kembali</a>
+</div>
+
+</div>
+
+<div class="jackpot">🏆 SUPER JACKPOT 🏆</div>
+
+<script>
+
+const reels=document.querySelectorAll(".reel");
+const inners=document.querySelectorAll(".reel-inner");
+
+const digitHeight=90;
+
+let spinning=false;
+
+inners.forEach(inner=>{
+
+let html="";
+
+for(let i=0;i<120;i++){
+
+html+=`<div class="number">${i%10}</div>`;
+
+}
+
+inner.innerHTML=html;
+
+});
+
+function spin(){
+    
+
+if(spinning) return;
+
+spinning=true;
+
+    // reset efek lama
+reels.forEach(reel=>{
+reel.classList.remove("stop-glow");
+reel.classList.remove("bounce");
+});
+
+// hapus spark lama
+document.querySelectorAll(".spark").forEach(s=>{
+s.remove();
+});
+
+document.querySelector(".jackpot").style.display="none";
+
+let results=[];
+
+for(let i=0;i<5;i++){
+
+results.push(Math.floor(Math.random()*10));
+
+}
+
+inners.forEach((inner,i)=>{
+
+let spins=40+Math.floor(Math.random()*20);
+
+let stopIndex=spins+results[i];
+
+let offset=stopIndex*digitHeight;
+
+inner.style.transition="transform 5s cubic-bezier(.17,.67,.12,.99)";
+
+setTimeout(()=>{
+
+inner.style.transform=`translateY(-${offset}px)`;
+
+reels[i].classList.add("stop-glow");
+reels[i].classList.add("bounce");
+
+spark(reels[i]);
+
+},i*600);
+
+});
+
+setTimeout(()=>{
+
+spinning=false;
+
+checkJackpot(results);
+
+},6500);
+
+}
+
+function spark(el){
+
+for(let i=0;i<10;i++){
+
+let s=document.createElement("div");
+
+s.className="spark";
+
+s.style.left=Math.random()*70+"px";
+s.style.top=Math.random()*70+"px";
+
+el.appendChild(s);
+
+setTimeout(()=>s.remove(),800);
+
+}
+
+}
+
+function checkJackpot(nums){
+
+let same=nums.every(v=>v===nums[0]);
+
+if(same){
+
+document.querySelector(".jackpot").style.display="block";
+
+confetti();
+
+}
+
+}
+
+function confetti(){
+
+for(let i=0;i<100;i++){
+
+let c=document.createElement("div");
+
+c.className="confetti";
+
+c.style.left=Math.random()*100+"%";
+
+c.style.background="hsl("+Math.random()*360+"deg,100%,50%)";
+
+c.style.animationDuration=(Math.random()*2+2)+"s";
+
+document.body.appendChild(c);
+
+setTimeout(()=>c.remove(),3000);
+
+}
+
+}
+
+</script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

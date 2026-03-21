@@ -1,0 +1,82 @@
+{
+"sydney":{
+"name":"Sydney",
+"flag":"https://flagcdn.com/w40/au.png"
+},
+
+"singapore":{
+"name":"Singapore",
+"flag":"https://flagcdn.com/w40/sg.png"
+},
+
+"hongkong":{
+"name":"Hongkong",
+"flag":"https://flagcdn.com/w40/hk.png"
+},
+
+"thailand":{
+"name":"Thailand",
+"flag":"https://flagcdn.com/w40/th.png"
+},
+
+"japan4d":{
+"name":"Japan 4D",
+"flag":"https://flagcdn.com/w40/jp.png"
+},
+
+"kspo":{
+"name":"KSPO Lottery",
+"flag":"https://flagcdn.com/w40/kr.png"
+},
+
+"india":{
+"name":"India Lottery",
+"flag":"https://flagcdn.com/w40/in.png"
+},
+
+"srilanka":{
+"name":"Sri Lanka Toto",
+"flag":"https://flagcdn.com/w40/lk.png"
+},
+
+"australiatoto":{
+"name":"Australia Toto",
+"flag":"https://flagcdn.com/w40/au.png"
+},
+
+"china":{
+"name":"China Toto",
+"flag":"https://flagcdn.com/w40/cn.png"
+},
+
+"jakut":{
+"name":"Jakarta Utara",
+"flag":"https://flagcdn.com/w40/id.png"
+},
+
+"jaksel":{
+"name":"Jakarta Selatan",
+"flag":"https://flagcdn.com/w40/id.png"
+},
+
+"jakpus":{
+"name":"Jakarta Pusat",
+"flag":"https://flagcdn.com/w40/id.png"
+},
+
+"vietnam":{
+"name":"Vietnam Toto",
+"flag":"https://flagcdn.com/w40/vn.png"
+},
+
+"malaysia":{
+"name":"Malaysia Super",
+"flag":"https://flagcdn.com/w40/my.png"
+},
+
+"taiwan6d":{
+"name":"Taiwan 6D",
+"flag":"https://flagcdn.com/w40/tw.png"
+}
+
+}

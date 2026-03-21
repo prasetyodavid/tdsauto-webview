@@ -64,8 +64,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://mahjong-way.page.dev";
-var MAIN_TITLE = "MahjongWays2";
+var MAIN_HOME_URL = "https://wla.wuaze.com/angkajitu/index.php";
+var MAIN_TITLE = "Angka Jitu 4D";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
@@ -73,6 +73,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -369,7 +370,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 progress < 1.0
                     ? LinearProgressIndicator(
                         value: progress,
-                        color: Color.fromRGBO(233, 78, 7, 1),
+                        color: Color.fromARGB(255, 226, 8, 194),
                       )
                     : Container(),
               ],
@@ -380,7 +381,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   Widget _buildProgressBar() {
     if (progress != 1.0) {
-      return CircularProgressIndicator(color: Color.fromRGBO(233, 78, 7, 1));
+      return CircularProgressIndicator(color: Color.fromARGB(255, 226, 8, 194));
     }
     return Container();
   }
