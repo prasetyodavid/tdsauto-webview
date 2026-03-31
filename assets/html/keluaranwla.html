@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Result</title>
+
+<style>
+:root{
+--bg:#0b0b0b;
+--card:#121212;
+--yellow:#f4c430;
+--yellow2:#ffdd55;
+--text:#f6f6f6;
+--muted:#bdbdbd;
+}
+
+body{
+margin:0;
+font-family:Arial;
+background:var(--bg);
+color:var(--text);
+}
+
+
+.wrap{
+max-width:1200px;
+margin:auto;
+padding:30px 20px 20px; 
+}
+
+.hero{
+display:grid;
+grid-template-columns:1fr;
+gap:15px;
+}
+
+.card{
+background:var(--card);
+border-radius:16px;
+padding:20px;
+}
+
+.badge{
+background:rgba(244,196,48,.1);
+color:var(--yellow2);
+padding:5px 10px;
+border-radius:10px;
+}
+
+select{
+padding:12px;
+background:#0f0f0f;
+color:#fff;
+border:1px solid #333;
+border-radius:10px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-bottom:20px;
+}
+
+.stat{
+background:#121212;
+padding:15px;
+border-radius:10px;
+}
+
+.stat .v{
+color:var(--yellow2);
+font-size:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:linear-gradient(#f7d55f,#d8a90b);
+color:#000;
+padding:12px;
+}
+
+td{
+padding:12px;
+text-align:center;
+border-bottom:1px solid #333;
+}
+
+.result{
+display:flex;
+justify-content:center;
+gap:8px;
+}
+
+.result span{
+width:38px;
+height:38px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+background:linear-gradient(145deg,#f7d55f,#d8a90b);
+color:#000;
+font-weight:bold;
+font-size:16px;
+box-shadow:0 2px 6px rgba(0,0,0,0.5);
+}
+
+
+/* BUTTON KUNJUNGI */
+.visit-btn{
+padding:8px 14px;
+background:linear-gradient(#f7d55f,#d8a90b);
+border:none;
+border-radius:8px;
+font-weight:bold;
+color:#000;
+cursor:pointer;
+}
+
+/* POPUP */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.popup.active{
+display:flex;
+}
+
+.popup-box{
+background:#111;
+padding:20px;
+border-radius:12px;
+text-align:center;
+width:90%;
+max-width:320px;
+border:1px solid rgba(244,196,48,.3);
+}
+
+.popup-box p{
+margin-bottom:20px;
+font-size:14px;
+}
+
+.popup-actions{
+display:flex;
+gap:10px;
+}
+
+.popup-actions button{
+flex:1;
+padding:10px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-cancel{
+background:#222;
+color:#ccc;
+}
+
+.btn-ok{
+background:linear-gradient(#f7d55f,#d8a90b);
+color:#000;
+}
+
+.popup-box{
+animation:fadeIn .2s ease;
+}
+
+@keyframes fadeIn{
+from{transform:scale(.9);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+.visit-wrap{
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+line-height:1;
+}
+
+.partner-text{
+font-size:10px;
+color:var(--yellow2);
+opacity:.8;
+margin-bottom:3px;
+letter-spacing:.5px;
+}
+</style>
+</head>
+
+<body>
+
+
+<div class="wrap">
+
+<section class="hero">
+
+<div class="card">
+<span class="badge">LIVE RESULT</span>
+</div>
+
+<div class="card">
+<label>PILIH MARKET</label>
+<select id="marketSelect">
+<option value="hongkong">Hongkong Lotto</option>
+<option value="singapore">Singapore</option>
+<option value="sydney">Sydney Lotto</option>
+
+<option value="macau_00">Macau 00:00</option>
+<option value="macau_13">Macau 13:00</option>
+<option value="macau_16">Macau 16:00</option>
+<option value="macau_19">Macau 19:00</option>
+<option value="macau_22">Macau 22:00</option>
+<option value="macau_23">Macau 23:00</option>
+</select>
+</div>
+
+</section>
+
+<section class="stats">
+<div class="stat">
+<div>Market</div>
+<div class="v" id="statMarket">-</div>
+</div>
+
+<div class="stat">
+<div>Hari</div>
+<div class="v" id="statHari">-</div>
+</div>
+
+<div class="stat">
+<div>Jam Tutup & Buka</div>
+<div class="v" id="statJam">-</div>
+</div>
+</section>
+
+<table>
+<thead>
+<tr>
+<th>Hari</th>
+<th>Tanggal</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody id="tableBody">
+<tr><td colspan="3">Loading...</td></tr>
+</tbody>
+</table>
+
+</div>
+
+<script>
+
+
+function renderResult(num){
+return num.split("").map(x=>"<span>"+x+"</span>").join("");
+}
+
+function updateMarketInfo(m){
+if(m=="hongkong"){
+statHari.innerText="Senin s/d Minggu";
+statJam.innerText="22:15 WIB | 23:00 WIB";
+}
+if(m=="singapore"){
+statHari.innerText="Selasa & Jumat Libur";
+statJam.innerText="17:25 WIB | 17:50 WIB";
+}
+if(m=="sydney"){
+statHari.innerText="Senin s/d Minggu";
+statJam.innerText="13:15 WIB | 13:50 WIB";
+}
+// MACAU
+if(m.startsWith("macau_")){
+  statHari.innerText="Senin s/d Minggu";
+
+  let jam = m.split("_")[1];
+
+  statJam.innerText = jam + ":00 WIB";
+}
+}
+
+function render(json){
+let html="";
+json.data.forEach(r=>{
+html+=`
+<tr>
+<td>${r.hari}</td>
+<td>${r.tanggal}</td>
+<td class="result">${renderResult(r.result)}</td>
+</tr>
+`;
+});
+tableBody.innerHTML=html;
+}
+
+async function loadData(){
+
+let market=marketSelect.value;
+
+if(market.startsWith("macau_")){
+  let jam = market.split("_")[1];
+  statMarket.innerText = "MACAU " + jam + ":00";
+}else if(market === "hongkong"){
+  statMarket.innerText = "HONGKONG LOTTO";
+}else if(market === "sydney"){
+  statMarket.innerText = "SYDNEY LOTTO";
+}else if(market === "singapore"){
+  statMarket.innerText = "SINGAPORE";
+}else{
+  statMarket.innerText = market.toUpperCase();
+} 
+updateMarketInfo(market);
+
+// cache dulu
+let cache=localStorage.getItem("result_"+market);
+if(cache){
+render(JSON.parse(cache));
+}
+
+// fetch JSON
+let res=await fetch("https://hasillivedraw.site/data/"+market+".json");
+let json=await res.json();
+
+localStorage.setItem("result_"+market, JSON.stringify(json));
+
+render(json);
+
+}
+
+marketSelect.onchange=loadData;
+
+loadData();
+
+</script>
+
+</body>
+</html>

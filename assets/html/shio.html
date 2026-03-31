@@ -3,208 +3,291 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<title>Tabel Shio</title>
 
 <style>
+
+:root{
+--bg:#0b0b0b;
+--card:#121212;
+--yellow:#f4c430;
+--yellow2:#ffdd55;
+--text:#f6f6f6;
+--muted:#bdbdbd;
+}
+
 body{
-    margin:0;
-    font-family:'Poppins',sans-serif;
-    background:#0c0c0c;
-    color:white;
+margin:0;
+font-family:Arial;
+background:var(--bg);
+color:var(--text);
+padding-bottom:80px;
 }
 
-.header{
-    text-align:center;
-    padding:20px;
-    font-size:22px;
-    font-weight:600;
-    color:gold;
-    border-bottom:1px solid rgba(255,215,0,0.2);
+
+
+/* CONTENT */
+
+.wrap{
+max-width:700px;
+margin:auto;
+padding:20px;
 }
 
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:20px;
+.title{
+margin-bottom:20px;
 }
 
-.year-btn{
-    width:100%;
-    padding:15px;
-    margin-bottom:10px;
-    background:#111;
-    border:1px solid rgba(255,215,0,0.3);
-    border-radius:10px;
-    color:gold;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    transition:0.3s;
+.title small{
+color:var(--muted);
 }
 
-.year-btn:hover{
-    background:#1a1a1a;
-    box-shadow:0 0 10px rgba(255,215,0,0.3);
+.title h1{
+margin:0;
+color:var(--yellow2);
 }
 
-.shio-content{
-    max-height:0;
-    overflow:hidden;
-    transition:max-height 0.5s ease;
-    margin-bottom:20px;
-}
-
-.shio-box{
-    background:#111;
-    padding:20px;
-    border-radius:10px;
-    border:1px solid rgba(255,215,0,0.2);
-}
-
-.shio-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:15px;
-}
+/* CARD SHIO */
 
 .shio-card{
-    background:#1a1a1a;
-    padding:10px;
-    border-radius:10px;
-    text-align:center;
-    border:1px solid rgba(255,215,0,0.2);
+display:flex;
+align-items:center;
+gap:15px;
+background:#141414;
+border-radius:14px;
+padding:15px;
+margin-bottom:15px;
+border:1px solid rgba(244,196,48,.1);
+}
+
+.shio-icon{
+width:55px;
+height:55px;
+border-radius:50%;
+background:#000;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:26px;
+}
+
+.shio-info{
+flex:1;
 }
 
 .shio-name{
-    font-weight:600;
-    color:gold;
-    margin-bottom:5px;
+font-weight:bold;
+margin-bottom:6px;
 }
 
-.shio-number{
-    font-size:14px;
-    color:#ddd;
+.shio-numbers{
+color:var(--yellow2);
+letter-spacing:2px;
+font-size:15px;
 }
 
-.back-link{
-    display:inline-block;
-    margin-top:30px;
-    color:gold;
-    text-decoration:none;
+
+
+/* POPUP */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.popup.active{
+display:flex;
+}
+
+.popup-box{
+background:#111;
+padding:20px;
+border-radius:12px;
+text-align:center;
+width:90%;
+max-width:320px;
+border:1px solid rgba(244,196,48,.3);
+}
+
+.popup-box p{
+margin-bottom:20px;
+font-size:14px;
+}
+
+.popup-actions{
+display:flex;
+gap:10px;
+}
+
+.popup-actions button{
+flex:1;
+padding:10px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-cancel{
+background:#222;
+color:#ccc;
+}
+
+.btn-ok{
+background:linear-gradient(#f7d55f,#d8a90b);
+color:#000;
+}
+
+.popup-box{
+animation:fadeIn .2s ease;
+}
+
+@keyframes fadeIn{
+from{transform:scale(.9);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+.visit-wrap{
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+line-height:1;
+}
+
+.partner-text{
+font-size:10px;
+color:var(--yellow2);
+opacity:.8;
+margin-bottom:3px;
+letter-spacing:.5px;
 }
 </style>
 </head>
+
 <body>
 
-<div class="header">
-    <div class="menu-btn" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-    </div>
-    <div class="header-title">TABEL SHIO</div>
-    <a href="https://wla.wuaze.com/angkajitu/index.php" class="login-btn">Link JP</a>
+<div class="wrap">
+
+<div class="title">
+<h3>Table</h3>
+<h1>Shio 2026</h1>
+
+<!-- KUDA -->
+<div class="shio-card">
+<div class="shio-icon">🐎</div>
+<div class="shio-info">
+<div class="shio-name">KUDA</div>
+<div class="shio-numbers">01 13 25 37 49 61 73 85 97</div>
+</div>
 </div>
 
-<div class="sidebar" id="sidebar">
-    <ul>
-        <li>
-            <a href="/index.html">Home</a>
-        </li>
-        <li>
-            <a href="/prediksi/index.html">Prediksi</a>
-        </li>
-        <li>
-            <a href="/buku_mimpi.html">Buku Mimpi</a>
-        </li>
-        <li>
-            <a href="/bbfs.html">BBFS Generator</a>
-        </li>
-        <li>
-            <a href="/shio.html">Shio</a>
-        </li>
-        <li>
-            <a href="/lucky.html">Angka Keberuntungan</a>
-        </li>
-        <li>
-            <a href="https://wla.wuaze.com/angkajitu/index.php">Link JP</a>
-        </li>
-    </ul>
+<!-- KAMBING -->
+<div class="shio-card">
+<div class="shio-icon">🐐</div>
+<div class="shio-info">
+<div class="shio-name">KAMBING</div>
+<div class="shio-numbers">02 14 26 38 50 62 74 86 98</div>
+</div>
 </div>
 
-<div class="page">
+<!-- MONYET -->
+<div class="shio-card">
+<div class="shio-icon">🐵</div>
+<div class="shio-info">
+<div class="shio-name">MONYET</div>
+<div class="shio-numbers">03 15 27 39 51 63 75 87 99</div>
+</div>
 </div>
 
-<div class="container">
-
-<button class="year-btn" onclick="toggleShio('y2026')">2026 - Tahun Kuda 🐎</button>
-<div id="y2026" class="shio-content"></div>
-
-<button class="year-btn" onclick="toggleShio('y2025')">2025 - Tahun Ular 🐍</button>
-<div id="y2025" class="shio-content"></div>
-
-<button class="year-btn" onclick="toggleShio('y2024')">2024 - Tahun Naga 🐉</button>
-<div id="y2024" class="shio-content"></div>
-
-<div class="back">
-<a href="index.html">← Kembali</a>
+<!-- AYAM -->
+<div class="shio-card">
+<div class="shio-icon">🐔</div>
+<div class="shio-info">
+<div class="shio-name">AYAM</div>
+<div class="shio-numbers">04 16 28 40 52 64 76 88 00</div>
+</div>
 </div>
 
+<!-- ANJING -->
+<div class="shio-card">
+<div class="shio-icon">🐶</div>
+<div class="shio-info">
+<div class="shio-name">ANJING</div>
+<div class="shio-numbers">05 17 29 41 53 65 77 89</div>
+</div>
 </div>
 
-<script>
+<!-- BABI -->
+<div class="shio-card">
+<div class="shio-icon">🐷</div>
+<div class="shio-info">
+<div class="shio-name">BABI</div>
+<div class="shio-numbers">06 18 30 42 54 66 78 90</div>
+</div>
+</div>
 
-const shioData = {
-    "Tikus": [ "01","13","25","37","49","61","73","85","97" ],
-    "Kerbau": [ "02","14","26","38","50","62","74","86","98" ],
-    "Macan": [ "03","15","27","39","51","63","75","87","99" ],
-    "Kelinci": [ "04","16","28","40","52","64","76","88","00" ],
-    "Naga": [ "05","17","29","41","53","65","77","89" ],
-    "Ular": [ "06","18","30","42","54","66","78","90" ],
-    "Kuda": [ "07","19","31","43","55","67","79","91" ],
-    "Kambing": [ "08","20","32","44","56","68","80","92" ],
-    "Monyet": [ "09","21","33","45","57","69","81","93" ],
-    "Ayam": [ "10","22","34","46","58","70","82","94" ],
-    "Anjing": [ "11","23","35","47","59","71","83","95" ],
-    "Babi": [ "12","24","36","48","60","72","84","96" ]
-};
+<!-- TIKUS -->
+<div class="shio-card">
+<div class="shio-icon">🐭</div>
+<div class="shio-info">
+<div class="shio-name">TIKUS</div>
+<div class="shio-numbers">07 19 31 43 55 67 79 91</div>
+</div>
+</div>
 
-function generateShioHTML(){
-    let html = '<div class="shio-box"><div class="shio-grid">';
-    for(let shio in shioData){
-        html += `
-        <div class="shio-card">
-            <div class="shio-name">${shio}</div>
-            <div class="shio-number">${shioData[shio].join(", ")}</div>
-        </div>`;
-    }
-    html += '</div></div>';
-    return html;
-}
+<!-- KERBAU -->
+<div class="shio-card">
+<div class="shio-icon">🐂</div>
+<div class="shio-info">
+<div class="shio-name">KERBAU</div>
+<div class="shio-numbers">08 20 32 44 56 68 80 92</div>
+</div>
+</div>
 
-function toggleShio(id){
+<!-- HARIMAU -->
+<div class="shio-card">
+<div class="shio-icon">🐯</div>
+<div class="shio-info">
+<div class="shio-name">HARIMAU</div>
+<div class="shio-numbers">09 21 33 45 57 69 81 93</div>
+</div>
+</div>
 
-    const element = document.getElementById(id);
+<!-- KELINCI -->
+<div class="shio-card">
+<div class="shio-icon">🐰</div>
+<div class="shio-info">
+<div class="shio-name">KELINCI</div>
+<div class="shio-numbers">10 22 34 46 58 70 82 94</div>
+</div>
+</div>
 
-    if(element.style.maxHeight){
-        element.style.maxHeight = null;
-        element.innerHTML = "";
-    } else {
+<!-- NAGA -->
+<div class="shio-card">
+<div class="shio-icon">🐉</div>
+<div class="shio-info">
+<div class="shio-name">NAGA</div>
+<div class="shio-numbers">11 23 35 47 59 71 83 95</div>
+</div>
+</div>
 
-        // Tutup semua dulu
-        document.querySelectorAll('.shio-content').forEach(el=>{
-            el.style.maxHeight = null;
-            el.innerHTML = "";
-        });
+<!-- ULAR -->
+<div class="shio-card">
+<div class="shio-icon">🐍</div>
+<div class="shio-info">
+<div class="shio-name">ULAR</div>
+<div class="shio-numbers">12 24 36 48 60 72 84 96</div>
+</div>
+</div>
 
-        element.innerHTML = generateShioHTML();
-        element.style.maxHeight = element.scrollHeight + "px";
-    }
-}
 
-</script>
-<script src="js/app.js"></script>
 
 </body>
 </html>

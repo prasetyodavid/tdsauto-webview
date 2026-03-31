@@ -1,4 +1,4 @@
-package com.angkajt4d.app
+package com.livedrwtiga.app
 
 import io.flutter.embedding.android.FlutterActivity
 

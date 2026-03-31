@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Prediksi Macau</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    :root {
+      --bg-main: #050014;
+      --bg-card: #070021;
+      --border-gold: #facc15;
+      --accent: #a855f7;
+      --accent-soft: rgba(168,85,247,0.18);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --pill-active: #a855f7;
+      --pill-border: #4b5563;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e1030 0, #020617 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 10px 8px 16px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .rb-wrapper {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      padding: 14px 12px 18px;
+      background: radial-gradient(circle at top, #0a0217 0, #020617 70%);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85);
+    }
+
+    .rb-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .rb-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .rb-title span {
+      color: var(--border-gold);
+    }
+
+    .rb-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .rb-panel {
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, .4);
+      padding: 12px 10px 14px;
+      background: #020617;
+      min-height: 160px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .rb-loading,
+    .rb-error-msg {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 16px 8px;
+    }
+
+    .rb-error-msg { 
+      color: #f97373; 
+    }
+
+    .rb-remote-block {
+      font-size: 0.8rem;
+      color: var(--text-main);
+      width: 100%;
+    }
+
+    .rb-remote-block * {
+      background: transparent !important;
+      background-color: transparent !important;
+      color: inherit;
+      max-width: 100%;
+    }
+
+    /* COMPACT TABLE STYLING - Mirip contoh gambar */
+    .rb-remote-block table {
+      width: 100% !important;
+      min-width: 100% !important;
+      border-collapse: collapse !important;
+      border-spacing: 0 !important;
+      font-size: 0.7rem !important;
+      margin-bottom: 0 !important;
+      table-layout: fixed !important;
+    }
+
+    .rb-remote-block th,
+    .rb-remote-block td {
+      border: 1px solid rgba(148, 163, 184, 0.3) !important;
+      padding: 4px 6px !important;
+      text-align: left !important;
+      vertical-align: top !important;
+      line-height: 1.2 !important;
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+
+    .rb-remote-block th {
+      font-weight: 600 !important;
+      color: var(--border-gold) !important;
+      background: rgba(15, 23, 42, 0.95) !important;
+      width: 35% !important;
+      white-space: nowrap !important;
+    }
+
+    .rb-remote-block td {
+      background: rgba(15, 23, 42, 0.6) !important;
+      width: 65% !important;
+    }
+
+    .rb-remote-block tr:nth-child(even) td {
+      background: rgba(15, 23, 42, 0.7) !important;
+    }
+
+    .rb-remote-block tr:nth-child(odd) td {
+      background: rgba(15, 23, 42, 0.5) !important;
+    }
+
+    .rb-remote-block a {
+      color: var(--accent) !important;
+      text-decoration: none !important;
+      word-break: break-all !important;
+    }
+
+    .rb-remote-block a:hover {
+      text-decoration: underline !important;
+    }
+
+    /* Remove unnecessary spacing in tables */
+    .rb-remote-block br {
+      display: none !important;
+    }
+
+    .rb-remote-block p {
+      margin: 2px 0 !important;
+      line-height: 1.2 !important;
+    }
+
+    .rb-footer {
+      margin-top: 10px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.3;
+      padding: 0 4px;
+    }
+
+    /* Mobile-specific optimizations */
+    @media (max-width: 480px) {
+      body {
+        padding: 8px 6px 14px;
+      }
+      
+      .rb-wrapper {
+        padding: 12px 10px 16px;
+        border-radius: 12px;
+      }
+      
+      .rb-title {
+        font-size: 1.15rem;
+      }
+      
+      .rb-sub {
+        font-size: 0.7rem;
+      }
+      
+      .rb-panel {
+        padding: 10px 8px 80px;
+        min-height: 140px;
+        border-radius: 8px;
+      }
+      
+      .rb-remote-block table {
+        font-size: 0.65rem !important;
+      }
+      
+      .rb-remote-block th,
+      .rb-remote-block td {
+        padding: 3px 5px !important;
+        line-height: 1.15 !important;
+      }
+      
+      .rb-remote-block th {
+        width: 40% !important;
+      }
+      
+      .rb-remote-block td {
+        width: 60% !important;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .rb-wrapper {
+        padding: 10px 8px 14px;
+      }
+      
+      .rb-title {
+        font-size: 1.05rem;
+      }
+      
+      .rb-remote-block table {
+        font-size: 0.62rem !important;
+      }
+      
+      .rb-remote-block th,
+      .rb-remote-block td {
+        padding: 2px 4px !important;
+      }
+    }
+
+    /* Landscape optimization */
+    @media (max-height: 500px) and (orientation: landscape) {
+      body {
+        padding: 6px 8px 12px;
+      }
+      
+      .rb-wrapper {
+        padding: 10px 8px 14px;
+      }
+      
+      .rb-panel {
+        min-height: 120px;
+        padding: 8px 6px 10px;
+      }
+    }
+
+    /* Tablet optimization */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .rb-wrapper {
+        max-width: 90%;
+      }
+      
+      .rb-remote-block table {
+        font-size: 0.75rem !important;
+      }
+      
+      .rb-remote-block th,
+      .rb-remote-block td {
+        padding: 5px 8px !important;
+      }
+    }
+    
+    table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      vertical-align: top;
+    }
+
+    table td:first-child {
+      width: 40%;
+      color: #ccc;
+    }
+
+    table td:last-child {
+      text-align: left;
+      color: white;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+<div class="rb-wrapper">
+  <header class="rb-header">
+    <div class="rb-title">Prediksi <span>Macau</span></div>
+  </header>
+
+  <section class="rb-panel" id="rbPanel">
+    <div class="rb-loading">Memuat data Prediksi Macau...</div>
+  </section>
+</div>
+
+<script>
+const panel = document.getElementById('rbPanel');
+
+/* ===== SEED STABIL ===== */
+function seededRandom(seed){
+  let x = Math.sin(seed)*10000;
+  return x - Math.floor(x);
+}
+
+function getSeed(base){
+  let d = new Date();
+  let str = base + d.getFullYear() + (d.getMonth()+1) + d.getDate();
+
+  let hash = 0;
+  for(let i=0;i<str.length;i++){
+    hash=((hash<<5)-hash)+str.charCodeAt(i);
+    hash|=0;
+  }
+  return Math.abs(hash);
+}
+
+function randDigit(seed){
+  return Math.floor(seededRandom(seed)*10);
+}
+
+function getBBFS(seed){
+  let arr=[];
+  let s=seed;
+  while(arr.length<5){
+    let n=randDigit(s++);
+    if(!arr.includes(n)) arr.push(n);
+  }
+  return arr.join("");
+}
+
+function get2D(seed){
+  let s=seed;
+  return randDigit(s++)+""+randDigit(s++);
+}
+
+function get3D(seed){
+  let s=seed;
+  return randDigit(s++)+""+randDigit(s++)+""+randDigit(s++);
+}
+
+function getShio(seed){
+  const list=["Naga","Ular","Kuda","Kambing","Monyet","Ayam","Anjing","Babi","Tikus","Kerbau","Macan","Kelinci"];
+  return list[Math.floor(seededRandom(seed)*12)];
+}
+
+function getDasar(seed){
+  return seededRandom(seed) > 0.5 ? "Besar & Genap" : "Kecil & Ganjil";
+}
+
+function getTwin(seed){
+  let a=randDigit(seed);
+  let b=randDigit(seed+1);
+  return `${a}${a} • ${b}${b}`;
+}
+
+/* ===== JAM MACAU ===== */
+const jamList = ["13:00","16:00","19:00","22:00","23:00","00:00"];
+
+/* ===== GENERATE ===== */
+function generate(){
+
+  let html = `<h2 style="color:white;margin-bottom:10px">PREDIKSI MACAU HARI INI</h2>`;
+
+  jamList.forEach((jam,i)=>{
+
+    let seed = getSeed("macau"+jam);
+
+    html += `
+    <div style="margin-bottom:20px">
+      <b style="color:gold">PREDIKSI TOTO MACAU JAM ${jam}</b>
+      <table style="width:100%; border-collapse:collapse;">
+        <tr><td>BBFS</td><td>${getBBFS(seed)}</td></tr>
+        <tr><td>Colok Bebas</td><td>${randDigit(seed+10)}</td></tr>
+        <tr><td>Colok Bebas 2D</td><td>${get2D(seed+20)}</td></tr>
+        <tr><td>Dasar</td><td>${getDasar(seed+30)}</td></tr>
+        <tr><td>Shio</td><td>${getShio(seed+40)}</td></tr>
+        <tr><td>2D BB</td><td>${get2D(seed+50)} • ${get2D(seed+60)} • ${get2D(seed+70)}</td></tr>
+        <tr><td>Jaga Twin</td><td>${getTwin(seed+80)}</td></tr>
+      </table>
+    </div>
+    `;
+  });
+
+  panel.innerHTML = html;
+}
+
+/* LOAD */
+generate();
+</script>
+
+</body>
+</html>

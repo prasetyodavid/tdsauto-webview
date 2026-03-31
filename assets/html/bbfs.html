@@ -1,220 +1,384 @@
 <!DOCTYPE html>
+
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBFS Generator</title>
-
-<link rel="stylesheet" href="css/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<title>BBFS</title>
 
 <style>
-.generator-box{
-    background:linear-gradient(145deg,#111,#1c1c1c);
-    padding:25px;
-    border-radius:20px;
-    border:1px solid rgba(255,215,0,0.3);
-    box-shadow:0 0 15px rgba(255,215,0,0.1);
+
+:root{
+--bg:#0b0b0b;
+--card:#121212;
+--yellow:#f4c430;
+--yellow2:#ffdd55;
+--text:#f6f6f6;
+--muted:#bdbdbd;
 }
 
-.generator-box input,
-.generator-box select{
-    padding:10px;
-    border-radius:8px;
-    border:none;
-    background:#000;
-    color:gold;
-    border:1px solid rgba(255,215,0,0.3);
-    margin:5px;
+*{
+box-sizing:border-box;
 }
 
-.generator-box button{
-    padding:10px 18px;
-    border-radius:8px;
-    border:none;
-    background:gold;
-    color:#000;
-    font-weight:600;
-    cursor:pointer;
-    margin:5px;
-    transition:.3s;
+body{
+margin:0;
+font-family:Arial;
+background:var(--bg);
+color:var(--text);
+padding-bottom:80px;
 }
 
-.generator-box button:hover{
-    box-shadow:0 0 10px gold;
+
+/* CONTENT */
+
+.wrap{
+max-width:600px;
+margin:auto;
+padding:20px;
 }
 
-textarea{
-    width:100%;
-    height:180px;
-    margin-top:15px;
-    border-radius:10px;
-    background:#000;
-    color:gold;
-    border:1px solid rgba(255,215,0,0.3);
-    padding:10px;
+/* CARD */
+
+.card{
+background:#121212;
+border:1px solid rgba(244,196,48,.18);
+border-radius:16px;
+padding:20px;
+margin-bottom:20px;
+}
+
+/* TITLE */
+
+.title{
+text-align:center;
+margin-bottom:15px;
+}
+
+.title h1{
+margin:0;
+font-size:28px;
+color:var(--yellow2);
+}
+
+.title p{
+color:var(--muted);
+font-size:12px;
+}
+
+/* INPUT */
+
+input{
+width:100%;
+padding:18px;
+font-size:26px;
+text-align:center;
+background:#0f0f0f;
+border:2px dashed var(--yellow);
+border-radius:12px;
+color:white;
+letter-spacing:6px;
+}
+
+/* TYPE BUTTON */
+
+.type{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+margin-top:15px;
+}
+
+.type button{
+padding:14px;
+border-radius:10px;
+background:#1b1b1b;
+border:1px solid #333;
+color:#aaa;
+font-weight:bold;
+cursor:pointer;
+}
+
+.type button.active{
+background:linear-gradient(#f7d55f,#d8a90b);
+color:#111;
+}
+
+/* BUTTON */
+
+.btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:12px;
+background:linear-gradient(#f7d55f,#d8a90b);
+font-weight:bold;
+color:#111;
+cursor:pointer;
+margin-top:20px;
+}
+
+.btn-reset{
+background:#222;
+color:#ccc;
+margin-top:10px;
+}
+
+/* RESULT */
+
+.resultBox{
+background:#111;
+border-radius:12px;
+padding:15px;
+border:1px solid #333;
+}
+
+#outputResult{
+width:100%;
+height:160px;
+background:#0d0d0d;
+border:1px solid #333;
+color:var(--yellow2);
+font-family:monospace;
+font-size:16px;
+padding:10px;
+resize:none;
+border-radius:8px;
+}
+
+.copyBtn{
+margin-top:10px;
+padding:12px;
+width:100%;
+background:linear-gradient(#f7d55f,#d8a90b);
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+color:#111;
+}
+
+
+/* BUTTON KUNJUNGI */
+.visit-btn{
+padding:8px 14px;
+background:linear-gradient(#f7d55f,#d8a90b);
+border:none;
+border-radius:8px;
+font-weight:bold;
+color:#000;
+cursor:pointer;
+}
+
+/* POPUP */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.popup.active{
+display:flex;
+}
+
+.popup-box{
+background:#111;
+padding:20px;
+border-radius:12px;
+text-align:center;
+width:90%;
+max-width:320px;
+border:1px solid rgba(244,196,48,.3);
+}
+
+.popup-box p{
+margin-bottom:20px;
+font-size:14px;
+}
+
+.popup-actions{
+display:flex;
+gap:10px;
+}
+
+.popup-actions button{
+flex:1;
+padding:10px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.btn-cancel{
+background:#222;
+color:#ccc;
+}
+
+.btn-ok{
+background:linear-gradient(#f7d55f,#d8a90b);
+color:#000;
+}
+
+.popup-box{
+animation:fadeIn .2s ease;
+}
+
+@keyframes fadeIn{
+from{transform:scale(.9);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+.visit-wrap{
+display:flex;
+flex-direction:column;
+align-items:flex-end;
+line-height:1;
+}
+
+.partner-text{
+font-size:10px;
+color:var(--yellow2);
+opacity:.8;
+margin-bottom:3px;
+letter-spacing:.5px;
 }
 </style>
+
 </head>
+
 <body>
 
-    <div class="header">
-    <div class="menu-btn" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-    </div>
-    <div class="header-title">BBFS Generator</div>
-    <a href="https://wla.wuaze.com/angkajitu/index.php" class="login-btn">Link JP</a>
+<div class="wrap">
+
+<div class="title">
+<h1>Generator BBFS</h1>
 </div>
 
-<div class="sidebar" id="sidebar">
-    <ul>
-        <li>
-            <a href="/index.html">Home</a>
-        </li>
-        <li>
-            <a href="/prediksi/index.html">Prediksi</a>
-        </li>
-        <li>
-            <a href="/buku_mimpi.html">Buku Mimpi</a>
-        </li>
-        <li>
-            <a href="/bbfs.html">BBFS Generator</a>
-        </li>
-        <li>
-            <a href="/shio.html">Shio</a>
-        </li>
-        <li>
-            <a href="/lucky.html">Angka Keberuntungan</a>
-        </li>
-        <li>
-            <a href="https://wla.wuaze.com/angkajitu/index.php">Link JP</a>
-        </li>
-    </ul>
+<div class="card">
+
+<label><Strong>Masukkan Angka</strong></label>
+
+<input type="text" id="inputAngka" placeholder="0123456789" maxlength="10">
+
+<div class="type">
+<button onclick="setTipe(4)" id="btn4D" class="active">4D</button>
+<button onclick="setTipe(3)" id="btn3D">3D</button>
+<button onclick="setTipe(2)" id="btn2D">2D</button>
 </div>
 
-<div class="content">
-
-<div class="generator-box">
-
-    <h2 style="color:gold; margin-bottom:15px;">BBFS Generator</h2>
-
-    <label>Angka tarung dalam:</label><br>
-
-    <input type="text" id="bbfsInput" placeholder="Contoh: 123456">
-
-    <div id="bbfsResult"></div>
-
-    <select id="digitType">
-        <option value="2">2D</option>
-        <option value="3">3D</option>
-        <option value="4">4D</option>
-        <option value="5">5D</option>
-    </select>
-
-    <select id="separator">
-        <option value="*">*</option>
-        <option value="#">#</option>
-    </select>
-
-    <br>
-
-    <button onclick="generateBBFS()">Generate</button>
-    <button onclick="clearBBFS()">Bersihkan</button>
-
-    <textarea id="resultArea" rows="8"></textarea>
-    <br>
-<button onclick="copyResult()" class="copy-btn">
-📋 Copy Hasil
-</button>
+<button class="btn" onclick="generateBBFS()">GENERATE</button> <button class="btn btn-reset" onclick="resetAll()">RESET</button>
 
 </div>
 
-<div class="back">
-<a href="index.html">← Kembali</a>
-</div>
+<div class="card resultBox">
+
+<h3>Hasil Kombinasi <span id="labelHasil">4D</span></h3>
+
+<textarea id="outputResult" readonly></textarea>
+
+<button class="copyBtn" onclick="copyResult()">SALIN HASIL</button>
 
 </div>
 
-<script src="js/app.js"></script>
+</div>
 
 <script>
+
+let currentTipe=4;
+
+function setTipe(n){
+
+currentTipe=n;
+
+document.querySelectorAll(".type button").forEach(b=>b.classList.remove("active"));
+
+document.getElementById("btn"+n+"D").classList.add("active");
+
+document.getElementById("labelHasil").innerText=n+"D";
+
+}
+
 function generateBBFS(){
 
-    const startTime = performance.now();
+let input=document.getElementById("inputAngka").value;
 
-    let input = document.getElementById("bbfsInput").value;
-    let digit = parseInt(document.getElementById("digitType").value);
-    let separator = document.getElementById("separator").value;
+if(input.length<currentTipe){
+alert("Minimal "+currentTipe+" digit");
+return;
+}
 
-    input = input.replace(/[^0-9]/g, '');
+let pool=input.split("");
 
-    if(input.length < digit){
-        alert("Jumlah angka tidak cukup!");
-        return;
-    }
+let res=getPermutations(pool,currentTipe);
 
-    // Hitung stok angka
-    let count = {};
-    for(let num of input){
-        count[num] = (count[num] || 0) + 1;
-    }
+let unique=[...new Set(res)];
 
-    let uniqueNumbers = Object.keys(count);
-    let results = [];
+document.getElementById("outputResult").value=unique.join(" ");
 
-    function permute(temp = [], localCount = {...count}){
+}
 
-        if(temp.length === digit){
-            results.push(temp.join(''));
-            return;
-        }
+function getPermutations(arr,len){
 
-        for(let num of uniqueNumbers){
+let result=[];
+let used=new Array(arr.length).fill(false);
 
-            if(localCount[num] > 0){
+function backtrack(cur){
 
-                localCount[num]--;
-                temp.push(num);
+if(cur.length===len){
+result.push(cur.join(""));
+return;
+}
 
-                permute(temp, localCount);
+for(let i=0;i<arr.length;i++){
 
-                temp.pop();
-                localCount[num]++;
-            }
-        }
-    }
+if(used[i]) continue;
 
-    permute();
+used[i]=true;
 
-    let finalResult = results.join(separator) + separator;
+cur.push(arr[i]);
 
-    const endTime = performance.now();
+backtrack(cur);
 
-    document.getElementById("resultArea").value = finalResult;
+cur.pop();
 
-    // Optional: tampilkan jumlah & waktu
-    console.log("Jumlah LN:", results.length);
-    console.log("Waktu:", (endTime - startTime).toFixed(2), "ms");
+used[i]=false;
+
+}
+
+}
+
+backtrack([]);
+
+return result;
+
 }
 
 function copyResult(){
 
-let textArea = document.getElementById("resultArea");
+let txt=document.getElementById("outputResult");
 
-if(textArea.value === ""){
-alert("Belum ada hasil untuk disalin!");
-return;
-}
-
-textArea.select();
-textArea.setSelectionRange(0, 99999);
-
+txt.select();
 document.execCommand("copy");
 
-alert("Hasil BBFS berhasil disalin!");
+alert("Hasil disalin");
 
 }
-</script>
 
+function resetAll(){
+
+document.getElementById("inputAngka").value="";
+document.getElementById("outputResult").value="";
+
+}
+
+</script>
 </body>
 </html>
