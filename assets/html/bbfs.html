@@ -1,384 +1,222 @@
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBFS</title>
+<title>BBFS Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 
-:root{
---bg:#0b0b0b;
---card:#121212;
---yellow:#f4c430;
---yellow2:#ffdd55;
---text:#f6f6f6;
---muted:#bdbdbd;
+body{
+margin:0;
+font-family:Poppins, sans-serif;
+background: linear-gradient(135deg,#0b112b,#1f2a6c,#5f2c82);
+color:#fff;
+padding-bottom:100px;
+display:flex;
+justify-content:center;
 }
 
-*{
+/* CONTAINER */
+.content{
+  max-width:420px;
+  margin:0 auto;
+  padding:20px 15px 100px;
+}
+
+/* BOX */
+.generator-box{
+width:100%;
+background:linear-gradient(145deg,#111,#1c1c1c);
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(174,0,243,0.3);
+box-shadow:0 0 15px rgba(174,0,243,0.1);
 box-sizing:border-box;
 }
 
-body{
-margin:0;
-font-family:Arial;
-background:var(--bg);
-color:var(--text);
-padding-bottom:80px;
-}
-
-
-/* CONTENT */
-
-.wrap{
-max-width:600px;
-margin:auto;
-padding:20px;
-}
-
-/* CARD */
-
-.card{
-background:#121212;
-border:1px solid rgba(244,196,48,.18);
-border-radius:16px;
-padding:20px;
-margin-bottom:20px;
-}
-
-/* TITLE */
-
-.title{
-text-align:center;
-margin-bottom:15px;
-}
-
-.title h1{
-margin:0;
-font-size:28px;
-color:var(--yellow2);
-}
-
-.title p{
-color:var(--muted);
-font-size:12px;
-}
-
 /* INPUT */
-
-input{
+.generator-box input,
+.generator-box select,
+textarea{
 width:100%;
-padding:18px;
-font-size:26px;
-text-align:center;
-background:#0f0f0f;
-border:2px dashed var(--yellow);
-border-radius:12px;
-color:white;
-letter-spacing:6px;
-}
-
-/* TYPE BUTTON */
-
-.type{
-display:grid;
-grid-template-columns:1fr 1fr 1fr;
-gap:10px;
-margin-top:15px;
-}
-
-.type button{
-padding:14px;
-border-radius:10px;
-background:#1b1b1b;
-border:1px solid #333;
-color:#aaa;
-font-weight:bold;
-cursor:pointer;
-}
-
-.type button.active{
-background:linear-gradient(#f7d55f,#d8a90b);
-color:#111;
+box-sizing:border-box;
+padding:10px;
+border-radius:8px;
+background:#000;
+color:#ae00f3;
+border:1px solid rgba(174,0,243,0.3);
+margin:5px 0;
 }
 
 /* BUTTON */
-
-.btn{
-width:100%;
-padding:16px;
+.generator-box button{
+padding:10px;
+border-radius:8px;
 border:none;
-border-radius:12px;
-background:linear-gradient(#f7d55f,#d8a90b);
+background:linear-gradient(#c059e8,#ae00f3);
+color:#000;
 font-weight:bold;
-color:#111;
 cursor:pointer;
-margin-top:20px;
-}
-
-.btn-reset{
-background:#222;
-color:#ccc;
-margin-top:10px;
-}
-
-/* RESULT */
-
-.resultBox{
-background:#111;
-border-radius:12px;
-padding:15px;
-border:1px solid #333;
-}
-
-#outputResult{
+margin-top:8px;
 width:100%;
-height:160px;
-background:#0d0d0d;
-border:1px solid #333;
-color:var(--yellow2);
-font-family:monospace;
-font-size:16px;
+}
+
+/* TEXTAREA */
+textarea{
+width:100%;
+height:180px;
+margin-top:15px;
+border-radius:10px;
+background:#000;
+color:#ae00f3;
+border:1px solid rgba(174,0,243,0.3);
 padding:10px;
 resize:none;
-border-radius:8px;
 }
 
-.copyBtn{
-margin-top:10px;
-padding:12px;
-width:100%;
-background:linear-gradient(#f7d55f,#d8a90b);
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-color:#111;
-}
-
-
-/* BUTTON KUNJUNGI */
-.visit-btn{
-padding:8px 14px;
-background:linear-gradient(#f7d55f,#d8a90b);
-border:none;
-border-radius:8px;
-font-weight:bold;
-color:#000;
-cursor:pointer;
-}
-
-/* POPUP */
-.popup{
+/* NAVBAR */
+.navbar{
 position:fixed;
-top:0;
+bottom:0;
 left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.7);
-display:none;
-align-items:center;
-justify-content:center;
+right:0;
+height:70px;
+background:#111;
+display:flex;
+border-top:1px solid #333;
 z-index:9999;
 }
 
-.popup.active{
-display:flex;
-}
-
-.popup-box{
-background:#111;
-padding:20px;
-border-radius:12px;
-text-align:center;
-width:90%;
-max-width:320px;
-border:1px solid rgba(244,196,48,.3);
-}
-
-.popup-box p{
-margin-bottom:20px;
-font-size:14px;
-}
-
-.popup-actions{
-display:flex;
-gap:10px;
-}
-
-.popup-actions button{
+.nav-btn{
 flex:1;
-padding:10px;
-border:none;
-border-radius:8px;
-font-weight:bold;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+color:#aaa;
 cursor:pointer;
 }
 
-.btn-cancel{
-background:#222;
-color:#ccc;
+.nav-btn.active{
+color:#ae00f3;
 }
 
-.btn-ok{
-background:linear-gradient(#f7d55f,#d8a90b);
-color:#000;
-}
-
-.popup-box{
-animation:fadeIn .2s ease;
-}
-
-@keyframes fadeIn{
-from{transform:scale(.9);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
-
-.visit-wrap{
-display:flex;
-flex-direction:column;
-align-items:flex-end;
-line-height:1;
-}
-
-.partner-text{
-font-size:10px;
-color:var(--yellow2);
-opacity:.8;
-margin-bottom:3px;
-letter-spacing:.5px;
-}
 </style>
-
 </head>
 
 <body>
 
-<div class="wrap">
+<div class="content">
 
-<div class="title">
-<h1>Generator BBFS</h1>
+<div class="generator-box">
+
+<h2 style="color:#ae00f3;">BBFS Generator</h2>
+
+<label>Angka tarung dalam:</label>
+
+<input type="text" id="bbfsInput" placeholder="Contoh: 123456">
+
+<select id="digitType">
+<option value="2">2D</option>
+<option value="3">3D</option>
+<option value="4">4D</option>
+<option value="5">5D</option>
+</select>
+
+<select id="separator">
+<option value="*">*</option>
+<option value="#">#</option>
+</select>
+
+<button onclick="generateBBFS()">Generate</button>
+<button onclick="clearBBFS()">Bersihkan</button>
+
+<textarea id="resultArea"></textarea>
+
+<button onclick="copyResult()">📋 Copy Hasil</button>
+
 </div>
 
-<div class="card">
-
-<label><Strong>Masukkan Angka</strong></label>
-
-<input type="text" id="inputAngka" placeholder="0123456789" maxlength="10">
-
-<div class="type">
-<button onclick="setTipe(4)" id="btn4D" class="active">4D</button>
-<button onclick="setTipe(3)" id="btn3D">3D</button>
-<button onclick="setTipe(2)" id="btn2D">2D</button>
 </div>
 
-<button class="btn" onclick="generateBBFS()">GENERATE</button> <button class="btn btn-reset" onclick="resetAll()">RESET</button>
-
-</div>
-
-<div class="card resultBox">
-
-<h3>Hasil Kombinasi <span id="labelHasil">4D</span></h3>
-
-<textarea id="outputResult" readonly></textarea>
-
-<button class="copyBtn" onclick="copyResult()">SALIN HASIL</button>
-
-</div>
-
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-btn" onclick="location.href='result.html'">RESULT</div>
+  <div class="nav-btn" onclick="location.href='bukumimpi.html'">BUKU MIMPI</div>
+  <div class="nav-btn" onclick="location.href='index.html'">HOME</div>
+  <div class="nav-btn" onclick="location.href='shio.html'">SHIO</div>
+  <div class="nav-btn" onclick="location.href='lucky.html'">LUCKY</div>
 </div>
 
 <script>
 
-let currentTipe=4;
-
-function setTipe(n){
-
-currentTipe=n;
-
-document.querySelectorAll(".type button").forEach(b=>b.classList.remove("active"));
-
-document.getElementById("btn"+n+"D").classList.add("active");
-
-document.getElementById("labelHasil").innerText=n+"D";
-
-}
-
 function generateBBFS(){
 
-let input=document.getElementById("inputAngka").value;
+    let input = document.getElementById("bbfsInput").value;
+    let digit = parseInt(document.getElementById("digitType").value);
+    let separator = document.getElementById("separator").value;
 
-if(input.length<currentTipe){
-alert("Minimal "+currentTipe+" digit");
-return;
+    input = input.replace(/[^0-9]/g, '');
+
+    if(input.length < digit){
+        alert("Jumlah angka tidak cukup!");
+        return;
+    }
+
+    let count = {};
+    for(let num of input){
+        count[num] = (count[num] || 0) + 1;
+    }
+
+    let uniqueNumbers = Object.keys(count);
+    let results = [];
+
+    function permute(temp = [], localCount = {...count}){
+
+        if(temp.length === digit){
+            results.push(temp.join(''));
+            return;
+        }
+
+        for(let num of uniqueNumbers){
+            if(localCount[num] > 0){
+                localCount[num]--;
+                temp.push(num);
+                permute(temp, localCount);
+                temp.pop();
+                localCount[num]++;
+            }
+        }
+    }
+
+    permute();
+
+    document.getElementById("resultArea").value = results.join(separator) + separator;
 }
 
-let pool=input.split("");
-
-let res=getPermutations(pool,currentTipe);
-
-let unique=[...new Set(res)];
-
-document.getElementById("outputResult").value=unique.join(" ");
-
-}
-
-function getPermutations(arr,len){
-
-let result=[];
-let used=new Array(arr.length).fill(false);
-
-function backtrack(cur){
-
-if(cur.length===len){
-result.push(cur.join(""));
-return;
-}
-
-for(let i=0;i<arr.length;i++){
-
-if(used[i]) continue;
-
-used[i]=true;
-
-cur.push(arr[i]);
-
-backtrack(cur);
-
-cur.pop();
-
-used[i]=false;
-
-}
-
-}
-
-backtrack([]);
-
-return result;
-
+function clearBBFS(){
+    document.getElementById("bbfsInput").value="";
+    document.getElementById("resultArea").value="";
 }
 
 function copyResult(){
+    let textArea = document.getElementById("resultArea");
 
-let txt=document.getElementById("outputResult");
+    if(textArea.value === ""){
+        alert("Belum ada hasil!");
+        return;
+    }
 
-txt.select();
-document.execCommand("copy");
+    textArea.select();
+    document.execCommand("copy");
 
-alert("Hasil disalin");
-
-}
-
-function resetAll(){
-
-document.getElementById("inputAngka").value="";
-document.getElementById("outputResult").value="";
-
+    alert("Berhasil disalin!");
 }
 
 </script>
+
 </body>
 </html>

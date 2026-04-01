@@ -64,8 +64,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://wlavip.tigaduadelapan.site";
-var MAIN_TITLE = "Live Draw Togel SGP HK";
+var MAIN_HOME_URL = "https://toto4d.layarlintasjaya.site";
+var MAIN_TITLE = "Toto 4D Live Draw Lengkap";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 

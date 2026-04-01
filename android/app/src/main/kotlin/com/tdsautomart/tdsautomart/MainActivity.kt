@@ -1,4 +1,4 @@
-package com.livedrwtiga.app
+package com.toto4dlive.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -8,10 +8,9 @@
 <style>
 
 :root{
---bg:#0b0b0b;
+--bg:#0b112b;
 --card:#121212;
---yellow:#f4c430;
---yellow2:#ffdd55;
+--accent:#ae00f3;
 --text:#f6f6f6;
 --muted:#bdbdbd;
 }
@@ -19,45 +18,39 @@
 body{
 margin:0;
 font-family:Arial;
-background:var(--bg);
+background:linear-gradient(135deg, #0b112b, #1f2a6c, #5f2c82);
 color:var(--text);
-padding-bottom:80px;
+padding-bottom:90px;
 }
 
-
-
-/* CONTENT */
-
+/* WRAP */
 .wrap{
 max-width:700px;
 margin:auto;
 padding:20px;
 }
 
-.title{
-margin-bottom:20px;
-}
-
-.title small{
+/* TITLE */
+.title h3{
+margin:0;
 color:var(--muted);
 }
 
 .title h1{
-margin:0;
-color:var(--yellow2);
+margin:5px 0 20px;
+color:#d67bff;
 }
 
-/* CARD SHIO */
-
+/* CARD */
 .shio-card{
 display:flex;
 align-items:center;
 gap:15px;
-background:#141414;
+background:linear-gradient(135deg, #0b112b, #1a1f4f, #3a1c71);
 border-radius:14px;
 padding:15px;
 margin-bottom:15px;
-border:1px solid rgba(244,196,48,.1);
+border:1px solid rgba(255,255,255,.05);
 }
 
 .shio-icon{
@@ -68,11 +61,13 @@ background:#000;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:26px;
+overflow:hidden;
 }
 
-.shio-info{
-flex:1;
+.shio-icon img{
+width:100%;
+height:100%;
+object-fit:contain;
 }
 
 .shio-name{
@@ -81,93 +76,38 @@ margin-bottom:6px;
 }
 
 .shio-numbers{
-color:var(--yellow2);
+color:#d67bff;
 letter-spacing:2px;
 font-size:15px;
 }
 
-
-
-/* POPUP */
-.popup{
+/* NAVBAR */
+.navbar{
 position:fixed;
-top:0;
+bottom:0;
 left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.7);
-display:none;
+right:0;
+height:70px;
+background:#111;
+display:flex;
+border-top:1px solid #333;
+z-index:10;
+}
+
+.nav-btn{
+flex:1;
+display:flex;
 align-items:center;
 justify-content:center;
-z-index:9999;
-}
-
-.popup.active{
-display:flex;
-}
-
-.popup-box{
-background:#111;
-padding:20px;
-border-radius:12px;
-text-align:center;
-width:90%;
-max-width:320px;
-border:1px solid rgba(244,196,48,.3);
-}
-
-.popup-box p{
-margin-bottom:20px;
-font-size:14px;
-}
-
-.popup-actions{
-display:flex;
-gap:10px;
-}
-
-.popup-actions button{
-flex:1;
-padding:10px;
-border:none;
-border-radius:8px;
-font-weight:bold;
+font-size:12px;
+color:#aaa;
 cursor:pointer;
 }
 
-.btn-cancel{
-background:#222;
-color:#ccc;
+.nav-btn.active{
+color:#ae00f3;
 }
 
-.btn-ok{
-background:linear-gradient(#f7d55f,#d8a90b);
-color:#000;
-}
-
-.popup-box{
-animation:fadeIn .2s ease;
-}
-
-@keyframes fadeIn{
-from{transform:scale(.9);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
-
-.visit-wrap{
-display:flex;
-flex-direction:column;
-align-items:flex-end;
-line-height:1;
-}
-
-.partner-text{
-font-size:10px;
-color:var(--yellow2);
-opacity:.8;
-margin-bottom:3px;
-letter-spacing:.5px;
-}
 </style>
 </head>
 
@@ -178,11 +118,12 @@ letter-spacing:.5px;
 <div class="title">
 <h3>Table</h3>
 <h1>Shio 2026</h1>
+</div>
 
 <!-- KUDA -->
 <div class="shio-card">
-<div class="shio-icon">🐎</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/kuda.png"></div>
+<div>
 <div class="shio-name">KUDA</div>
 <div class="shio-numbers">01 13 25 37 49 61 73 85 97</div>
 </div>
@@ -190,8 +131,8 @@ letter-spacing:.5px;
 
 <!-- KAMBING -->
 <div class="shio-card">
-<div class="shio-icon">🐐</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/kambing.png"></div>
+<div>
 <div class="shio-name">KAMBING</div>
 <div class="shio-numbers">02 14 26 38 50 62 74 86 98</div>
 </div>
@@ -199,8 +140,8 @@ letter-spacing:.5px;
 
 <!-- MONYET -->
 <div class="shio-card">
-<div class="shio-icon">🐵</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/monyet.png"></div>
+<div>
 <div class="shio-name">MONYET</div>
 <div class="shio-numbers">03 15 27 39 51 63 75 87 99</div>
 </div>
@@ -208,8 +149,8 @@ letter-spacing:.5px;
 
 <!-- AYAM -->
 <div class="shio-card">
-<div class="shio-icon">🐔</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/ayam.png"></div>
+<div>
 <div class="shio-name">AYAM</div>
 <div class="shio-numbers">04 16 28 40 52 64 76 88 00</div>
 </div>
@@ -217,8 +158,8 @@ letter-spacing:.5px;
 
 <!-- ANJING -->
 <div class="shio-card">
-<div class="shio-icon">🐶</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/anjing.png"></div>
+<div>
 <div class="shio-name">ANJING</div>
 <div class="shio-numbers">05 17 29 41 53 65 77 89</div>
 </div>
@@ -226,8 +167,8 @@ letter-spacing:.5px;
 
 <!-- BABI -->
 <div class="shio-card">
-<div class="shio-icon">🐷</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/babi.png"></div>
+<div>
 <div class="shio-name">BABI</div>
 <div class="shio-numbers">06 18 30 42 54 66 78 90</div>
 </div>
@@ -235,8 +176,8 @@ letter-spacing:.5px;
 
 <!-- TIKUS -->
 <div class="shio-card">
-<div class="shio-icon">🐭</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/tikus.png"></div>
+<div>
 <div class="shio-name">TIKUS</div>
 <div class="shio-numbers">07 19 31 43 55 67 79 91</div>
 </div>
@@ -244,8 +185,8 @@ letter-spacing:.5px;
 
 <!-- KERBAU -->
 <div class="shio-card">
-<div class="shio-icon">🐂</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/kerbau.png"></div>
+<div>
 <div class="shio-name">KERBAU</div>
 <div class="shio-numbers">08 20 32 44 56 68 80 92</div>
 </div>
@@ -253,8 +194,8 @@ letter-spacing:.5px;
 
 <!-- HARIMAU -->
 <div class="shio-card">
-<div class="shio-icon">🐯</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/harimau.png"></div>
+<div>
 <div class="shio-name">HARIMAU</div>
 <div class="shio-numbers">09 21 33 45 57 69 81 93</div>
 </div>
@@ -262,8 +203,8 @@ letter-spacing:.5px;
 
 <!-- KELINCI -->
 <div class="shio-card">
-<div class="shio-icon">🐰</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/kelinci.png"></div>
+<div>
 <div class="shio-name">KELINCI</div>
 <div class="shio-numbers">10 22 34 46 58 70 82 94</div>
 </div>
@@ -271,8 +212,8 @@ letter-spacing:.5px;
 
 <!-- NAGA -->
 <div class="shio-card">
-<div class="shio-icon">🐉</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/naga.png"></div>
+<div>
 <div class="shio-name">NAGA</div>
 <div class="shio-numbers">11 23 35 47 59 71 83 95</div>
 </div>
@@ -280,14 +221,23 @@ letter-spacing:.5px;
 
 <!-- ULAR -->
 <div class="shio-card">
-<div class="shio-icon">🐍</div>
-<div class="shio-info">
+<div class="shio-icon"><img src="img/ular.png"></div>
+<div>
 <div class="shio-name">ULAR</div>
 <div class="shio-numbers">12 24 36 48 60 72 84 96</div>
 </div>
 </div>
 
+</div>
 
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-btn" onclick="window.location.href='result.html'">RESULT</div>
+  <div class="nav-btn" onclick="window.location.href='bukumimpi.html'">BUKU MIMPI</div>
+  <div class="nav-btn" onclick="window.location.href='index.html'">HOME</div>
+  <div class="nav-btn active" onclick="window.location.href='shio.html'">SHIO</div>
+  <div class="nav-btn" onclick="window.location.href='prediksi.html'">PREDIKSI</div>
+</div>
 
 </body>
 </html>
