@@ -78,7 +78,7 @@ flutter:
     - assets/html/js/
     - assets/html/buku/
     - assets/html/data/
-    - assets/html/prediksi/
+    - assets/html/gambarmimpi/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

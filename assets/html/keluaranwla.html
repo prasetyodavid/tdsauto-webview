@@ -336,7 +336,7 @@ render(JSON.parse(cache));
 }
 
 // fetch JSON
-let res=await fetch("https://hasillivedraw.site/data/"+market+".json");
+let res = await fetch("https://hasillivedraw.site/proxy.php?market=" + market);
 let json=await res.json();
 
 localStorage.setItem("result_"+market, JSON.stringify(json));
