@@ -74,11 +74,10 @@ flutter:
   assets:
     - assets/icon/icon.png
     - assets/html/
-    - assets/html/css/
-    - assets/html/js/
-    - assets/html/img/
-    - assets/html/data/
-    - assets/html/gambarmimpi/
+    - assets/html/assets/
+    - assets/html/assets/images/
+    - assets/html/assets/photo/
+    - assets/html/assets/voice/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

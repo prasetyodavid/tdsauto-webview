@@ -15,7 +15,8 @@ HttpServer? _assetServer;
 Future<void> _startAssetServer() async {
   _assetServer = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
   _assetServer!.listen((HttpRequest request) async {
-    var path = request.uri.path;
+    // Uri.path keeps %20 etc.; Flutter asset keys use real spaces/filenames on disk.
+    var path = Uri.decodeFull(request.uri.path);
     if (path.isEmpty || path == '/') {
       path = '/index.html';
     }
@@ -64,8 +65,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://toto4d.layarlintasjaya.site";
-var MAIN_TITLE = "Toto 4D Live Draw Lengkap";
+var MAIN_HOME_URL = "http://localhost";
+var MAIN_TITLE = "Sugar Bonanza";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
@@ -73,15 +74,15 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 228, 6, 224),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/icon/icon.png',
-              width: 200, // Adjust the width as needed
-              height: 200, // Adjust the height as needed
+              width: 400, // Adjust the width as needed
+              height: 400, // Adjust the height as needed
             ),
             //SizedBox(height: 20),
             //Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
@@ -370,7 +371,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 progress < 1.0
                     ? LinearProgressIndicator(
                         value: progress,
-                        color: Color.fromARGB(255, 216, 181, 23),
+                        color: Color.fromARGB(255, 214, 17, 214),
                       )
                     : Container(),
               ],
@@ -382,7 +383,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget _buildProgressBar() {
     if (progress != 1.0) {
       return CircularProgressIndicator(
-          color: Color.fromARGB(255, 216, 181, 23));
+          color: Color.fromARGB(255, 214, 17, 214));
     }
     return Container();
   }

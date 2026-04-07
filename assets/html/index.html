@@ -1,390 +1,568 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOTO 4D LIVE RESULT LENGKAP</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background: linear-gradient(135deg, #0b112b, #1f2a6c, #5f2c82);
-  color:#fff;
-}
-
-/* NAVBAR */
-.navbar{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:70px;
-  background:#111;
-  display:flex;
-  border-top:1px solid #333;
-  z-index:10;
-}
-
-.nav-btn{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  color:#aaa;
-  cursor:pointer;
-}
-
-.nav-btn.active{
-  color:#ae00f3;
-}
-
-/* HEADER */
-.header{
-  padding:20px;
-}
-
-.top-badge{
-  display:inline-block;
-  background:#1c1c1c;
-  color:#ae00f3;
-  padding:5px 10px;
-  border-radius:8px;
-  font-size:12px;
-  margin-bottom:15px;
-}
-
-.welcome{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.welcome p{
-  margin:0;
-  color:#aaa;
-}
-
-.welcome h2{
-  margin:0;
-  color:#ae00f3;
-}
-
-.logo{
-  text-align:center;
-}
-
-.logo img{
-  width:60px;
-  display:block;
-  margin:auto;
-}
-
-.logo button{
-  margin-top:5px;
-  background:transparent;
-  border:1px solid #ae00f3;
-  color:#ae00f3;
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:10px;
-}
-
-/* SECTION */
-.section-title{
-  margin:10px 20px;
-  color:#aaa;
-  font-size:12px;
-  border-bottom:1px solid #333;
-  padding-bottom:5px;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-  padding:15px;
-  padding-bottom:90px; /* biar ga ketutup navbar */
-}
-
-.card{
-  position:relative;
-  padding:20px;
-  padding-top:55px;
-  background: linear-gradient(135deg, #0b112b, #1a1f4f, #3a1c71);
-  border-radius:15px;
-  color:#ae00f3;
-  border:1px solid #222;
-  box-shadow:0 0 10px rgba(244,196,48,0.08);
-  cursor:pointer;
-  transition:0.2s;
-}
-
-.card:hover{
-  transform:scale(1.03);
-  box-shadow:0 0 15px rgba(244,196,48,0.2);
-}
-
-.icon{
-  position:absolute;
-  top:15px;
-  left:15px;
-  width:40px;
-  height:40px;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-  background:#3f156d;
-}
-
-.popup{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-}
-
-.popup.active{
-  display:flex;
-}
-
-.popup-box{
-  background:#111;
-  padding:20px;
-  border-radius:12px;
-  text-align:center;
-  width:90%;
-  max-width:320px;
-  border:1px solid rgba(174,0,243,.3);
-}
-
-.popup-box p{
-  margin-bottom:20px;
-  font-size:14px;
-}
-
-.popup-actions{
-  display:flex;
-  gap:10px;
-}
-
-.popup-actions button{
-  flex:1;
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.btn-cancel{
-  background:#222;
-  color:#ccc;
-}
-
-.btn-ok{
-  background:linear-gradient(#c059e8,#ae00f3);
-  color:#000;
-}
-
-.text{
-  margin-top:5px;
-}
-
-.yellow{ color:#f4c430; }
-.purple{ color:#b983ff; }
-.pink{ color:#ff6ec7; }
-.cyan{ color:#00e5ff; }
-.red{ color:#ff5c5c; }
-.blue{ color:#4da6ff; }
-
-.disclaimer{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.9);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:99999;
-}
-
-.disclaimer .box{
-  background:#111;
-  padding:20px;
-  border-radius:15px;
-  max-width:300px;
-  text-align:center;
-  border:1px solid #ae00f3;
-  box-shadow:0 0 20px rgba(174,0,243,0.3);
-}
-
-.disclaimer h2{
-  color:#ff4d4d;
-  margin-bottom:10px;
-}
-
-.disclaimer button{
-  margin-top:15px;
-  padding:10px;
-  width:100%;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(#c059e8,#ae00f3);
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tile Master</title>
+    
+    <!-- External Resources -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div id="disclaimer" class="disclaimer">
-  <div class="box">
-    <h2>⚠️ Disclaimer</h2>
+    <!-- ===== PHONE FRAME CONTAINER ===== -->
+    <div id="mobile-frame">
 
-    <p>
-      Aplikasi ini hanya sebagai <b>media informasi & analisis data</b>.
-      Kami tidak menyediakan layanan perjudian atau transaksi uang.
-    </p>
+        <!-- ===== NOTIFICATION SYSTEM ===== -->
+        <div id="toastNotification" class="toast-notification">
+            <i class="fas fa-check-circle"></i> 
+            <span id="toastText">Saved Successfully</span>
+        </div>
 
-    <p style="font-size:12px;color:#aaa;">
-      Dengan melanjutkan, Anda menyatakan telah berusia 18+ dan setuju menggunakan aplikasi ini secara bijak.
-    </p>
+        <!-- ===== MAIN MENU PAGE ===== -->
+        <div id="mainPage" class="page-container">
+            <!-- Header Controls -->
+            <div class="top-header-controls">
+                <div class="left-group"> 
+                    <div class="coin-display">
+                        <i class="fas fa-coins" style="color:#f1c40f;"></i> 
+                        <span id="coinCountMain">100</span> 
+                        <button class="buy-coins-btn"><i class="fas fa-plus"></i></button> 
+                    </div>
+                </div>
+                <div class="right-group"> 
+                    <button class="game-icon-btn settings-btn" id="openSettingsPopOver"><i class="fas fa-bars"></i></button> 
+                    <button class="game-icon-btn hidden-in-header" id="openLevelsPageBtn"><i class="fas fa-th-large"></i></button>
+                    <button class="game-icon-btn hidden-in-header theme-btn"><i class="fas fa-palette"></i></button>
+                    <button class="game-icon-btn hidden-in-header shop-btn"><i class="fas fa-store"></i></button>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-menu-content">
+                <img src="assets/images/sugarlogo.webp" class="game-logo">
+                <h1 id="mainTitle" style="display:none;">Tile Master</h1>
+                <div id="mainSubtitle">Level 1</div>
+                <button class="start-btn">
+                    <i class="fas fa-play"></i> 
+                    <span id="playBtnText">Play Now</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- ===== EXTENDED MENU (POPUP) ===== -->
+        <div id="extendedMenu">
+            <div class="menu-popover-btn settings-btn-ext" title="Settings"><i class="fas fa-cog"></i></div>
+            <div class="menu-popover-btn shop-btn-ext" title="Shop"><i class="fas fa-store"></i></div>
+            <div class="menu-popover-btn theme-btn-ext" title="Themes"><i class="fas fa-palette"></i></div>
+            <div class="menu-popover-btn levels-btn-ext" title="Layouts"><i class="fas fa-th-large"></i></div>
+            <div class="menu-popover-btn website-btn-ext" title="Website"><i class="fas fa-globe"></i></div>
+        </div>
 
-    <button onclick="acceptDisclaimer()">Saya Mengerti</button>
-  </div>
-</div> 
+        <!-- ===== GAME PAGE ===== -->
+        <div id="gamePage" class="page-container hidden">
+            <!-- Background Layer with Blur -->
+            <div id="game-bg-layer"></div>
 
-<!-- CONTENT -->
-<div class="header">
-  <div class="top-badge">LIVE CENTER</div>
+            <!-- Game Header -->
+            <div class="game-top-bar">
+                <div class="level-indicator" id="levelText">Level 1</div>
+                <div class="coin-group-wrapper"> 
+                    <div class="coin-display">
+                        <i class="fas fa-coins" style="color:#f1c40f;"></i> 
+                        <span id="coinCountGame">100</span> 
+                        <button class="buy-coins-btn"><i class="fas fa-plus"></i></button> 
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game Area -->
+            <div class="center-game-area">
+                <div class="dock-wrapper" id="dockWrapper">
+                    <div class="dock-slot"></div>
+                    <div class="dock-slot"></div>
+                    <div class="dock-slot"></div>
+                    <div class="dock-slot"></div>
+                    <div class="dock-slot"></div>
+                    <div class="dock-slot"></div>
+                    <div class="dock-slot"></div>
+                </div>
+                <div class="game-board" id="gameBoard"></div>
+            </div>
 
-  <div class="welcome">
-    <div>
-      <p>Selamat Datang,</p>
-      <h2>Bosku</h2>
-    </div>
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <button id="undoBtn" class="game-action-btn">
+                    <i class="fas fa-undo"></i>
+                    <span class="btn-badge" id="undoBadge">5</span>
+                </button>
+                <button id="magicBtn" class="game-action-btn" style="color: #f658c6;">
+                    <i class="fas fa-magic"></i>
+                    <span class="btn-badge" id="magicBadge">5</span>
+                </button>
+                <button id="gameSettingsBtn" class="game-action-btn">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
 
-    <div class="logo">
-      <img src="img/icon4d.png" />
-      <button onclick="openPopup()">
-        KUNJUNGI SITUS<br>PARTNER RESMI
-      </button>
-    </div>
-  </div>
-</div>
+        <!-- ===== MODALS ===== -->
+        
+        <!-- Pause Modal -->
+        <div class="modal-overlay" id="pauseModal">
+            <div class="modal-content">
+                <div class="modal-title" id="pauseMenuTitle" style="color: #1e90ff;">Menu</div>
+                <button class="modal-btn btn-green" id="resumeGameBtn">Resume</button>
+                <button class="modal-btn btn-red" id="quitToHomeBtn">Main Menu</button>
+            </div>
+        </div>
 
-<div class="section-title">AKSES CEPAT</div>
+        <!-- Win/Loss Modal -->
+        <div class="modal-overlay" id="resultModal">
+            <div class="modal-content win-modal">
+                <div class="win-glow"></div>
+                <div class="win-icon-container">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="modal-title" id="resultTitle">You Won!</div>
+                <div class="win-stars">
+                    <i class="fas fa-star active"></i>
+                    <i class="fas fa-star active big"></i>
+                    <i class="fas fa-star active"></i>
+                </div>
+                <div id="rewardMessage" class="win-reward">
+                    <span class="plus">+</span>10 <i class="fas fa-coins"></i>
+                </div>
+                <div class="win-buttons-row">
+                    <button class="modal-btn btn-green" id="restartBtn">
+                        <i class="fas fa-arrow-right"></i> Continue
+                    </button>
+                    <button class="modal-btn btn-red" id="homeBtn">
+                        <i class="fas fa-home"></i> Exit
+                    </button>
+                </div>
+            </div>
+        </div>
 
-<div class="grid">
+        <!-- Exit Confirmation Modal -->
+        <div class="modal-overlay" id="exitModal">
+            <div class="modal-content">
+                <div class="modal-title" id="exitTitle">Exit Game?</div>
+                <div style="display: flex; gap: 10px; width: 100%; justify-content: center;">
+                    <button class="modal-btn btn-red" id="confirmExitBtn">Yes</button>
+                    <button class="modal-btn btn-green" id="cancelExitBtn">No</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Shop Confirmation Modal -->
+        <div class="modal-overlay" id="shopConfirmModal">
+            <div class="modal-content">
+                <div class="modal-title" id="confirmBuyTitle">Confirm</div>
+                <p id="confirmBuyMsg" style="margin: 10px 0; font-size: 1rem; color: #2d3436;">Are you sure?</p>
+                <div style="display: flex; gap: 10px; width: 100%; justify-content: center;">
+                    <button class="modal-btn btn-green" id="btnConfirmBuy">Yes</button>
+                    <button class="modal-btn btn-red" id="btnCancelBuy">No</button>
+                </div>
+            </div>
+        </div>
 
-  <div class="card" onclick="window.location.href='result.html'">
-    <div class="icon yellow">📄</div>
-    <div class="text">
-      Hasil Keluaran<br><b>RESULT</b>
-    </div>
-  </div>
+        <!-- How to play -->
+        <div class="modal-overlay" id="howToPlayModal" style="display: none;">
+            <div class="modal-content how-to-play-modal">
+                <div class="modal-title" id="howToPlayTitleText">How to play</div>
+                <p class="how-to-play-body" id="howToPlayBodyText"></p>
+                <button type="button" class="modal-btn btn-green" id="howToPlayCloseBtn">Got it</button>
+            </div>
+        </div>
 
-  <div class="card" onclick="window.location.href='prediksi.html'">
-    <div class="icon purple">📖</div>
-    <div class="text">
-      Prediksi<br><b>SDY SGP HK</b>
-    </div>
-  </div>
+        <!-- Statistics -->
+        <div class="modal-overlay" id="statsModal" style="display: none;">
+            <div class="modal-content stats-modal">
+                <div class="modal-title" id="statsTitleText">Your stats</div>
+                <ul class="stats-list">
+                    <li><span id="statsPlayedLabel"></span> <strong id="statsPlayedVal">0</strong></li>
+                    <li><span id="statsWinsLabel"></span> <strong id="statsWinsVal">0</strong></li>
+                    <li><span id="statsLossesLabel"></span> <strong id="statsLossesVal">0</strong></li>
+                    <li><span id="statsBestLabel"></span> <strong id="statsBestVal">0</strong></li>
+                </ul>
+                <button type="button" class="modal-btn btn-green" id="statsCloseBtn">Close</button>
+            </div>
+        </div>
 
-  <div class="card" onclick="window.location.href='bukumimpi.html'">
-    <div class="icon pink">📱</div>
-    <div class="text">
-      Buku<br><b>MIMPI 2D</b>
-    </div>
-  </div>
+        <!-- ===== SHOP PAGES ===== -->
+        
+        <!-- Shop Page -->
+        <div id="shopPage" class="page-container hidden" style="background: #f1f2f6;">
+            <div class="sub-page-wrapper">
+                <div class="sub-page-header">
+                    <button class="back-btn-fixed back-to-main">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 id="shopTitle">Shop</h2>
+                </div>
+                <p id="shopPageSubtitle" class="coins-page-subtitle"></p>
+                <div class="scrollable-content" style="padding: 20px;">
+                    <div class="shop-grid" id="shopGrid">
+                        <!-- Magic Wand Item -->
+                        <div class="shop-card magic-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-magic"></i>
+                                    </div>
+                                </div>
+                                <div class="shop-card-title" id="item1Title">Wand x10</div>
+                                <span id="item1Desc" style="display:none"></span>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-price="50" data-type="magic">
+                                        <span class="coin-icon"><i class="fas fa-coins"></i></span>
+                                        <span class="price-text">50</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Undo Item -->
+                        <div class="shop-card undo-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                </div>
+                                <div class="shop-card-title" id="item2Title">Undo x10</div>
+                                <span id="item2Desc" style="display:none"></span>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-price="50" data-type="undo">
+                                        <span class="coin-icon"><i class="fas fa-coins"></i></span>
+                                        <span class="price-text">50</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Free coins page (no real-money purchases) -->
+        <div id="coinsPage" class="page-container hidden" style="background: #f1f2f6;">
+            <div class="sub-page-wrapper">
+                <div class="sub-page-header">
+                    <button class="back-btn-fixed back-to-main">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 id="coinsTitle">Add Free Coins</h2>
+                </div>
+                <p id="coinsPageSubtitle" class="coins-page-subtitle"></p>
+                <div class="scrollable-content" style="padding: 20px;">
+                    <div class="shop-grid">
+                        <!-- 100 Coins -->
+                        <div class="shop-card coin-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                </div>
+                                <div class="coin-amount-display">100 <i class="fas fa-gem"></i></div>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-coins="100">
+                                        <span class="price-text coin-free-btn-label">Add free</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 500 Coins -->
+                        <div class="shop-card coin-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                </div>
+                                <div class="coin-amount-display">500 <i class="fas fa-gem"></i></div>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-coins="500">
+                                        <span class="price-text coin-free-btn-label">Add free</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 1500 Coins -->
+                        <div class="shop-card coin-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                </div>
+                                <div class="coin-amount-display">1500 <i class="fas fa-gem"></i></div>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-coins="1500">
+                                        <span class="price-text coin-free-btn-label">Add free</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 2500 Coins -->
+                        <div class="shop-card coin-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                </div>
+                                <div class="coin-amount-display">2500 <i class="fas fa-gem"></i></div>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-coins="2500">
+                                        <span class="price-text coin-free-btn-label">Add free</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 5000 Coins -->
+                        <div class="shop-card coin-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                </div>
+                                <div class="coin-amount-display">5000 <i class="fas fa-gem"></i></div>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-coins="5000">
+                                        <span class="price-text coin-free-btn-label">Add free</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 10000 Coins -->
+                        <div class="shop-card coin-theme">
+                            <div class="card-glow"></div>
+                            <div class="shop-card-content">
+                                <div class="shop-icon-container">
+                                    <div class="shop-icon-circle">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                </div>
+                                <div class="coin-amount-display">10000 <i class="fas fa-gem"></i></div>
+                                <div class="shop-action">
+                                    <button class="buy-btn-3d" data-coins="10000">
+                                        <span class="price-text coin-free-btn-label">Add free</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <div class="card" onclick="window.location.href='bbfs.html'">
-    <div class="icon cyan">🔧</div>
-    <div class="text">
-      Tools<br><b>BBFS GENERATOR</b>
-    </div>
-  </div>
+        <!-- ===== SETTINGS PAGES ===== -->
+        
+        <!-- Levels Page -->
+        <div id="levelsPage" class="page-container hidden" style="background: #f1f2f6;">
+            <div class="sub-page-wrapper">
+                <div class="sub-page-header">
+                    <button class="back-btn-fixed" id="levelsBackBtn">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 id="levelsTitle">Layouts</h2>
+                    <button id="saveLayoutsBtn" class="header-save-btn">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+                <div class="scrollable-content">
+                    <div class="content-box" style="margin-bottom: 0;">
+                        <div class="settings-row" style="margin: 0; width: 100%; box-sizing: border-box;">
+                            <span>
+                                <i class="fas fa-dice icon-main"></i> 
+                                <span id="randomModeLabel">Optional</span>
+                            </span>
+                            <label class="switch">
+                                <input type="checkbox" id="randomCheck">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <p id="layoutSelectMsg" style="margin: 10px 0; text-align: center; color: #7f8c8d; font-size: 0.8rem;">
+                        Choose the layout you want to play with:
+                    </p>
+                    <div class="content-box" id="layoutsContainer" style="margin-top: 0;">
+                        <div class="levels-grid" id="levelsGrid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings Page -->
+        <div id="settingsPage" class="page-container hidden" style="background: #f1f2f6;">
+            <div class="sub-page-wrapper">
+                <div class="sub-page-header">
+                    <button class="back-btn-fixed back-to-main">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 id="settingsTitle">Settings</h2>
+                </div>
+                <div class="scrollable-content">
+                    <div class="content-box">
+                        <div class="settings-row">
+                            <span>
+                                <i class="fas fa-volume-high icon-main"></i> 
+                                <span id="soundText">Sounds</span>
+                            </span>
+                            <label class="switch">
+                                <input type="checkbox" checked id="soundCheck">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-row" id="openLangPageBtn">
+                            <span>
+                                <i class="fas fa-globe icon-main"></i> 
+                                <span id="langText">Language</span>
+                            </span>
+                            <button class="arrow-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="settings-row" id="openHowToPlayBtn">
+                            <span>
+                                <i class="fas fa-circle-question icon-main"></i> 
+                                <span id="howToPlayRowText">How to play</span>
+                            </span>
+                            <button class="arrow-btn" type="button">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div class="settings-row" id="openStatsBtn">
+                            <span>
+                                <i class="fas fa-chart-simple icon-main"></i> 
+                                <span id="statsRowText">Statistics</span>
+                            </span>
+                            <button class="arrow-btn" type="button">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p id="settingsFreeBanner" class="settings-free-banner"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Language Page -->
+        <div id="languagePage" class="page-container hidden" style="background: #f1f2f6;">
+            <div class="sub-page-wrapper">
+                <div class="sub-page-header">
+                    <button class="back-btn-fixed" id="backToSettingsFromLang">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 id="langTitle">Language</h2>
+                </div>
+                <div class="scrollable-content">
+                    <div class="content-box">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="langSearch" placeholder="Search language...">
+                        </div>
+                        <div class="lang-list-wrapper" id="langList">
+                            <!-- English -->
+                            <div class="settings-row" data-lang="en">
+                                <span>English</span>
+                                <i class="fas fa-check" style="color:#2ed573;"></i>
+                            </div>
+                            <!-- Arabic -->
+                            <div class="settings-row" data-lang="ar">
+                                <span>العربية</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                            <!-- French -->
+                            <div class="settings-row" data-lang="fr">
+                                <span>Français</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                            <!-- German -->
+                            <div class="settings-row" data-lang="de">
+                                <span>Deutsch</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                            <!-- Spanish -->
+                            <div class="settings-row" data-lang="es">
+                                <span>Español</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                            <!-- Portuguese -->
+                            <div class="settings-row" data-lang="pt">
+                                <span>Português</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                            <!-- Japanese -->
+                            <div class="settings-row" data-lang="ja">
+                                <span>日本語</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                            <!-- Korean -->
+                            <div class="settings-row" data-lang="ko">
+                                <span>한국어</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                            <!-- Chinese -->
+                            <div class="settings-row" data-lang="zh">
+                                <span>中文</span>
+                                <i class="fas fa-check" style="display:none; color:#2ed573;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Appearance Page -->
+        <div id="appearancePage" class="page-container hidden" style="background: #f1f2f6;">
+            <div class="sub-page-wrapper">
+                <div class="sub-page-header">
+                    <button class="back-btn-fixed" id="appearanceBackBtn">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 id="themeTitle">Themes</h2>
+                    <button id="saveThemeBtn" class="header-save-btn">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+                <div class="scrollable-content">
+                    <div class="content-box">
+                        <div class="theme-tabs-container">
+                            <button class="theme-tab active" id="tabMenuBtn" data-tab="main">
+                                Main Menu
+                            </button>
+                            <button class="theme-tab" id="tabGameBtn" data-tab="game">
+                                Gameplay
+                            </button>
+                        </div>
+                        <div class="theme-content-section active" id="mainThemeContainer"></div>
+                        <div class="theme-content-section" id="gameThemeContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  <div class="card" onclick="window.location.href='shio.html'">
-    <div class="icon red">📊</div>
-    <div class="text">
-      Tabel<br><b>Shio</b>
-    </div>
-  </div>
+    </div> <!-- End of mobile-frame -->
 
-  <div class="card" onclick="window.location.href='lucky.html'">
-    <div class="icon blue">✨</div>
-    <div class="text">
-      Draw<br><b>Lucky Number</b>
-    </div>
-  </div>
-
-</div>
-
-<!-- NAVBAR -->
-<div class="navbar">
-  <div class="nav-btn" onclick="window.location.href='result.html'">RESULT</div>
-  <div class="nav-btn" onclick="window.location.href='bukumimpi.html'">BUKU MIMPI</div>
-  <div class="nav-btn active" onclick="window.location.href='index.html'">HOME</div>
-  <div class="nav-btn" onclick="window.location.href='shio.html'">SHIO</div>
-  <div class="nav-btn" onclick="window.location.href='prediksi.html'">PREDIKSI</div>
-</div>
-
-<div class="popup" id="popup">
-  <div class="popup-box">
-    <p>Anda akan diarahkan ke Situs Resmi.</p>
-
-    <div class="popup-actions">
-      <button class="btn-cancel" onclick="closePopup()">Batal</button>
-      <button class="btn-ok" onclick="goToSite()">Lanjutkan</button>
-    </div>
-  </div>
-</div>
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
 </body>
-
-<script>
-function openPopup(){
-  document.getElementById("popup").classList.add("active");
-}
-
-function closePopup(){
-  document.getElementById("popup").classList.remove("active");
-}
-
-function goToSite(){
-  window.location.href = "http://wla.wuaze.com/livett/mimpi";
-}
-
-
-function acceptDisclaimer(){
-  localStorage.setItem("disclaimer", "yes");
-  document.getElementById("disclaimer").style.display="none";
-}
-
-// cek saat pertama buka
-window.onload = function(){
-  if(localStorage.getItem("disclaimer") === "yes"){
-    document.getElementById("disclaimer").style.display="none";
-  }
-}
-
-</script>
-
 </html>
