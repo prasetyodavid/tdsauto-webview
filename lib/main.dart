@@ -195,16 +195,16 @@ class _WebViewScreenState extends State<WebViewScreen> {
       return await showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Konfirmasi'),
-              content: Text('Anda ingin keluar dari aplikasi?'),
+              title: Text('Confirmation'),
+              content: Text('Do you want to exit the application?'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('Tidak'),
+                  child: Text('No'),
                 ),
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Ya'),
+                  child: Text('Yes'),
                 ),
               ],
             ),
