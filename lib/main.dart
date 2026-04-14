@@ -66,7 +66,7 @@ Future main() async {
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
 var MAIN_HOME_URL = "http://localhost";
-var MAIN_TITLE = "Sugar Bonanza";
+var MAIN_TITLE = "Glaze Tile Glory";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
