@@ -1060,8 +1060,23 @@
   document.getElementById('btn-go-workload').addEventListener('click', function () { showView('workload'); });
   document.getElementById('btn-go-breakdown').addEventListener('click', function () { showView('breakdown'); });
 
+  function wlaCsvToBase64(text) {
+    return btoa(unescape(encodeURIComponent(text)));
+  }
+
   document.getElementById('btn-export').addEventListener('click', function () {
     var csv = buildExportCsv();
+    var wv = window.flutter_inappwebview;
+    if (wv && typeof wv.callHandler === 'function') {
+      wv.callHandler('saveCsvToDownloads', 'wla-backup.csv', wlaCsvToBase64(csv)).then(function (res) {
+        if (res && res.ok === false && res.error) {
+          alert('Could not save file: ' + res.error);
+        }
+      }).catch(function (err) {
+        alert('Could not save file.');
+      });
+      return;
+    }
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);

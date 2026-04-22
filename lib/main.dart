@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show MethodChannel, rootBundle;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
@@ -50,10 +51,6 @@ Future<void> _startAssetServer() async {
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Permission.storage.request();
-  //await Permission.photos.request();
-  //await Permission.videos.request();
-  await Permission.manageExternalStorage.request();
   //await Permission.notification.request();
   //await Permission.camera.request();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
@@ -78,7 +75,8 @@ const String _localWebEntryUrl = 'http://localhost:8080/index.html';
 /// Simulates Play [ReferrerDetails.installReferrer]. Applies in **all** build modes
 /// (`debug` / `profile` / `release`) when `true`, so profile & release installs still
 /// test `ref=` without Play — unlike `kDebugMode`, which is false for profile/release.
-const bool _debugUseHardcodedInstallReferrer = true;
+const bool _debugUseHardcodedInstallReferrer = false;
+
 /// Same shape as the decoded `referrer=` query (e.g. TikTok paid example).
 const String _debugHardcodedInstallReferrer =
     'utm_source=tiktok&utm_medium=paid&utm_campaign=campaign1';
@@ -277,6 +275,104 @@ class _WebViewScreenState extends State<WebViewScreen> {
     super.dispose();
   }
 
+  static const MethodChannel _androidDownloadsChannel =
+      MethodChannel('com.wlacalculator.app/downloads');
+
+  /// Android 10+: [MediaStore.Downloads] via platform channel (Play-friendly, no MANAGE_EXTERNAL_STORAGE).
+  Future<Map<String, dynamic>> _saveCsvAndroidDownloadsViaMediaStore(
+    Uint8List bytes,
+    String displayName, {
+    bool retried = false,
+  }) async {
+    try {
+      final dynamic raw = await _androidDownloadsChannel.invokeMethod<dynamic>(
+        'saveToDownloads',
+        <String, dynamic>{
+          'displayName': displayName,
+          'bytes': bytes,
+        },
+      );
+      if (raw is Map) {
+        final Object? okVal = raw['ok'];
+        if (okVal == true) {
+          return <String, dynamic>{
+            'ok': true,
+            'path': raw['path']?.toString() ?? '',
+            'usedDownloads': true,
+          };
+        }
+        final String err = raw['error']?.toString() ?? 'Save failed';
+        if (err == 'storage_permission_required' && !retried) {
+          final PermissionStatus st = await Permission.storage.request();
+          if (st.isGranted) {
+            return _saveCsvAndroidDownloadsViaMediaStore(
+              bytes,
+              displayName,
+              retried: true,
+            );
+          }
+          return <String, dynamic>{
+            'ok': false,
+            'error':
+                'Storage permission denied (needed on Android 9 and below only)',
+          };
+        }
+        return <String, dynamic>{'ok': false, 'error': err};
+      }
+      return <String, dynamic>{
+        'ok': false,
+        'error': 'Unexpected response from save channel',
+      };
+    } catch (e, st) {
+      debugPrint('_saveCsvAndroidDownloadsViaMediaStore: $e\n$st');
+      return <String, dynamic>{'ok': false, 'error': e.toString()};
+    }
+  }
+
+  /// Saves CSV from the WebView (base64 UTF-8). Android uses MediaStore Downloads.
+  Future<Map<String, dynamic>> _saveCsvToDownloadsFromWeb(List<dynamic> args) async {
+    if (args.length < 2) {
+      return <String, dynamic>{'ok': false, 'error': 'Missing filename or data'};
+    }
+    final rawName = args[0]?.toString() ?? 'export.csv';
+    final base64Csv = args[1]?.toString() ?? '';
+    if (base64Csv.isEmpty) {
+      return <String, dynamic>{'ok': false, 'error': 'Empty CSV payload'};
+    }
+
+    late final List<int> bytes;
+    try {
+      bytes = base64Decode(base64Csv);
+    } catch (e) {
+      return <String, dynamic>{'ok': false, 'error': 'Invalid base64: $e'};
+    }
+
+    var safeName = rawName.replaceAll(RegExp(r'[/\\?%*:|"<>]'), '_');
+    if (!safeName.toLowerCase().endsWith('.csv')) {
+      safeName = '$safeName.csv';
+    }
+
+    if (Platform.isAndroid) {
+      return _saveCsvAndroidDownloadsViaMediaStore(
+        Uint8List.fromList(bytes),
+        safeName,
+      );
+    }
+
+    final Directory? downloads = await getDownloadsDirectory();
+    final bool usedPublicDownloads = downloads != null;
+    final Directory targetDir =
+        downloads ?? await getApplicationDocumentsDirectory();
+    final File file = File('${targetDir.path}/$safeName');
+    await file.writeAsBytes(bytes, flush: true);
+
+    return <String, dynamic>{
+      'ok': true,
+      'path': file.path,
+      'usedDownloads': usedPublicDownloads,
+    };
+  }
+
   Future<void> updateCookies(Uri url) async {
     // Convert Uri to WebUri
     WebUri webUrl = WebUri(url.toString());
@@ -336,6 +432,42 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
                     webViewController = controller;
+                    controller.addJavaScriptHandler(
+                      handlerName: 'saveCsvToDownloads',
+                      callback: (args) async {
+                        try {
+                          final Map<String, dynamic> result =
+                              await _saveCsvToDownloadsFromWeb(
+                                  List<dynamic>.from(args));
+                          if (mounted) {
+                            final bool ok = result['ok'] == true;
+                            final bool usedDl = result['usedDownloads'] == true;
+                            final String message = ok
+                                ? (usedDl
+                                    ? 'Saved to Downloads'
+                                    : 'Saved to app folder')
+                                : 'Save failed: ${result['error']}';
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(message)),
+                            );
+                          }
+                          return result;
+                        } catch (e, st) {
+                          debugPrint('saveCsvToDownloads: $e\n$st');
+                          final Map<String, dynamic> err = <String, dynamic>{
+                            'ok': false,
+                            'error': e.toString(),
+                          };
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text('Save failed: ${e.toString()}')),
+                            );
+                          }
+                          return err;
+                        }
+                      },
+                    );
                   },
                   onDownloadStartRequest: (controller, url) async {
                     var urls = url.url.toString();
