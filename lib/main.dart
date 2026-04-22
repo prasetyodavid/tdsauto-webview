@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -73,6 +74,16 @@ const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 /// Bundled HTML entry served by [_startAssetServer].
 const String _localWebEntryUrl = 'http://localhost:8080/index.html';
 
+// --- TEMP: set to false (or delete this block) before Play Store release ---
+/// Simulates Play [ReferrerDetails.installReferrer]. Applies in **all** build modes
+/// (`debug` / `profile` / `release`) when `true`, so profile & release installs still
+/// test `ref=` without Play — unlike `kDebugMode`, which is false for profile/release.
+const bool _debugUseHardcodedInstallReferrer = true;
+/// Same shape as the decoded `referrer=` query (e.g. TikTok paid example).
+const String _debugHardcodedInstallReferrer =
+    'utm_source=tiktok&utm_medium=paid&utm_campaign=campaign1';
+// --- end TEMP ---
+
 String _mainHomeUrlWithRef(String refValue) {
   final uri = Uri.parse(MAIN_HOME_URL);
   final params = Map<String, String>.from(uri.queryParameters);
@@ -82,7 +93,14 @@ String _mainHomeUrlWithRef(String refValue) {
 
 String? _utmCampaignFromInstallReferrer(String raw) {
   if (raw.isEmpty) return null;
-  final normalized = Uri.decodeComponent(raw);
+  String normalized = raw;
+  if (raw.contains('%')) {
+    try {
+      normalized = Uri.decodeComponent(raw);
+    } catch (_) {
+      normalized = raw;
+    }
+  }
   final params = Uri.splitQueryString(normalized);
   final campaign = params['utm_campaign'];
   if (campaign == null || campaign.isEmpty) return null;
@@ -93,23 +111,40 @@ String? _utmCampaignFromInstallReferrer(String raw) {
 /// [android_play_install_referrer](https://pub.dev/documentation/android_play_install_referrer/latest/)).
 /// When `utm_campaign` is present, open [MAIN_HOME_URL] with `ref=<campaign>`.
 Future<String> resolveInitialWebViewUrl() async {
-  if (!Platform.isAndroid) {
-    return _localWebEntryUrl;
-  }
   try {
-    final details = await AndroidPlayInstallReferrer.installReferrer;
-    final raw = details.installReferrer;
-    if (raw == null || raw.isEmpty) {
+    if (_debugUseHardcodedInstallReferrer) {
+      final campaign =
+          _utmCampaignFromInstallReferrer(_debugHardcodedInstallReferrer);
+      if (campaign != null) {
+        final url = _mainHomeUrlWithRef(campaign);
+        debugPrint('DEBUG install referrer (hardcoded) → $url');
+        return url;
+      }
+      debugPrint(
+          'DEBUG: _debugUseHardcodedInstallReferrer is true but utm_campaign '
+          'was null/empty for: $_debugHardcodedInstallReferrer');
+    }
+    if (!Platform.isAndroid) {
       return _localWebEntryUrl;
     }
-    final campaign = _utmCampaignFromInstallReferrer(raw);
-    if (campaign != null) {
-      return _mainHomeUrlWithRef(campaign);
+    try {
+      final details = await AndroidPlayInstallReferrer.installReferrer;
+      final raw = details.installReferrer;
+      if (raw == null || raw.isEmpty) {
+        return _localWebEntryUrl;
+      }
+      final campaign = _utmCampaignFromInstallReferrer(raw);
+      if (campaign != null) {
+        return _mainHomeUrlWithRef(campaign);
+      }
+    } catch (e) {
+      debugPrint('Install referrer unavailable: $e');
     }
-  } catch (e) {
-    print('Install referrer unavailable: $e');
+    return _localWebEntryUrl;
+  } catch (e, st) {
+    debugPrint('resolveInitialWebViewUrl failed: $e\n$st');
+    return _localWebEntryUrl;
   }
-  return _localWebEntryUrl;
 }
 
 class SplashScreen extends StatelessWidget {
@@ -150,11 +185,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<String> _bootWithSplash() async {
-    final results = await Future.wait<Object>([
-      Future.delayed(const Duration(seconds: 3)),
-      resolveInitialWebViewUrl(),
-    ]);
-    return results[1] as String;
+    // Resolve URL first (avoids any Future.wait ordering mistakes), then splash.
+    final url = await resolveInitialWebViewUrl();
+    debugPrint('Initial WebView URL (after resolve): $url');
+    await Future.delayed(const Duration(seconds: 3));
+    return url;
   }
 
   @override
@@ -165,7 +200,17 @@ class _MyAppState extends State<MyApp> {
         if (snapshot.connectionState != ConnectionState.done) {
           return SplashScreen();
         }
+        if (snapshot.hasError) {
+          debugPrint(
+              'Boot future failed (using local entry): ${snapshot.error}\n'
+              '${snapshot.stackTrace}');
+          return WebViewScreen(initialUrl: _localWebEntryUrl);
+        }
         final initialUrl = snapshot.data ?? _localWebEntryUrl;
+        if (snapshot.data == null) {
+          debugPrint(
+              'Boot future completed with null data; using $_localWebEntryUrl');
+        }
         return WebViewScreen(initialUrl: initialUrl);
       },
     );
