@@ -64,8 +64,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://wlavip.tigaduadelapan.site";
-var MAIN_TITLE = "Live Draw Togel SGP HK";
+var MAIN_HOME_URL = "http://localhost";
+var MAIN_TITLE = "Prediksi Master";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
@@ -370,7 +370,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 progress < 1.0
                     ? LinearProgressIndicator(
                         value: progress,
-                        color: Color.fromARGB(255, 216, 181, 23),
+                        color: Color.fromARGB(255, 33, 140, 247),
                       )
                     : Container(),
               ],
@@ -382,7 +382,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget _buildProgressBar() {
     if (progress != 1.0) {
       return CircularProgressIndicator(
-          color: Color.fromARGB(255, 216, 181, 23));
+          color: Color.fromARGB(255, 33, 140, 247));
     }
     return Container();
   }

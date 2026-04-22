@@ -1,4 +1,4 @@
-package com.livedrwtiga.app
+package com.prediksimaster.app
 
 import io.flutter.embedding.android.FlutterActivity
 

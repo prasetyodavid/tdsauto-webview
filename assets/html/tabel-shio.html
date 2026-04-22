@@ -61,31 +61,34 @@
 		
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f1f5f9; /* Slate 100 */
+            -webkit-tap-highlight-color: transparent;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        .grad-text {
+        .row-shio:nth-child(even) {
+            background-color: rgba(30, 41, 59, 0.5);
+        }
+        .row-shio:hover {
+            background-color: rgba(51, 65, 85, 0.5);
+        }
+        .custom-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f59e0b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.1em;
+        }
+        .gradient-text {
             background: linear-gradient(to right, #00a1ff, #00a1ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
-        .grad-bg {
-            background: linear-gradient(135deg, #00a1ff, #00a1ff);
-        }
-
-        .input-dark {
-            background-color: #1e293b;
-            border-color: #334155;
-            color: #00a1ff;
-        }
-
-        .card-dark {
-            background-color: #1e293b;
-            border-color: #334155;
+        @media (max-width: 640px) {
+            .numbers-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(28px, 1fr));
+                gap: 3px;
+            }
         }		
     </style>
 </head>
@@ -182,84 +185,47 @@
 
     <main class="flex-grow container mx-auto p-6 flex flex-col items-center justify-center">
         
-<body class="p-4 md:p-8 min-h-screen">
-    <div class="max-w-2xl mx-auto">
+    <body class="p-2 md:p-8 min-h-screen">
+
+    <div class="max-w-4xl mx-auto">
         <!-- Header Konten -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold tracking-tight grad-text uppercase">Generator BBFS</h1>
+        <div class="text-center mb-5 md:mb-8">
+            <h1 class="text-xl md:text-4xl font-extrabold uppercase tracking-tight gradient-text">Arsip Tabel Shio</h1>
+            <p class="text-slate-500 text-[10px] md:text-sm font-medium mt-0.5">Urutan angka shio berdasarkan tahun.</p>
         </div>
 
-        <!-- Kartu Utama -->
-        <div class="card-dark rounded-3xl shadow-2xl border p-6 md:p-8 mb-6">
-            
-            <!-- Area Input -->
-            <div class="mb-8">
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Masukkan Angka (0-9):</label>
-                <input type="text" id="inputAngka" placeholder="012345" 
-                    class="w-full text-3xl tracking-[0.5em] font-bold text-center py-6 input-dark border-2 border-dashed rounded-2xl focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10 transition-all outline-none"
-                    maxlength="10">
-                <div class="flex justify-between items-center mt-3">
-                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">* Angka duplikat diperbolehkan</p>
-                    <p id="digitCount" class="text-xs font-bold text-sky-400 bg-sky-400/10 px-3 py-1 rounded-md border border-sky-400/20 uppercase">0 Digit</p>
-                </div>
-            </div>
-
-            <!-- Seleksi Tipe -->
-            <div class="grid grid-cols-3 gap-3 mb-8">
-                <button onclick="setTipe(4)" id="btn4D" class="tipe-btn py-4 rounded-xl border-2 border-sky-500 grad-bg text-slate-900 font-black transition-all shadow-lg shadow-sky-500/20">
-                    4D
-                </button>
-                <button onclick="setTipe(3)" id="btn3D" class="tipe-btn py-4 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-black hover:border-slate-600 transition-all">
-                    3D
-                </button>
-                <button onclick="setTipe(2)" id="btn2D" class="tipe-btn py-4 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-black hover:border-slate-600 transition-all">
-                    2D
-                </button>
-            </div>
-
-            <!-- Tombol Kontrol -->
-            <div class="flex flex-col sm:flex-row gap-4">
-                <button onclick="generateBBFS()" class="flex-[2] grad-bg hover:opacity-90 text-slate-900 font-black py-5 rounded-2xl shadow-xl shadow-sky-500/20 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 uppercase">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.047a1 1 0 01.897.95V4.25h2.556a2.125 2.125 0 012.125 2.125v4.5a2.125 2.125 0 01-2.125 2.125h-2.556v2.253a1 1 0 01-1.897.45L7.403 11H2.125A2.125 2.125 0 010 8.875v-4.5A2.125 2.125 0 012.125 2.25h5.278l3.897-1.203zM4.25 7.5a.75.75 0 000 1.5h.005a.75.75 0 000-1.5H4.25zm3 0a.75.75 0 000 1.5h.005a.75.75 0 000-1.5H7.25z" clip-rule="evenodd" /></svg>
-                    Generate Sekarang
-                </button>
-                <button onclick="resetAll()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-5 rounded-2xl border border-slate-700 transition-all uppercase">
-                    Reset
-                </button>
+        <!-- Navigasi Tahun -->
+        <div class="mb-5 md:mb-8 flex justify-center">
+            <div class="relative w-full max-w-[240px]">
+                <label for="yearSelector" class="block text-[9px] font-bold text-sky-500/80 mb-1 uppercase tracking-widest text-center">Pilih Tahun</label>
+                <select id="yearSelector" onchange="switchYear(this.value)" 
+                    class="custom-select w-full bg-slate-800 border border-slate-700 text-sky-500 py-2 px-3 pr-8 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-500/30 font-bold text-sm md:text-lg transition-all cursor-pointer text-center">
+                </select>
             </div>
         </div>
 
-        <!-- Container Hasil -->
-        <div id="resultContainer" class="hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div class="flex justify-between items-center mb-4 px-2">
-                <h3 class="font-extrabold text-slate-300 flex items-center gap-2 uppercase">
-                    Hasil Kombinasi <span id="labelHasil" class="grad-text">4D</span>
-                </h3>
-                <span id="totalLine" class="text-[10px] grad-bg text-slate-900 px-3 py-1.5 rounded-full font-black uppercase tracking-widest">0 Line</span>
+        <!-- Area Tampilan Tabel -->
+        <div class="bg-slate-800/50 border border-slate-700 rounded-xl md:rounded-3xl overflow-hidden shadow-2xl backdrop-blur-md mb-8">
+            <div class="bg-slate-900 p-3 md:p-6 text-center border-b border-slate-700">
+                <div id="shioIconLarge" class="text-3xl md:text-5xl mb-1 animate-bounce">🐎</div>
+                <h2 id="tableTitle" class="text-base md:text-2xl font-black text-white uppercase tracking-wide leading-none">Tabel Shio 2026</h2>
+                <p id="tableSub" class="gradient-text font-extrabold uppercase tracking-widest text-[9px] md:text-sm mt-1">Kuda Api</p>
             </div>
             
-            <div class="card-dark rounded-3xl shadow-2xl border p-2 relative">
-                <textarea id="outputResult" readonly 
-                    class="w-full h-64 bg-slate-900/50 rounded-2xl p-6 text-sky-400 font-mono text-base leading-relaxed border-none focus:ring-0 resize-none no-scrollbar"></textarea>
-                
-                <div class="absolute bottom-6 right-6 flex gap-2">
-                    <button onclick="copyResult()" id="copyBtn" class="grad-bg text-slate-900 px-6 py-3 rounded-xl text-sm font-bold hover:opacity-90 shadow-lg shadow-sky-500/20 transition-all flex items-center gap-2 uppercase">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-                        Salin Angka
-                    </button>
-                </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-900 text-slate-500 text-[9px] uppercase font-bold border-b border-slate-700">
+                        <tr>
+                            <th class="p-2 text-center w-8">No</th>
+                            <th class="p-2 w-20 md:w-40">Shio</th>
+                            <th class="p-2">Urutan Angka (2D)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shioTableBody" class="text-[11px] md:text-sm">
+                        <!-- Data diisi oleh JavaScript -->
+                    </tbody>
+                </table>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal Notifikasi -->
-    <div id="msgBox" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-slate-800 rounded-3xl p-8 max-w-sm w-full text-center border border-slate-700 shadow-2xl">
-            <div class="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-            </div>
-            <p id="msgText" class="text-slate-200 font-bold text-lg mb-6 leading-tight uppercase"></p>
-            <button onclick="closeMsg()" class="w-full grad-bg text-slate-900 py-4 rounded-2xl font-black transition-all uppercase">Tutup</button>
         </div>
     </div>
 
@@ -328,97 +294,99 @@
             }
         }
 
-        let currentTipe = 4;
-        const inputMain = document.getElementById('inputAngka');
-        const output = document.getElementById('outputResult');
-        const resultDiv = document.getElementById('resultContainer');
-        const digitCounter = document.getElementById('digitCount');
+        const shioCycle = ['Tikus', 'Kerbau', 'Harimau', 'Kelinci', 'Naga', 'Ular', 'Kuda', 'Kambing', 'Monyet', 'Ayam', 'Anjing', 'Babi'];
+        
+        const shioMeta = {
+            'Tikus': { icon: '🐀', sub: 'Air' },
+            'Kerbau': { icon: '🐂', sub: 'Tanah' },
+            'Harimau': { icon: '🐅', sub: 'Kayu' },
+            'Kelinci': { icon: '🐇', sub: 'Kayu' },
+            'Naga': { icon: '🐉', sub: 'Tanah' },
+            'Ular': { icon: '🐍', sub: 'Api' },
+            'Kuda': { icon: '🐎', sub: 'Api' },
+            'Kambing': { icon: '🐐', sub: 'Tanah' },
+            'Monyet': { icon: '🐒', sub: 'Logam' },
+            'Ayam': { icon: '🐓', sub: 'Logam' },
+            'Anjing': { icon: '🐕', sub: 'Tanah' },
+            'Babi': { icon: '🐖', sub: 'Air' }
+        };
 
-        inputMain.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            digitCounter.innerText = `${e.target.value.length} DIGIT`;
-        });
+        function getYearShio(year) {
+            const index = (year - 4) % 12;
+            return shioCycle[index];
+        }
 
-        function setTipe(n) {
-            currentTipe = n;
-            document.querySelectorAll('.tipe-btn').forEach(btn => {
-                btn.className = "tipe-btn py-4 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-black hover:border-slate-600 transition-all";
+        function getShioOrder(year) {
+            const mainShio = getYearShio(year);
+            const mainIdx = shioCycle.indexOf(mainShio);
+            let order = [];
+            for (let i = 0; i < 12; i++) {
+                let idx = (mainIdx - i + 12) % 12;
+                order.push(shioCycle[idx]);
+            }
+            return order;
+        }
+
+        function initYearSelector() {
+            const select = document.getElementById('yearSelector');
+            for (let year = 2026; year >= 2000; year--) {
+                const opt = document.createElement('option');
+                opt.value = year;
+                opt.innerText = `Tahun ${year}`;
+                select.appendChild(opt);
+            }
+        }
+
+        function switchYear(year) {
+            const yearNum = parseInt(year);
+            const mainShio = getYearShio(yearNum);
+            
+            document.getElementById('tableTitle').innerText = `Tabel Shio ${yearNum}`;
+            document.getElementById('tableSub').innerText = `${mainShio} ${shioMeta[mainShio].sub}`;
+            document.getElementById('shioIconLarge').innerText = shioMeta[mainShio].icon;
+
+            const order = getShioOrder(yearNum);
+            const tbody = document.getElementById('shioTableBody');
+            let html = '';
+
+            order.forEach((name, index) => {
+                let numbers = [];
+                let current = index + 1;
+                while (current <= 100) {
+                    let formatted = current === 100 ? "00" : current.toString().padStart(2, '0');
+                    numbers.push(formatted);
+                    current += 12;
+                }
+
+                html += `
+                    <tr class="row-shio border-b border-slate-700/30 last:border-none transition-all duration-200">
+                        <td class="p-2 text-center font-bold text-slate-600 bg-slate-900/20">${(index + 1).toString().padStart(2, '0')}</td>
+                        <td class="p-2">
+                            <div class="flex items-center gap-1.5 md:gap-2">
+                                <span class="text-lg md:text-2xl">${shioMeta[name].icon}</span>
+                                <div class="leading-none">
+                                    <span class="font-bold text-slate-200 block text-[10px] md:text-sm">${name}</span>
+                                    <span class="hidden md:inline text-[8px] text-slate-500 uppercase tracking-tighter">${shioMeta[name].sub}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-2">
+                            <div class="numbers-grid flex flex-wrap gap-1">
+                                ${numbers.map(n => `
+                                    <span class="w-7 h-7 md:w-auto md:h-auto flex items-center justify-center bg-slate-800 border border-slate-700 rounded-md font-mono font-bold text-sky-500 text-[10px] md:text-sm shadow-sm">
+                                        ${n}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </td>
+                    </tr>
+                `;
             });
-            const activeBtn = document.getElementById(`btn${n}D`);
-            activeBtn.className = "tipe-btn py-4 rounded-xl border-2 border-sky-500 grad-bg text-slate-900 font-black transition-all shadow-lg shadow-sky-500/20";
-            document.getElementById('labelHasil').innerText = `${n}D`;
+            tbody.innerHTML = html;
         }
 
-        function generateBBFS() {
-            let angkaStr = inputMain.value;
-            if (angkaStr.length < currentTipe) {
-                showMsg(`MINIMAL BUTUH ${currentTipe} DIGIT ANGKA UNTUK TIPE ${currentTipe}D!`);
-                return;
-            }
-
-            let pool = angkaStr.split('');
-            const results = getPermutations(pool, currentTipe);
-            const uniqueResults = [...new Set(results)];
-            
-            output.value = uniqueResults.join(' ');
-            document.getElementById('totalLine').innerText = `${uniqueResults.length} LINE`;
-            resultDiv.classList.remove('hidden');
-            resultDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function getPermutations(arr, length) {
-            let res = [];
-            let used = new Array(arr.length).fill(false);
-
-            function backtrack(current) {
-                if (current.length === length) {
-                    res.push(current.join(''));
-                    return;
-                }
-                for (let i = 0; i < arr.length; i++) {
-                    if (used[i]) continue;
-                    used[i] = true;
-                    current.push(arr[i]);
-                    backtrack(current);
-                    current.pop();
-                    used[i] = false;
-                }
-            }
-            backtrack([]);
-            return res;
-        }
-
-        function copyResult() {
-            if (!output.value) return;
-            output.select();
-            document.execCommand('copy');
-            
-            const btn = document.getElementById('copyBtn');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = ` TERSALIN!`;
-            btn.classList.replace('grad-bg', 'bg-emerald-500');
-            
-            setTimeout(() => {
-                btn.innerHTML = originalHTML;
-                btn.classList.replace('bg-emerald-500', 'grad-bg');
-            }, 2000);
-        }
-
-        function resetAll() {
-            inputMain.value = '';
-            output.value = '';
-            digitCounter.innerText = '0 DIGIT';
-            resultDiv.classList.add('hidden');
-        }
-
-        function showMsg(text) {
-            document.getElementById('msgText').innerText = text;
-            document.getElementById('msgBox').classList.replace('hidden', 'flex');
-        }
-
-        function closeMsg() {
-            document.getElementById('msgBox').classList.replace('flex', 'hidden');
-        }
+        initYearSelector();
+        switchYear(2026);
     </script>
 </body>
 </html>
