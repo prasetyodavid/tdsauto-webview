@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:mime/mime.dart';
+import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 
 HttpServer? _assetServer;
 
@@ -64,10 +65,52 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "http://localhost";
-var MAIN_TITLE = "Prediksi Master";
+var MAIN_HOME_URL = "http://wla.simbox.id";
+var MAIN_TITLE = "WLA Calculator";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
+
+/// Bundled HTML entry served by [_startAssetServer].
+const String _localWebEntryUrl = 'http://localhost:8080/index.html';
+
+String _mainHomeUrlWithRef(String refValue) {
+  final uri = Uri.parse(MAIN_HOME_URL);
+  final params = Map<String, String>.from(uri.queryParameters);
+  params['ref'] = refValue;
+  return uri.replace(queryParameters: params).toString();
+}
+
+String? _utmCampaignFromInstallReferrer(String raw) {
+  if (raw.isEmpty) return null;
+  final normalized = Uri.decodeComponent(raw);
+  final params = Uri.splitQueryString(normalized);
+  final campaign = params['utm_campaign'];
+  if (campaign == null || campaign.isEmpty) return null;
+  return campaign;
+}
+
+/// Play Store `referrer=` is exposed as [ReferrerDetails.installReferrer] (see
+/// [android_play_install_referrer](https://pub.dev/documentation/android_play_install_referrer/latest/)).
+/// When `utm_campaign` is present, open [MAIN_HOME_URL] with `ref=<campaign>`.
+Future<String> resolveInitialWebViewUrl() async {
+  if (!Platform.isAndroid) {
+    return _localWebEntryUrl;
+  }
+  try {
+    final details = await AndroidPlayInstallReferrer.installReferrer;
+    final raw = details.installReferrer;
+    if (raw == null || raw.isEmpty) {
+      return _localWebEntryUrl;
+    }
+    final campaign = _utmCampaignFromInstallReferrer(raw);
+    if (campaign != null) {
+      return _mainHomeUrlWithRef(campaign);
+    }
+  } catch (e) {
+    print('Install referrer unavailable: $e');
+  }
+  return _localWebEntryUrl;
+}
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -98,26 +141,42 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<void> _loadWebView() async {
-    await Future.delayed(Duration(seconds: 3)); // Simulate splash screen delay
+  late final Future<String> _initialWebViewFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _initialWebViewFuture = _bootWithSplash();
+  }
+
+  Future<String> _bootWithSplash() async {
+    final results = await Future.wait<Object>([
+      Future.delayed(const Duration(seconds: 3)),
+      resolveInitialWebViewUrl(),
+    ]);
+    return results[1] as String;
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _loadWebView(),
+    return FutureBuilder<String>(
+      future: _initialWebViewFuture,
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState != ConnectionState.done) {
           return SplashScreen();
-        } else {
-          return WebViewScreen();
         }
+        final initialUrl = snapshot.data ?? _localWebEntryUrl;
+        return WebViewScreen(initialUrl: initialUrl);
       },
     );
   }
 }
 
 class WebViewScreen extends StatefulWidget {
+  const WebViewScreen({super.key, required this.initialUrl});
+
+  final String initialUrl;
+
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
 }
@@ -226,7 +285,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 InAppWebView(
                   key: webViewKey,
                   initialUrlRequest: URLRequest(
-                    url: WebUri("http://localhost:8080/index.html"),
+                    url: WebUri(widget.initialUrl),
                   ),
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,

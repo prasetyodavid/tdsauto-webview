@@ -25,7 +25,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.prediksimaster.app"
+    namespace "com.wlacalculator.app"
     compileSdk 35
     ndkVersion "27.0.12077973"
 
@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.prediksimaster.app"
+        applicationId "com.wlacalculator.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21

@@ -1,552 +1,1108 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Transisi halus untuk sidebar */
-        .sidebar-transition {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        /* Efek Gradien Kustom */
-        .bg-gradient-gold {
-            background: linear-gradient(135deg, #00a1ff 0%, #00a1ff 100%);
-        }
-        .text-gradient-gold {
-            background: linear-gradient(135deg, #00a1ff 0%, #00a1ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        /* Border Gradien untuk Header dan Navigasi */
-        .border-gradient-blue-bottom {
-            border-bottom: 2px solid;
-            border-image-source: linear-gradient(90deg, transparent, #00a1ff, #00a1ff, #00a1ff, transparent);
-            border-image-slice: 1;
-        }
-        
-        .border-gradient-blue-top {
-            border-top: 2px solid;
-            border-image-source: linear-gradient(90deg, transparent, #00a1ff, #00a1ff, #00a1ff, transparent);
-            border-image-slice: 1;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>WLA Calculator</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a222d;
+      --surface2: #243040;
+      --text: #e8eef4;
+      --muted: #8b9aad;
+      --accent: #3d9cf0;
+      --accent-dim: #2a6fa8;
+      --success: #3ecf8e;
+      --danger: #e85d6c;
+      --border: #2f3d4f;
+      --radius: 12px;
+      --font: system-ui, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      --tap: 44px;
+      --nav-h: 56px;
+    }
 
-        /* Mencegah scroll saat sidebar terbuka */
-        .no-scroll {
-            overflow: hidden;
-        }
-        
-        /* Animasi rotasi untuk ikon dropdown */
-        .rotate-180 {
-            transform: rotate(180deg);
-        }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f4f6f9;
+        --surface: #ffffff;
+        --surface2: #e9eef5;
+        --text: #1a2332;
+        --muted: #5c6b7e;
+        --accent: #156cc4;
+        --accent-dim: #0d4a8a;
+        --success: #0d8a5a;
+        --danger: #c42d3c;
+        --border: #cfd8e6;
+      }
+    }
 
-        /* Menghilangkan outline biru & delay tap di mobile */
-        * {
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
+    *, *::before, *::after { box-sizing: border-box; }
 
-        /* State aktif saat ditekan (Mobile Native Feel) */
-        .btn-active:active {
-            background-color: rgba(255, 255, 255, 0.05);
-            transform: scale(0.97);
-        }
-        
-        .nav-item-active:active {
-            opacity: 0.6;
-            transform: scale(0.95);
-        }
-		
-		@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap');
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #0f172a;
-        }
-        .gradient-accent { 
-            background: linear-gradient(135deg, #00a1ff 0%, #00a1ff 100%); 
-        }
-        .text-gradient {
-            background: linear-gradient(135deg, #00a1ff 0%, #00a1ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .header-gradient {
-            background: linear-gradient(to right, #00a1ff, #00a1ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-        .green-gradient {
-            background: linear-gradient(to right, #10b981, #34d399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-        .divider-gradient {
-            height: 2px;
-            width: 100%;
-            background: linear-gradient(to right, transparent, #00a1ff, #00a1ff, transparent);
-            border-radius: 999px;
-            margin: 0.75rem 0;
-            opacity: 0.6;
-        }
-        .card-dark {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .bb-preview-container {
-            position: relative;
-            background: rgba(15, 23, 42, 0.3);
-            border-radius: 1.5rem;
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            overflow: hidden;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 75px; 
-        }
-        .bb-preview-container.expanded {
-            max-height: 1200px; 
-            background: rgba(15, 23, 42, 0.85);
-            border-color: rgba(249, 115, 22, 0.4);
-        }
-        .peek-gradient-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, transparent 0%, rgba(30, 41, 59, 0.9) 75%, #1e293b 100%);
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 10px;
-            z-index: 10;
-        }
-        .expanded .peek-gradient-overlay {
-            opacity: 0;
-        }
-        .glow-arrow {
-            filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.7));
-        }
-        @keyframes bounce-subtle {
-            0%, 100% { transform: translateY(0); opacity: 0.7; }
-            50% { transform: translateY(4px); opacity: 1; }
-        }
-        .animate-bounce-subtle {
-            animation: bounce-subtle 2s infinite ease-in-out;
-        }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-        .card-dark {
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
-        }
-    </style>
+    html {
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      font-family: var(--font);
+      font-size: 16px;
+      line-height: 1.45;
+      color: var(--text);
+      background: var(--bg);
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+    }
+
+    .skip {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .skip:focus {
+      position: fixed;
+      top: 0.5rem;
+      left: 0.5rem;
+      z-index: 200;
+      width: auto;
+      height: auto;
+      clip: auto;
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+    }
+
+    .app-shell {
+      max-width: 640px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 8px);
+    }
+
+    .app-top {
+      padding: 0.75rem 1rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .app-top h1 {
+      font-size: clamp(1.15rem, 3.5vw, 1.35rem);
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .app-top .sub {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin: 0.2rem 0 0;
+    }
+
+    main {
+      flex: 1;
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    .view[hidden] {
+      display: none !important;
+    }
+
+    .wrap-inner {
+      max-width: 100%;
+    }
+
+    h2.page-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h2 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 0 0 0.75rem;
+      font-weight: 600;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 420px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+    }
+
+    @media (min-width: 480px) {
+      .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .kpi {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .kpi .kpi-val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0;
+      word-break: break-word;
+    }
+
+    .kpi .kpi-lbl {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin: 0.35rem 0 0;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      min-height: var(--tap);
+      padding: 0 0.75rem;
+      font: inherit;
+      color: var(--text);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    textarea {
+      min-height: 120px;
+      padding: 0.65rem 0.75rem;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .tasks-header {
+      display: none;
+    }
+
+    @media (min-width: 520px) {
+      .tasks-header {
+        display: grid;
+        grid-template-columns: 1fr minmax(0, 5.5rem) minmax(0, 5.5rem) 2.75rem;
+        gap: 0.5rem;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        padding: 0 0.25rem;
+      }
+    }
+
+    .task-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      background: var(--surface2);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--border);
+    }
+
+    @media (min-width: 520px) {
+      .task-row {
+        grid-template-columns: 1fr minmax(0, 5.5rem) minmax(0, 5.5rem) 2.75rem;
+        align-items: end;
+        padding: 0.5rem 0.75rem;
+      }
+      .task-row .field-task { margin-bottom: 0; }
+      .task-row label { display: none; }
+    }
+
+    .task-row label { margin-bottom: 0.25rem; }
+
+    .field-task { min-width: 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--tap);
+      padding: 0 1rem;
+      font: inherit;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:active { background: var(--accent-dim); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--border);
+      padding: 0;
+      min-width: var(--tap);
+    }
+
+    .btn-danger:active { background: rgba(232, 93, 108, 0.15); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .actions .btn-primary { flex: 1; min-width: 140px; }
+
+    .summary {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat:last-child { border-bottom: none; }
+
+    .stat strong { font-size: 1.15rem; }
+
+    .stat .label { color: var(--muted); font-size: 0.9rem; }
+
+    .stat.highlight {
+      background: var(--surface2);
+      margin: 0 -1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .break-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .break-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.65rem 0.75rem;
+      background: var(--surface2);
+    }
+
+    .break-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .break-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin: 0;
+      word-break: break-word;
+    }
+
+    .break-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .break-bar-bg {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .break-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+      min-width: 2px;
+      transition: width 0.2s ease;
+    }
+
+    .empty-hint {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0;
+      padding: 0.5rem 0;
+    }
+
+    .util-bar-bg {
+      height: 12px;
+      border-radius: 6px;
+      background: var(--border);
+      overflow: hidden;
+      margin-top: 0.35rem;
+    }
+
+    .util-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: var(--success);
+      min-width: 0;
+      transition: width 0.2s ease, background 0.2s ease;
+    }
+
+    .util-bar-fill.warn { background: #e8a838; }
+    .util-bar-fill.bad { background: var(--danger); }
+
+    .help-block {
+      font-size: 0.9rem;
+      color: var(--text);
+      margin: 0 0 0.75rem;
+    }
+
+    .help-block:last-child { margin-bottom: 0; }
+
+    .help-block code {
+      font-size: 0.85em;
+      background: var(--surface2);
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-around;
+      align-items: stretch;
+      min-height: var(--nav-h);
+      padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .bottom-nav button {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      min-height: var(--nav-h);
+      padding: 6px 4px;
+      font: inherit;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .bottom-nav button .nav-ic {
+      font-size: 1.25rem;
+      line-height: 1;
+      opacity: 0.85;
+    }
+
+    .bottom-nav button[aria-current="page"] {
+      color: var(--accent);
+    }
+
+    .bottom-nav button[aria-current="page"] .nav-ic {
+      opacity: 1;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .file-input {
+      position: absolute;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
 </head>
-<body class="bg-[#334155] text-gray-100 flex flex-col min-h-screen font-sans select-none">
+<body>
+  <a class="skip" href="#main">Skip to content</a>
 
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-70 z-40 hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>
-
-    <aside id="sidebar" class="fixed top-0 left-0 h-full w-72 bg-[#1e1e1e] border-r border-gray-800 shadow-2xl z-50 transform -translate-x-full sidebar-transition overflow-y-auto">
-        <div class="p-6">
-            <div class="flex items-center justify-center mb-8 border-b border-gray-800 pb-6">
-                <div class="text-2xl font-black tracking-tighter italic">
-                    <span class="text-white">PREDIKSI</span><span class="text-gradient-gold"> MASTER</span>
-                </div>
-            </div>
-
-            <nav class="space-y-1">
-                <div>
-                    <button onclick="toggleSubmenu('bukuMimpi')" class="w-full flex items-center justify-between px-4 py-3 text-gray-300 btn-active rounded-xl transition-all group">
-                        <div class="flex items-center">
-                            <div class="p-2 bg-gray-800 rounded-lg mr-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                            </div>
-                            <span class="font-medium">Buku Mimpi</span>
-                        </div>
-                        <svg id="arrow-bukuMimpi" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div id="submenu-bukuMimpi" class="hidden pl-14 pr-4 py-2 space-y-4">
-                        <a href="/buku-mimpi-2d.html" class="block text-sm text-gray-400 active:text-blue-500">Buku Mimpi 2D</a>
-                        <a href="/buku-mimpi-3d.html" class="block text-sm text-gray-400 active:text-blue-500">Buku Mimpi 3D</a>
-                        <a href="/buku-mimpi-4d.html" class="block text-sm text-gray-400 active:text-blue-500">Buku Mimpi 4D</a>
-                    </div>
-                </div>
-
-                <a href="/index.html" class="flex items-center px-4 py-3 text-gray-300 btn-active rounded-xl transition-all">
-                    <div class="p-2 bg-gray-800 rounded-lg mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">Paito</span>
-                </a>
-
-                <a href="/tabel-shio.html" class="flex items-center px-4 py-3 text-gray-300 btn-active rounded-xl transition-all">
-                    <div class="p-2 bg-gray-800 rounded-lg mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">Tabel Shio</span>
-                </a>
-
-                <a href="/generator4d.html" class="flex items-center px-4 py-3 text-gray-300 btn-active rounded-xl transition-all">
-                    <div class="p-2 bg-gray-800 rounded-lg mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">Generator 4D</span>
-                </a>
-
-                <a href="/bbfs.html" class="flex items-center px-4 py-3 text-gray-300 btn-active rounded-xl transition-all">
-                    <div class="p-2 bg-gray-800 rounded-lg mr-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
-                        </svg>
-                    </div>
-                    <span class="font-medium">BBFS</span>
-                </a>
-            </nav>
-        </div>
-    </aside>
-
-    <header class="bg-[#1e1e1e] border-gradient-blue-bottom px-4 py-3 sticky top-0 z-30 shadow-md">
-        <div class="container mx-auto flex items-center relative h-8">
-            <button onclick="toggleSidebar()" class="p-2 btn-active rounded-lg focus:outline-none absolute left-0 z-10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="#00a1ff">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-
-            <div class="w-full flex justify-center">
-                <div class="text-xl font-black tracking-tighter italic leading-none">
-                    <span class="text-white">PREDIKSI</span><span class="text-gradient-gold"> MASTER</span>
-                </div>
-            </div>
-            
-            <div class="w-10 h-10 absolute right-0"></div>
-        </div>
+  <div class="app-shell">
+    <header class="app-top">
+      <h1>WLA Calculator</h1>
+      <p class="sub" id="view-subtitle">Snapshot of your workload</p>
     </header>
 
-    <main class="flex-grow container mx-auto p-6 flex flex-col items-center justify-center">
-        
-        <body class="text-gray-200 min-h-screen p-4">
+    <main id="main">
+      <!-- Home -->
+      <section id="view-home" class="view wrap-inner" aria-labelledby="home-title">
+        <h2 class="page-title" id="home-title">Home</h2>
+        <p class="sub" style="margin-bottom: 1rem;">Work load analysis: standard time × volume for a period. Use the tabs below to move between screens.</p>
+        <div class="grid-4">
+          <div class="kpi">
+            <p class="kpi-val" id="home-minutes">0</p>
+            <p class="kpi-lbl">Minutes</p>
+          </div>
+          <div class="kpi">
+            <p class="kpi-val" id="home-hours">0</p>
+            <p class="kpi-lbl">Hours</p>
+          </div>
+          <div class="kpi">
+            <p class="kpi-val" id="home-fte">—</p>
+            <p class="kpi-lbl">FTE</p>
+          </div>
+          <div class="kpi">
+            <p class="kpi-val" id="home-tasks">0</p>
+            <p class="kpi-lbl">Tasks</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 1rem;">
+          <h2>Utilization</h2>
+          <p class="sub" id="util-caption" style="margin-bottom: 0.5rem;">Workload vs one person’s available time in the period.</p>
+          <div class="util-bar-bg" aria-hidden="true"><div class="util-bar-fill" id="util-fill" style="width: 0%;"></div></div>
+          <p class="sub" id="util-pct" style="margin-top: 0.5rem; margin-bottom: 0;">—</p>
+        </div>
+        <div class="cta-row">
+          <button type="button" class="btn btn-primary" id="btn-go-workload">Edit workload</button>
+          <button type="button" class="btn btn-ghost" id="btn-go-breakdown">View breakdown</button>
+        </div>
+      </section>
 
-    <div class="max-w-md mx-auto">
-        <header class="text-center mb-10 pt-6">
-            <p class="text-gray-400 text-sm tracking-widest font-medium opacity-80 uppercase">
-                Prediksi Akurasi Tinggi • Pasaran Terlengkap
-            </p>
-            <div class="h-1 w-20 gradient-accent mx-auto mt-4 rounded-full"></div>
-        </header>
+      <!-- Workload -->
+      <section id="view-workload" class="view wrap-inner" hidden aria-labelledby="workload-title">
+        <h2 class="page-title" id="workload-title">Workload</h2>
+        <p class="sub" style="margin-bottom: 1rem;">Enter tasks and volumes for the same analysis window.</p>
 
-        <div class="mb-8">
-            <div class="relative">
-                <input type="text" id="searchInput" placeholder="Cari pasaran..." 
-                    class="w-full p-4 pl-12 rounded-2xl bg-slate-800 border border-slate-700 text-white shadow-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm tracking-wide text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-4 top-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+        <section class="card" aria-labelledby="period-heading">
+          <h2 id="period-heading">Analysis period</h2>
+          <div class="grid-2">
+            <div>
+              <label for="period">Period label</label>
+              <select id="period">
+                <option value="day">Per day</option>
+                <option value="week" selected>Per week</option>
+                <option value="month">Per month</option>
+                <option value="custom">Custom</option>
+              </select>
             </div>
-        </div>
+            <div>
+              <label for="available">Available minutes / person / period</label>
+              <input id="available" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 2400" value="2400" autocomplete="off">
+            </div>
+          </div>
+          <p class="sub" id="period-hint" style="margin: 0.75rem 0 0; font-size: 0.8rem;"></p>
+        </section>
 
-        <div id="marketGrid" class="grid grid-cols-1 gap-6 pb-12">
-            <!-- Market Cards injected here -->
-        </div>
+        <section class="card" aria-labelledby="tasks-heading">
+          <h2 id="tasks-heading">Tasks</h2>
+          <div class="tasks-header" aria-hidden="true">
+            <span>Task</span>
+            <span>Min / unit</span>
+            <span>Volume</span>
+            <span></span>
+          </div>
+          <div id="task-list"></div>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="add-task">Add task</button>
+            <button type="button" class="btn btn-ghost" id="clear-all">Clear all</button>
+          </div>
+        </section>
 
-        <footer class="text-center pb- border-t border-slate-800 pt-1">
-            <p class="text-xs text-red-400 px-4">Tetap Utamakan Prediksi Anda Sendiri</p>
-        </footer>
-    </div>
-        
+        <section class="card" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">Totals</h2>
+          <div class="summary" id="summary">
+            <div class="stat">
+              <span class="label">Total workload</span>
+              <strong id="out-minutes">0 min</strong>
+            </div>
+            <div class="stat">
+              <span class="label">Hours (same period)</span>
+              <strong id="out-hours">0 h</strong>
+            </div>
+            <div class="stat highlight" id="fte-row">
+              <span class="label">Implied FTE (headcount)</span>
+              <strong id="out-fte">—</strong>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Breakdown -->
+      <section id="view-breakdown" class="view wrap-inner" hidden aria-labelledby="breakdown-title">
+        <h2 class="page-title" id="breakdown-title">Breakdown</h2>
+        <p class="sub" style="margin-bottom: 1rem;">Share of total workload by task (largest first).</p>
+        <div class="card">
+          <h2>By task</h2>
+          <div id="breakdown-list" class="break-list"></div>
+          <p class="empty-hint" id="breakdown-empty" hidden>No workload yet. Add tasks under Workload.</p>
+        </div>
+      </section>
+
+      <!-- More -->
+      <section id="view-more" class="view wrap-inner" hidden aria-labelledby="more-title">
+        <h2 class="page-title" id="more-title">More</h2>
+
+        <section class="card" aria-labelledby="help-heading">
+          <h2 id="help-heading">How it works</h2>
+          <p class="help-block">Each line: <strong>minutes per unit</strong> × <strong>volume</strong> in the period = workload for that task (minutes).</p>
+          <p class="help-block"><strong>FTE</strong> = total workload minutes ÷ <code>available minutes per person per period</code>. Clear that field if you only want hours, not headcount.</p>
+          <p class="help-block"><strong>Utilization</strong> on Home compares total workload to one person’s available minutes (same as FTE × 100% when availability is set).</p>
+        </section>
+
+        <section class="card" aria-labelledby="data-heading">
+          <h2 id="data-heading">Backup &amp; restore</h2>
+          <p class="sub" style="margin-bottom: 0.75rem;">Save period, availability, and tasks as CSV (opens in Excel). Import replaces the current workload.</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-export">Export CSV</button>
+            <button type="button" class="btn btn-ghost" id="btn-import-label">Import CSV</button>
+          </div>
+          <input type="file" id="import-file" class="file-input" accept=".csv,text/csv">
+        </section>
+      </section>
     </main>
+  </div>
 
-    <nav class="bg-[#1e1e1e]/90 backdrop-blur-md border-gradient-blue-top flex items-center justify-around py-3 sticky bottom-0 z-30">
-        <a href="/bbfs.html" class="flex flex-col items-center nav-item-active transition-all">
-            <div class="p-1 text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.691.387a6 6 0 01-3.86.517l-2.387-.477a2 2 0 00-1.022.547l-1.162 1.162a2 2 0 000 2.828l1.162 1.162a2 2 0 002.828 0l1.162-1.162a2 2 0 00.547-1.022l.477-2.387a6 6 0 01.517-3.86l.387-.691a6 6 0 00.517-3.86l-.477-2.387a2 2 0 00-.547-1.022l-1.162-1.162a2 2 0 00-2.828 0l-1.162 1.162a2 2 0 000 2.828l1.162 1.162z" />
-                </svg>
-            </div>
-            <span class="text-[10px] mt-1 font-bold uppercase tracking-widest text-gray-500">BBFS</span>
-        </a>
-        
-        <a href="/index.html" class="flex flex-col items-center relative nav-item-active transition-all">
-            <div class="absolute -top-9 bg-gradient-gold p-4 rounded-full shadow-lg shadow-blue-500/30 text-white border-4 border-[#121212]">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-            </div>
-            <span class="text-[10px] mt-8 font-bold uppercase tracking-widest text-blue-500">Beranda</span>
-        </a>
+  <nav class="bottom-nav" aria-label="Primary">
+    <button type="button" id="nav-home" aria-current="page">
+      <span class="nav-ic" aria-hidden="true">⌂</span>
+      Home
+    </button>
+    <button type="button" id="nav-workload">
+      <span class="nav-ic" aria-hidden="true">≡</span>
+      Workload
+    </button>
+    <button type="button" id="nav-breakdown">
+      <span class="nav-ic" aria-hidden="true">▥</span>
+      Split
+    </button>
+    <button type="button" id="nav-more">
+      <span class="nav-ic" aria-hidden="true">⋯</span>
+      More
+    </button>
+  </nav>
 
-        <a href="/jadwal.html" class="flex flex-col items-center nav-item-active transition-all">
-            <div class="p-1 text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            </div>
-            <span class="text-[10px] mt-1 font-bold uppercase tracking-widest text-gray-500">Jadwal</span>
-        </a>
-    </nav>
+  <script>
+(function () {
+  'use strict';
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const isClosed = sidebar.classList.contains('-translate-x-full');
+  var views = {
+    home: document.getElementById('view-home'),
+    workload: document.getElementById('view-workload'),
+    breakdown: document.getElementById('view-breakdown'),
+    more: document.getElementById('view-more')
+  };
 
-            if (isClosed) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                document.body.classList.add('no-scroll');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-                document.body.classList.remove('no-scroll');
-                document.querySelectorAll('[id^="submenu-"]').forEach(el => el.classList.add('hidden'));
-                document.querySelectorAll('[id^="arrow-"]').forEach(el => el.classList.remove('rotate-180'));
-            }
+  var navButtons = {
+    home: document.getElementById('nav-home'),
+    workload: document.getElementById('nav-workload'),
+    breakdown: document.getElementById('nav-breakdown'),
+    more: document.getElementById('nav-more')
+  };
+
+  var subtitles = {
+    home: 'Snapshot of your workload',
+    workload: 'Enter tasks and period settings',
+    breakdown: 'Workload share by task',
+    more: 'Help and data tools'
+  };
+
+  var viewSubtitle = document.getElementById('view-subtitle');
+  var taskList = document.getElementById('task-list');
+  var periodSelect = document.getElementById('period');
+  var periodHint = document.getElementById('period-hint');
+  var availableInput = document.getElementById('available');
+  var outMinutes = document.getElementById('out-minutes');
+  var outHours = document.getElementById('out-hours');
+  var outFte = document.getElementById('out-fte');
+  var fteRow = document.getElementById('fte-row');
+
+  var homeMinutes = document.getElementById('home-minutes');
+  var homeHours = document.getElementById('home-hours');
+  var homeFte = document.getElementById('home-fte');
+  var homeTasks = document.getElementById('home-tasks');
+  var utilFill = document.getElementById('util-fill');
+  var utilPct = document.getElementById('util-pct');
+
+  var breakdownList = document.getElementById('breakdown-list');
+  var breakdownEmpty = document.getElementById('breakdown-empty');
+
+  var currentView = 'home';
+
+  function parseNum(el) {
+    var v = parseFloat(String(el.value).replace(',', '.'));
+    return isFinite(v) ? v : 0;
+  }
+
+  function formatMinutes(m) {
+    if (!isFinite(m) || m < 0) m = 0;
+    var rounded = Math.round(m * 100) / 100;
+    return rounded.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  }
+
+  function formatHours(h) {
+    if (!isFinite(h) || h < 0) h = 0;
+    var rounded = Math.round(h * 1000) / 1000;
+    return rounded.toLocaleString(undefined, { maximumFractionDigits: 3 });
+  }
+
+  function formatPct(p) {
+    if (!isFinite(p)) return '—';
+    return (Math.round(p * 10) / 10).toLocaleString(undefined, { maximumFractionDigits: 1 }) + '%';
+  }
+
+  function getTaskRows() {
+    return taskList.querySelectorAll('.task-row');
+  }
+
+  function collectTasks() {
+    var rows = [];
+    getTaskRows().forEach(function (row) {
+      var name = row.querySelector('.inp-name').value.trim() || 'Untitled';
+      var t = parseNum(row.querySelector('.inp-min'));
+      var v = parseNum(row.querySelector('.inp-vol'));
+      rows.push({ name: name, minPerUnit: t, volume: v, loadMin: t * v });
+    });
+    return rows;
+  }
+
+  function showView(id) {
+    if (!views[id]) return;
+    currentView = id;
+    Object.keys(views).forEach(function (k) {
+      views[k].hidden = k !== id;
+    });
+    Object.keys(navButtons).forEach(function (k) {
+      navButtons[k].setAttribute('aria-current', k === id ? 'page' : 'false');
+    });
+    viewSubtitle.textContent = subtitles[id] || '';
+    if (id === 'breakdown') renderBreakdown();
+    history.replaceState(null, '', '#' + id);
+  }
+
+  function onHash() {
+    var h = (location.hash || '').replace(/^#/, '');
+    if (views[h]) showView(h);
+  }
+
+  function rowTemplate(rid) {
+    return (
+      '<div class="task-row" data-row="' + rid + '">' +
+        '<div class="field-task">' +
+          '<label>Task</label>' +
+          '<input type="text" class="inp-name" placeholder="Activity name" autocomplete="off" inputmode="text">' +
+        '</div>' +
+        '<div>' +
+          '<label>Min / unit</label>' +
+          '<input type="number" class="inp-min" inputmode="decimal" min="0" step="any" placeholder="0" autocomplete="off">' +
+        '</div>' +
+        '<div>' +
+          '<label>Volume</label>' +
+          '<input type="number" class="inp-vol" inputmode="decimal" min="0" step="any" placeholder="0" autocomplete="off">' +
+        '</div>' +
+        '<div>' +
+          '<button type="button" class="btn btn-danger remove" aria-label="Remove task">×</button>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  var nextId = 0;
+
+  function addTask() {
+    var id = nextId++;
+    taskList.insertAdjacentHTML('beforeend', rowTemplate(id));
+    var row = taskList.querySelector('[data-row="' + id + '"]');
+    row.querySelector('.inp-name').focus();
+    bindRow(row);
+    recalc();
+  }
+
+  function bindRow(row) {
+    row.querySelector('.remove').addEventListener('click', function () {
+      row.remove();
+      recalc();
+    });
+    ['inp-name', 'inp-min', 'inp-vol'].forEach(function (cls) {
+      row.querySelector('.' + cls).addEventListener('input', recalc);
+    });
+  }
+
+  function updatePeriodHint() {
+    var v = periodSelect.value;
+    var scope =
+      v === 'day' ? 'day' :
+      v === 'week' ? 'week' :
+      v === 'month' ? 'month' :
+      'time window';
+    periodHint.textContent =
+      'Enter volumes for the same ' + scope +
+      '. FTE = total workload ÷ available minutes per person for that scope. Clear “available” to hide FTE.';
+  }
+
+  function renderBreakdown() {
+    var tasks = collectTasks().filter(function (t) { return t.loadMin > 0; });
+    var total = tasks.reduce(function (s, t) { return s + t.loadMin; }, 0);
+
+    breakdownList.innerHTML = '';
+    if (tasks.length === 0 || total <= 0) {
+      breakdownEmpty.hidden = false;
+      return;
+    }
+    breakdownEmpty.hidden = true;
+
+    tasks.sort(function (a, b) { return b.loadMin - a.loadMin; });
+
+    tasks.forEach(function (t) {
+      var pct = (t.loadMin / total) * 100;
+      var row = document.createElement('div');
+      row.className = 'break-item';
+      row.innerHTML =
+        '<div class="break-top">' +
+          '<p class="break-name"></p>' +
+          '<span class="break-meta"></span>' +
+        '</div>' +
+        '<div class="break-bar-bg"><div class="break-bar-fill"></div></div>';
+      row.querySelector('.break-name').textContent = t.name;
+      row.querySelector('.break-meta').textContent =
+        formatMinutes(t.loadMin) + ' min · ' + formatPct(pct);
+      row.querySelector('.break-bar-fill').style.width = Math.min(100, pct) + '%';
+      breakdownList.appendChild(row);
+    });
+  }
+
+  function setUtilization(totalMin, availNum) {
+    utilFill.classList.remove('warn', 'bad');
+    if (!isFinite(availNum) || availNum <= 0 || !isFinite(totalMin)) {
+      utilFill.style.width = '0%';
+      utilPct.textContent = 'Set availability under Workload to compare.';
+      return;
+    }
+    var u = (totalMin / availNum) * 100;
+    var w = Math.min(100, Math.max(0, u));
+    utilFill.style.width = w + '%';
+    if (u > 100) {
+      utilFill.classList.add('bad');
+      utilPct.textContent = formatPct(u) + ' of one person’s time — over capacity.';
+    } else if (u > 85) {
+      utilFill.classList.add('warn');
+      utilPct.textContent = formatPct(u) + ' of one person’s available time.';
+    } else {
+      utilPct.textContent = formatPct(u) + ' of one person’s available time.';
+    }
+  }
+
+  function recalc() {
+    var rows = getTaskRows();
+    var totalMin = 0;
+    rows.forEach(function (row) {
+      var t = parseNum(row.querySelector('.inp-min'));
+      var v = parseNum(row.querySelector('.inp-vol'));
+      totalMin += t * v;
+    });
+
+    var hours = totalMin / 60;
+    outMinutes.textContent = formatMinutes(totalMin) + ' min';
+    outHours.textContent = formatHours(hours) + ' h';
+
+    homeMinutes.textContent = formatMinutes(totalMin);
+    homeHours.textContent = formatHours(hours);
+    homeTasks.textContent = String(rows.length);
+
+    var avail = String(availableInput.value).trim();
+    var availNum = parseFloat(avail.replace(',', '.'));
+    if (avail === '' || !isFinite(availNum) || availNum <= 0) {
+      outFte.textContent = '—';
+      fteRow.style.opacity = '0.65';
+      homeFte.textContent = '—';
+      setUtilization(totalMin, NaN);
+    } else {
+      var fte = totalMin / availNum;
+      outFte.textContent = formatHours(fte);
+      fteRow.style.opacity = '1';
+      homeFte.textContent = formatHours(fte);
+      setUtilization(totalMin, availNum);
+    }
+
+    if (currentView === 'breakdown') renderBreakdown();
+  }
+
+  function escapeCsvCell(s) {
+    s = String(s);
+    if (/[",\r\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  function parseCsvLine(line) {
+    var out = [];
+    var cur = '';
+    var inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (line[i + 1] === '"') {
+            cur += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          cur += c;
         }
+      } else if (c === '"') {
+        inQuotes = true;
+      } else if (c === ',') {
+        out.push(cur);
+        cur = '';
+      } else {
+        cur += c;
+      }
+    }
+    out.push(cur);
+    return out;
+  }
 
-        function toggleSubmenu(id) {
-            const submenu = document.getElementById('submenu-' + id);
-            const arrow = document.getElementById('arrow-' + id);
-            const isHidden = submenu.classList.contains('hidden');
-            
-            if (isHidden) {
-                submenu.classList.remove('hidden');
-                arrow.classList.add('rotate-180');
-            } else {
-                submenu.classList.add('hidden');
-                arrow.classList.remove('rotate-180');
-            }
-        }
-		
-		                const markets = [
-            { name: "TOTOMACAU (00.15)", time: "Setiap Hari 00:15 (WIB)", hour: 0, min: 15 },
-            { name: "INDIA49", time: "Setiap Hari 01:30 (WIB)", hour: 1, min: 30 },
-            { name: "KSPO 4D", time: "Setiap Hari 10:00 (WIB)", hour: 10, min: 0 },
-            { name: "JAPAN 4D", time: "Setiap Hari 10:00 (WIB)", hour: 10, min: 0 },
-            { name: "JAKTIM", time: "Setiap Hari 11:30 (WIB)", hour: 11, min: 30 },
-            { name: "PCSTOTO 45", time: "Setiap Hari 12:00 (WIB)", hour: 12, min: 0 },
-            { name: "CHINA", time: "Setiap Hari 12:30 (WIB)", hour: 12, min: 30 },
-            { name: "TOTOMACAU (13.15)", time: "Setiap Hari 13:15 (WIB)", hour: 13, min: 15 },
-            { name: "INDIA 45", time: "Setiap Hari 13:30 (WIB)", hour: 13, min: 30 },
-            { name: "SRILANKA TOTO", time: "Setiap Hari 13:30 (WIB)", hour: 13, min: 30 },
-            { name: "THAI TOTO", time: "Setiap Hari 13:45 (WIB)", hour: 13, min: 45 },
-            { name: "SYDNEY", time: "Setiap Hari 13:50 (WIB)", hour: 13, min: 50 },
-            { name: "AUS 4D", time: "Setiap Hari 14:15 (WIB)", hour: 14, min: 15 },
-            { name: "JAKBAR", time: "Setiap Hari 14:45 (WIB)", hour: 14, min: 45 },
-            { name: "TOTOMACAU 5D (15.15)", time: "Setiap Hari 15:15 (WIB)", hour: 15, min: 15 },
-            { name: "KSPO LOTTERY 6D", time: "Setiap Hari 16:00 (WIB)", hour: 16, min: 0 },
-            { name: "JAPAN 6D", time: "Selasa s/d Minggu 16:00 (WIB)", hour: 16, min: 0 },
-            { name: "AUS 6D", time: "Setiap Hari 16:00 (WIB)", hour: 16, min: 0 },
-            { name: "TOTOMACAU (16.15)", time: "Setiap Hari 16:15 (WIB)", hour: 16, min: 15 },
-            { name: "PCSOTOTO 49", time: "Setiap Hari 17:00 (WIB)", hour: 17, min: 0 },
-            { name: "KINGKONG4D (Sore)", time: "Setiap Hari 17:00 (WIB)", hour: 17, min: 0 },
-            { name: "JAKUT", time: "Setiap Hari 17:15 (WIB)", hour: 17, min: 15 },
-            { name: "SINGAPORE", time: "Selasa & Jumat (Libur) 17:50 (WIB)", hour: 17, min: 50 },
-            { name: "VIETNAM", time: "Setiap Hari 18:45 (WIB)", hour: 18, min: 45 },
-            { name: "TOTOMACAU (19.15)", time: "Setiap Hari 19:15 (WIB)", hour: 19, min: 15 },
-            { name: "TAIWAN 4D", time: "Setiap Hari 19:30 (WIB)", hour: 19, min: 30 },
-            { name: "MALAYSIA SUPER", time: "Setiap Hari 19:30 (WIB)", hour: 19, min: 30 },
-            { name: "TAIWAN 6D", time: "Setiap Hari 20:00 (WIB)", hour: 20, min: 0 },
-            { name: "TAIWAN TOTO", time: "Setiap Hari 20:30 (WIB)", hour: 20, min: 30 },
-            { name: "JAKSEL", time: "Setiap Hari 20:45 (WIB)", hour: 20, min: 45 },
-            { name: "AUSTRALIA TOTO", time: "Setiap Hari 21:15 (WIB)", hour: 21, min: 15 },
-            { name: "TOTOMACAU 5D (21.15)", time: "Setiap Hari 21:15 (WIB)", hour: 21, min: 15 },
-            { name: "KSPOLOTTERY TOTO", time: "Setiap Hari 22:00 (WIB)", hour: 22, min: 0 },
-            { name: "TOTOMACAU (22.15)", time: "Setiap Hari 22:15 (WIB)", hour: 22, min: 15 },
-            { name: "HKJC (GMT+8)", time: "Setiap Hari 22:30 (WIB)", hour: 22, min: 30 },
-            { name: "HONGKONG", time: "Setiap Hari 23:00 (WIB)", hour: 23, min: 0 },
-            { name: "KINGKONG4D (Malam)", time: "Setiap Hari 23:30 (WIB)", hour: 23, min: 30 },
-            { name: "JAKPUS", time: "Setiap Hari 00:00 (WIB)", hour: 24, min: 0 } // Diberi 24 agar berada di paling bawah
-        ];
+  function buildExportCsv() {
+    var lines = [];
+    lines.push(['WLA_EXPORT', '1'].map(escapeCsvCell).join(','));
+    lines.push(['period', periodSelect.value].map(escapeCsvCell).join(','));
+    lines.push(['available_minutes', String(availableInput.value).trim()].map(escapeCsvCell).join(','));
+    lines.push(['task', 'minutes_per_unit', 'volume'].map(escapeCsvCell).join(','));
+    getTaskRows().forEach(function (row) {
+      lines.push([
+        row.querySelector('.inp-name').value,
+        String(parseNum(row.querySelector('.inp-min'))),
+        String(parseNum(row.querySelector('.inp-vol')))
+      ].map(escapeCsvCell).join(','));
+    });
+    return '\uFEFF' + lines.join('\r\n');
+  }
 
-        const shioList = ["Naga", "Ular", "Kuda", "Kambing", "Monyet", "Ayam", "Anjing", "Babi", "Tikus", "Kerbau", "Macan", "Kelinci"];
+  var VALID_PERIOD = { day: 1, week: 1, month: 1, custom: 1 };
 
-        function seededRandom(seed) {
-            let x = Math.sin(seed++) * 10000;
-            return x - Math.floor(x);
-        }
+  function applyImportCsv(text) {
+    var clean = text.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    var rawLines = clean.split('\n');
+    var rows = [];
+    for (var li = 0; li < rawLines.length; li++) {
+      if (rawLines[li] === '' && li === rawLines.length - 1) continue;
+      rows.push(parseCsvLine(rawLines[li]));
+    }
+    if (rows.length === 0) {
+      alert('File is empty.');
+      return;
+    }
 
-        function getSeed(marketName) {
-            const d = new Date();
-            const dateStr = `${d.getFullYear()}${d.getMonth()}${d.getDate()}`;
-            const combined = marketName + dateStr;
-            let hash = 0;
-            for (let i = 0; i < combined.length; i++) {
-                hash = ((hash << 5) - hash) + combined.charCodeAt(i);
-                hash |= 0; 
-            }
-            return Math.abs(hash);
-        }
+    var i = 0;
+    var period = 'week';
+    var avail = '';
 
-        function getCombinedPool(amArr, aiArr) {
-            return [...new Set([...amArr, ...aiArr])];
-        }
+    if (rows[0][0] === 'WLA_EXPORT') {
+      if (String(rows[0][1]) !== '1') {
+        alert('Unsupported export version.');
+        return;
+      }
+      i = 1;
+      if (rows[i]) {
+        period = rows[i][1] != null && String(rows[i][1]).trim() !== '' ? String(rows[i][1]).trim() : 'week';
+        i++;
+      }
+      if (rows[i]) {
+        avail = rows[i].length > 1 && rows[i][1] != null ? String(rows[i][1]).trim() : '';
+        i++;
+      }
+    } else if (rows[0][0] === 'task' && rows[0][1] === 'minutes_per_unit') {
+      i = 1;
+    } else {
+      alert('Invalid CSV: use Export CSV from this app, or start with WLA_EXPORT,1.');
+      return;
+    }
 
-        function getSeededDigitsArray(count, seed) {
-            let digits = [];
-            let currentSeed = seed;
-            while(digits.length < count) {
-                let r = Math.floor(seededRandom(currentSeed++) * 10);
-                if(digits.indexOf(r) === -1) digits.push(r);
-            }
-            return digits;
-        }
+    if (!VALID_PERIOD[period]) period = 'week';
 
-        function getSeededNumber(min, max, seed) {
-            return Math.floor(seededRandom(seed) * (max - min + 1)) + min;
-        }
+    if (rows[i] && rows[i][0] === 'task') i++;
 
-        function generateLinesFromPool(lineCount, setsPerLine, digitCount, seed, pool) {
-            let html = '';
-            let currentSeed = seed;
-            for(let i=0; i<lineCount; i++) {
-                let sets = [];
-                for(let j=0; j<setsPerLine; j++) {
-                    let num = "";
-                    for(let k=0; k<digitCount; k++) {
-                        let index = Math.floor(seededRandom(currentSeed++) * pool.length);
-                        num += pool[index];
-                    }
-                    sets.push(num);
-                }
-                html += `<div class="text-sm font-bold text-white tracking-widest ${i !== lineCount -1 ? 'mb-1' : ''}">${sets.join(' • ')}</div>`;
-            }
-            return html;
-        }
+    var tasks = [];
+    for (; i < rows.length; i++) {
+      var r = rows[i];
+      if (!r || (r.length === 1 && r[0] === '')) continue;
+      var name = r[0] != null ? String(r[0]) : '';
+      var min = r.length > 1 ? parseFloat(String(r[1]).replace(',', '.')) : NaN;
+      var vol = r.length > 2 ? parseFloat(String(r[2]).replace(',', '.')) : NaN;
+      tasks.push({
+        name: name,
+        minPerUnit: isFinite(min) ? min : 0,
+        volume: isFinite(vol) ? vol : 0
+      });
+    }
 
-        function getTodayDate() {
-            const date = new Date();
-            return date.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
-        }
+    periodSelect.value = period;
+    availableInput.value = avail;
+    taskList.innerHTML = '';
+    nextId = 0;
+    tasks.forEach(function (t) {
+      var id = nextId++;
+      taskList.insertAdjacentHTML('beforeend', rowTemplate(id));
+      var row = taskList.querySelector('[data-row="' + id + '"]');
+      row.querySelector('.inp-name').value = t.name;
+      row.querySelector('.inp-min').value = t.minPerUnit !== 0 ? t.minPerUnit : '';
+      row.querySelector('.inp-vol').value = t.volume !== 0 ? t.volume : '';
+      bindRow(row);
+    });
+    if (tasks.length === 0) addTask();
+    updatePeriodHint();
+    recalc();
+  }
 
-        function togglePeek(index) {
-            const container = document.getElementById(`bb-peek-${index}`);
-            container.classList.toggle('expanded');
-        }
+  periodSelect.addEventListener('change', function () {
+    updatePeriodHint();
+    recalc();
+  });
+  updatePeriodHint();
 
-        function renderMarkets(filter = "") {
-            const grid = document.getElementById('marketGrid');
-            grid.innerHTML = "";
-            const todayStr = getTodayDate();
-            
-            // Pengurutan berdasarkan waktu (hour & min)
-            const filtered = markets.filter(m => m.name.toLowerCase().includes(filter.toLowerCase()))
-                                    .sort((a, b) => (a.hour * 60 + a.min) - (b.hour * 60 + b.min));
-            
-            filtered.forEach((m, index) => {
-                const dailySeed = getSeed(m.name);
-                const amArray = getSeededDigitsArray(4, dailySeed);
-                const aiArray = getSeededDigitsArray(2, dailySeed + 100);
-                const combinedPool = getCombinedPool(amArray, aiArray);
+  document.getElementById('add-task').addEventListener('click', addTask);
+  document.getElementById('clear-all').addEventListener('click', function () {
+    taskList.innerHTML = '';
+    recalc();
+    addTask();
+  });
+  availableInput.addEventListener('input', recalc);
 
-                const cb1 = amArray[0];
-                const cb2 = amArray[1];
-                const cm1 = `${amArray[0]}${amArray[2]}`;
-                const cm2 = `${amArray[1]}${amArray[3]}`;
-                const shio = shioList[getSeededNumber(0, 11, dailySeed + 400)];
-                
-                const bb2dLines = generateLinesFromPool(2, 4, 2, dailySeed + 500, combinedPool);
-                const bb3dLines = generateLinesFromPool(3, 3, 3, dailySeed + 600, combinedPool);
-                const bb4dLines = generateLinesFromPool(4, 2, 4, dailySeed + 700, combinedPool);
+  navButtons.home.addEventListener('click', function () { showView('home'); });
+  navButtons.workload.addEventListener('click', function () { showView('workload'); });
+  navButtons.breakdown.addEventListener('click', function () { showView('breakdown'); });
+  navButtons.more.addEventListener('click', function () { showView('more'); });
 
-                const card = document.createElement('div');
-                card.className = "card-dark p-6 rounded-[2.5rem] shadow-xl flex flex-col gap-2";
-                card.onclick = () => togglePeek(index);
-                
-                card.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h3 class="font-black text-xl tracking-wider header-gradient">${m.name}</h3>
-                            <p class="text-[10px] italic font-bold uppercase tracking-[0.2em] text-slate-100 mt-1 opacity-70">${m.time}</p>
-                        </div>
-                        <div class="text-right shrink-0 bg-slate-900/50 p-2 rounded-xl border border-slate-700/30">
-                            <span class="block text-[7px] font-black text-blue-500 uppercase tracking-[0.3em] mb-1 text-center">PREDIKSI</span>
-                            <span class="text-xs font-bold text-white font-mono tracking-tighter">${todayStr}</span>
-                        </div>
-                    </div>
+  document.getElementById('btn-go-workload').addEventListener('click', function () { showView('workload'); });
+  document.getElementById('btn-go-breakdown').addEventListener('click', function () { showView('breakdown'); });
 
-                    <div class="divider-gradient"></div>
+  document.getElementById('btn-export').addEventListener('click', function () {
+    var csv = buildExportCsv();
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'wla-backup.csv';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  });
 
-                    <div class="grid grid-cols-2 gap-4 mt-2">
-                        <div class="bg-emerald-950/20 p-4 rounded-2xl border border-emerald-500/30 text-center shadow-inner">
-                            <span class="block text-[10px] green-gradient mb-2">ANGKA MAIN</span>
-                            <span class="text-2xl font-black text-white tracking-[0.3em]">${amArray.join('')}</span>
-                        </div>
-                        <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-700/50 text-center shadow-inner">
-                            <span class="block text-[10px] header-gradient mb-2">ANGKA IKUT</span>
-                            <span class="text-2xl font-black text-white tracking-[0.3em]">${aiArray.join('')}</span>
-                        </div>
-                    </div>
+  var importInput = document.getElementById('import-file');
+  document.getElementById('btn-import-label').addEventListener('click', function () {
+    importInput.click();
+  });
+  importInput.addEventListener('change', function () {
+    var f = importInput.files && importInput.files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        applyImportCsv(reader.result);
+        showView('workload');
+      } catch (e) {
+        alert('Could not read CSV file.');
+      }
+      importInput.value = '';
+    };
+    reader.readAsText(f);
+  });
 
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="bg-slate-900/40 p-3 rounded-2xl border border-slate-700/30 text-center">
-                            <span class="block text-[8px] header-gradient mb-1">COLOK BEBAS</span>
-                            <span class="text-base font-bold text-white">${cb1} • ${cb2}</span>
-                        </div>
-                        <div class="bg-slate-900/40 p-3 rounded-2xl border border-slate-700/30 text-center">
-                            <span class="block text-[8px] header-gradient mb-1">COLOK MACAU</span>
-                            <span class="text-base font-bold text-white">${cm1}/${cm2}</span>
-                        </div>
-                        <div class="bg-slate-900/40 p-3 rounded-2xl border border-slate-700/30 text-center">
-                            <span class="block text-[8px] header-gradient mb-1">SHIO</span>
-                            <span class="text-base font-bold text-white uppercase text-[13px]">${shio}</span>
-                        </div>
-                    </div>
+  window.addEventListener('hashchange', onHash);
 
-                    <div id="bb-peek-${index}" class="bb-preview-container px-6 pt-6 pb-2">
-                        <div class="peek-gradient-overlay">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500 glow-arrow animate-bounce-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        
-                        <div class="flex flex-col gap-8">
-                            <div class="text-center">
-                                <span class="block text-[10px] header-gradient mb-3">TOP BB 2D</span>
-                                ${bb2dLines}
-                            </div>
-                            <div class="text-center">
-                                <span class="block text-[10px] header-gradient mb-3">TOP BB 3D</span>
-                                ${bb3dLines}
-                            </div>
-                            <div class="text-center">
-                                <span class="block text-[10px] header-gradient mb-3">TOP BB 4D</span>
-                                ${bb4dLines}
-                            </div>
-                            <div class="flex justify-center pb-2">
-                                <div class="bg-slate-800/50 p-2 rounded-full border border-slate-700/50">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 15l7-7 7 7" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
+  if (location.hash && views[location.hash.replace(/^#/, '')]) {
+    onHash();
+  } else {
+    showView('home');
+  }
 
-        document.getElementById('searchInput').oninput = (e) => renderMarkets(e.target.value);
-        window.onload = () => renderMarkets();
-    </script>
+  addTask();
+})();
+  </script>
 </body>
 </html>
