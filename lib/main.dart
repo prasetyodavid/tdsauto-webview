@@ -52,7 +52,6 @@ Future<void> _startAssetServer() async {
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Permission.notification.request();
-  //await Permission.camera.request();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
   await _startAssetServer();
@@ -63,7 +62,7 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "http://wla.simbox.id";
+var MAIN_HOME_URL = "https://novadawndigital.com";
 var MAIN_TITLE = "WLA Calculator";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
@@ -330,9 +329,13 @@ class _WebViewScreenState extends State<WebViewScreen> {
   }
 
   /// Saves CSV from the WebView (base64 UTF-8). Android uses MediaStore Downloads.
-  Future<Map<String, dynamic>> _saveCsvToDownloadsFromWeb(List<dynamic> args) async {
+  Future<Map<String, dynamic>> _saveCsvToDownloadsFromWeb(
+      List<dynamic> args) async {
     if (args.length < 2) {
-      return <String, dynamic>{'ok': false, 'error': 'Missing filename or data'};
+      return <String, dynamic>{
+        'ok': false,
+        'error': 'Missing filename or data'
+      };
     }
     final rawName = args[0]?.toString() ?? 'export.csv';
     final base64Csv = args[1]?.toString() ?? '';
@@ -461,7 +464,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                           if (mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                  content: Text('Save failed: ${e.toString()}')),
+                                  content:
+                                      Text('Save failed: ${e.toString()}')),
                             );
                           }
                           return err;
@@ -499,26 +503,12 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     });
                   },
                   onPermissionRequest: (controller, request) async {
-                    // checking this to get permission on specific URL
-                    if (true) {
-                      try {
-                        var cameraStatus = await Permission.camera.request();
-                        if (cameraStatus.isDenied) {
-                          await Permission.camera.request();
-                        }
-                        return PermissionResponse(
-                            action: PermissionResponseAction.GRANT,
-                            resources: [
-                              PermissionResourceType.CAMERA_AND_MICROPHONE,
-                            ]);
-                      } catch (e) {
-                        return PermissionResponse(
-                            action: PermissionResponseAction.PROMPT,
-                            resources: [
-                              PermissionResourceType.CAMERA_AND_MICROPHONE,
-                            ]);
-                      }
-                    }
+                    // Camera/mic are not declared in AndroidManifest; deny so
+                    // embedded pages do not assume hardware access was granted.
+                    return PermissionResponse(
+                      action: PermissionResponseAction.DENY,
+                      resources: request.resources,
+                    );
                   },
                   androidOnGeolocationPermissionsShowPrompt:
                       (InAppWebViewController controller, String origin) async {
