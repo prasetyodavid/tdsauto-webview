@@ -78,7 +78,7 @@ const bool _debugUseHardcodedInstallReferrer = false;
 
 /// Same shape as the decoded `referrer=` query (e.g. TikTok paid example).
 const String _debugHardcodedInstallReferrer =
-    'utm_source=tiktok&utm_medium=paid&gclid=campaign1';
+    'utm_source=tiktok&utm_medium=paid&ttclid=21423';
 // --- end TEMP ---
 
 String _mainHomeUrlWithRef(String refValue) {
@@ -163,7 +163,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF1C1C1C),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
