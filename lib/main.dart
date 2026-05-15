@@ -63,7 +63,7 @@ Future main() async {
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
 var MAIN_HOME_URL = "https://novadawndigital.com";
-var MAIN_TITLE = "WLA Calculator";
+var MAIN_TITLE = "TetraDigit";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
@@ -78,7 +78,7 @@ const bool _debugUseHardcodedInstallReferrer = false;
 
 /// Same shape as the decoded `referrer=` query (e.g. TikTok paid example).
 const String _debugHardcodedInstallReferrer =
-    'utm_source=tiktok&utm_medium=paid&utm_campaign=campaign1';
+    'utm_source=tiktok&utm_medium=paid&gclid=campaign1';
 // --- end TEMP ---
 
 String _mainHomeUrlWithRef(String refValue) {
@@ -88,7 +88,7 @@ String _mainHomeUrlWithRef(String refValue) {
   return uri.replace(queryParameters: params).toString();
 }
 
-String? _utmCampaignFromInstallReferrer(String raw) {
+String? _installReferrerValue(String raw) {
   if (raw.isEmpty) return null;
   String normalized = raw;
   if (raw.contains('%')) {
@@ -98,28 +98,43 @@ String? _utmCampaignFromInstallReferrer(String raw) {
       normalized = raw;
     }
   }
+
   final params = Uri.splitQueryString(normalized);
+
   final campaign = params['utm_campaign'];
-  if (campaign == null || campaign.isEmpty) return null;
-  return campaign;
+  if (campaign != null && campaign.isNotEmpty) {
+    return campaign;
+  }
+
+  final gclid = params['gclid'];
+  if (gclid != null && gclid.isNotEmpty) {
+    return gclid;
+  }
+
+  final ttclid = params['ttclid'];
+  if (ttclid != null && ttclid.isNotEmpty) {
+    return ttclid;
+  }
+
+  return null;
 }
 
 /// Play Store `referrer=` is exposed as [ReferrerDetails.installReferrer] (see
 /// [android_play_install_referrer](https://pub.dev/documentation/android_play_install_referrer/latest/)).
-/// When `utm_campaign` is present, open [MAIN_HOME_URL] with `ref=<campaign>`.
+/// When `utm_campaign`, `gclid`, or `ttclid` is present, open [MAIN_HOME_URL]
+/// with `ref=<value>`.
 Future<String> resolveInitialWebViewUrl() async {
   try {
     if (_debugUseHardcodedInstallReferrer) {
-      final campaign =
-          _utmCampaignFromInstallReferrer(_debugHardcodedInstallReferrer);
-      if (campaign != null) {
-        final url = _mainHomeUrlWithRef(campaign);
+      final refValue = _installReferrerValue(_debugHardcodedInstallReferrer);
+      if (refValue != null) {
+        final url = _mainHomeUrlWithRef(refValue);
         debugPrint('DEBUG install referrer (hardcoded) → $url');
         return url;
       }
       debugPrint(
-          'DEBUG: _debugUseHardcodedInstallReferrer is true but utm_campaign '
-          'was null/empty for: $_debugHardcodedInstallReferrer');
+          'DEBUG: _debugUseHardcodedInstallReferrer is true but no ref value '
+          'was found for: $_debugHardcodedInstallReferrer');
     }
     if (!Platform.isAndroid) {
       return _localWebEntryUrl;
@@ -130,9 +145,9 @@ Future<String> resolveInitialWebViewUrl() async {
       if (raw == null || raw.isEmpty) {
         return _localWebEntryUrl;
       }
-      final campaign = _utmCampaignFromInstallReferrer(raw);
-      if (campaign != null) {
-        return _mainHomeUrlWithRef(campaign);
+      final refValue = _installReferrerValue(raw);
+      if (refValue != null) {
+        return _mainHomeUrlWithRef(refValue);
       }
     } catch (e) {
       debugPrint('Install referrer unavailable: $e');

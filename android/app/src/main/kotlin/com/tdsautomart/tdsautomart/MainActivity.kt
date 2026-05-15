@@ -1,4 +1,4 @@
-package com.wlacalculator.app
+package com.tetradigit.app
 
 import android.Manifest
 import android.content.ContentValues
