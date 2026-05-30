@@ -4,57 +4,17 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show MethodChannel, rootBundle;
+import 'package:flutter/services.dart' show MethodChannel;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:mime/mime.dart';
-import 'package:android_play_install_referrer/android_play_install_referrer.dart';
-
-HttpServer? _assetServer;
-
-Future<void> _startAssetServer() async {
-  _assetServer = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
-  _assetServer!.listen((HttpRequest request) async {
-    var path = request.uri.path;
-    if (path.isEmpty || path == '/') {
-      path = '/index.html';
-    }
-    final assetKey = 'assets/html$path';
-
-    try {
-      final data = await rootBundle.load(assetKey);
-      final bytes = data.buffer.asUint8List();
-      final isJs = path.endsWith('.js');
-      final mimeType = lookupMimeType(path) ??
-          (isJs ? 'application/javascript' : 'text/plain');
-
-      if (isJs) {
-        request.response.headers.contentType =
-            ContentType('application', 'javascript');
-      } else {
-        request.response.headers.contentType = ContentType.parse(mimeType);
-      }
-      request.response.add(bytes);
-      await request.response.close();
-    } catch (e) {
-      print('Asset server: failed to load $assetKey: $e');
-      request.response.statusCode = HttpStatus.notFound;
-      request.response.headers.contentType = ContentType.text;
-      request.response.write('404 - asset not found: $assetKey');
-      await request.response.close();
-    }
-  });
-}
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Permission.notification.request();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
-
-  await _startAssetServer();
 
   runApp(MaterialApp(home: new MyApp()));
 }
@@ -62,101 +22,11 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://novadawndigital.com";
+var MAIN_HOME_URL = "https://tetra.novadawndigital.com";
 var MAIN_TITLE = "TetraDigit";
-// Local HTML from assets (used when loading offline)
-const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
-/// Bundled HTML entry served by [_startAssetServer].
-const String _localWebEntryUrl = 'http://localhost:8080/index.html';
-
-// --- TEMP: set to false (or delete this block) before Play Store release ---
-/// Simulates Play [ReferrerDetails.installReferrer]. Applies in **all** build modes
-/// (`debug` / `profile` / `release`) when `true`, so profile & release installs still
-/// test `ref=` without Play — unlike `kDebugMode`, which is false for profile/release.
-const bool _debugUseHardcodedInstallReferrer = false;
-
-/// Same shape as the decoded `referrer=` query (e.g. TikTok paid example).
-const String _debugHardcodedInstallReferrer =
-    'utm_source=tiktok&utm_medium=paid&ttclid=21423';
-// --- end TEMP ---
-
-String _mainHomeUrlWithRef(String refValue) {
-  final uri = Uri.parse(MAIN_HOME_URL);
-  final params = Map<String, String>.from(uri.queryParameters);
-  params['ref'] = refValue;
-  return uri.replace(queryParameters: params).toString();
-}
-
-String? _installReferrerValue(String raw) {
-  if (raw.isEmpty) return null;
-  String normalized = raw;
-  if (raw.contains('%')) {
-    try {
-      normalized = Uri.decodeComponent(raw);
-    } catch (_) {
-      normalized = raw;
-    }
-  }
-
-  final params = Uri.splitQueryString(normalized);
-
-  final campaign = params['utm_campaign'];
-  if (campaign != null && campaign.isNotEmpty) {
-    return campaign;
-  }
-
-  final gclid = params['gclid'];
-  if (gclid != null && gclid.isNotEmpty) {
-    return gclid;
-  }
-
-  final ttclid = params['ttclid'];
-  if (ttclid != null && ttclid.isNotEmpty) {
-    return ttclid;
-  }
-
-  return null;
-}
-
-/// Play Store `referrer=` is exposed as [ReferrerDetails.installReferrer] (see
-/// [android_play_install_referrer](https://pub.dev/documentation/android_play_install_referrer/latest/)).
-/// When `utm_campaign`, `gclid`, or `ttclid` is present, open [MAIN_HOME_URL]
-/// with `ref=<value>`.
 Future<String> resolveInitialWebViewUrl() async {
-  try {
-    if (_debugUseHardcodedInstallReferrer) {
-      final refValue = _installReferrerValue(_debugHardcodedInstallReferrer);
-      if (refValue != null) {
-        final url = _mainHomeUrlWithRef(refValue);
-        debugPrint('DEBUG install referrer (hardcoded) → $url');
-        return url;
-      }
-      debugPrint(
-          'DEBUG: _debugUseHardcodedInstallReferrer is true but no ref value '
-          'was found for: $_debugHardcodedInstallReferrer');
-    }
-    if (!Platform.isAndroid) {
-      return _localWebEntryUrl;
-    }
-    try {
-      final details = await AndroidPlayInstallReferrer.installReferrer;
-      final raw = details.installReferrer;
-      if (raw == null || raw.isEmpty) {
-        return _localWebEntryUrl;
-      }
-      final refValue = _installReferrerValue(raw);
-      if (refValue != null) {
-        return _mainHomeUrlWithRef(refValue);
-      }
-    } catch (e) {
-      debugPrint('Install referrer unavailable: $e');
-    }
-    return _localWebEntryUrl;
-  } catch (e, st) {
-    debugPrint('resolveInitialWebViewUrl failed: $e\n$st');
-    return _localWebEntryUrl;
-  }
+  return MAIN_HOME_URL;
 }
 
 class SplashScreen extends StatelessWidget {
@@ -214,14 +84,14 @@ class _MyAppState extends State<MyApp> {
         }
         if (snapshot.hasError) {
           debugPrint(
-              'Boot future failed (using local entry): ${snapshot.error}\n'
+              'Boot future failed (using main url): ${snapshot.error}\n'
               '${snapshot.stackTrace}');
-          return WebViewScreen(initialUrl: _localWebEntryUrl);
+          return WebViewScreen(initialUrl: MAIN_HOME_URL);
         }
-        final initialUrl = snapshot.data ?? _localWebEntryUrl;
+        final initialUrl = snapshot.data ?? MAIN_HOME_URL;
         if (snapshot.data == null) {
           debugPrint(
-              'Boot future completed with null data; using $_localWebEntryUrl');
+              'Boot future completed with null data; using $MAIN_HOME_URL');
         }
         return WebViewScreen(initialUrl: initialUrl);
       },
@@ -596,7 +466,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                     child: FloatingActionButton(
                       onPressed: () {
                         webViewController?.loadFile(
-                          assetFilePath: LOCAL_INDEX_ASSET,
+                          // local asset home removed; always uses MAIN_HOME_URL
                         );
                       },
                       child: Icon(Icons.home),
