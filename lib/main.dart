@@ -65,9 +65,9 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://glaze.novadawndigital.com/";
-//var MAIN_HOME_URL = "http://localhost:8080/index.html";
-var MAIN_TITLE = "Glaze Tile Glory";
+var MAIN_HOME_URL = "https://novadawndigital.com/bidbuddy/";
+//var MAIN_HOME_URL = "https://novadawndigital.com/bidbuddy/";
+var MAIN_TITLE = "BidBuddy";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 
@@ -75,17 +75,18 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 228, 6, 224),
+      backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/icon/icon.png',
-              width: 400, // Adjust the width as needed
-              height: 400, // Adjust the height as needed
+              width: 200, // Adjust the width as needed
+              height: 200, // Adjust the height as needed
             ),
-            //SizedBox(height: 20),
+
+            ///SizedBox(height: 20),
             //Text(MAIN_TITLE, style: TextStyle(fontSize: 20)),
           ],
         ),
@@ -372,7 +373,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 progress < 1.0
                     ? LinearProgressIndicator(
                         value: progress,
-                        color: Color.fromARGB(255, 214, 17, 214),
+                        color: const Color.fromARGB(255, 4, 78, 53),
                       )
                     : Container(),
               ],
@@ -384,7 +385,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget _buildProgressBar() {
     if (progress != 1.0) {
       return CircularProgressIndicator(
-          color: Color.fromARGB(255, 214, 17, 214));
+          color: const Color.fromARGB(255, 4, 78, 53));
     }
     return Container();
   }

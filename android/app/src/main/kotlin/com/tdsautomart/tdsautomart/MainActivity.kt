@@ -1,4 +1,4 @@
-package com.sugarbonanza.app
+package com.bidbuddy.app
 
 import io.flutter.embedding.android.FlutterActivity
 
