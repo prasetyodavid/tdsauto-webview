@@ -65,7 +65,8 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "http://localhost";
+var MAIN_HOME_URL = "https://glaze.novadawndigital.com/";
+//var MAIN_HOME_URL = "http://localhost:8080/index.html";
 var MAIN_TITLE = "Glaze Tile Glory";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
@@ -227,7 +228,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
                 InAppWebView(
                   key: webViewKey,
                   initialUrlRequest: URLRequest(
-                    url: WebUri("http://localhost:8080/index.html"),
+                    url: WebUri(MAIN_HOME_URL),
                   ),
                   initialOptions: options,
                   pullToRefreshController: pullToRefreshController,
