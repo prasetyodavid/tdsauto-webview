@@ -13,6 +13,18 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
+// Ensure library modules include shared ProGuard rules to suppress R8 missing-class warnings
+gradle.projectsEvaluated {
+    subprojects.each { project ->
+        try {
+            if (project.plugins.hasPlugin('com.android.library')) {
+                project.android.defaultConfig.consumerProguardFiles += files(rootProject.file('proguard-all.pro'))
+            }
+        } catch(ignore) {
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

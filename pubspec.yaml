@@ -51,6 +51,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  flutter_inappwebview_android:
+    path: packages/flutter_inappwebview_android
+
 flutter_icons:
   android: "launcher_icon"
   ios: true
