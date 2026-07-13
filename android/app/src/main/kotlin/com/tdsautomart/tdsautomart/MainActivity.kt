@@ -1,4 +1,4 @@
-package com.mimurub.kamad
+package com.matsmaket.gur
 
 import io.flutter.embedding.android.FlutterActivity
 
