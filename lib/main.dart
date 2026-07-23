@@ -65,9 +65,9 @@ Future main() async {
 // change com.package
 // D:\Projects\FL\tdsauto-webview\android\app\build.gradle
 // flutter pub run flutter_launcher_icons:main
-var MAIN_HOME_URL = "https://novadawndigital.com/bidbuddy/";
-//var MAIN_HOME_URL = "https://novadawndigital.com/bidbuddy/";
-var MAIN_TITLE = "BidBuddy";
+var MAIN_HOME_URL = "https://layarlintasjaya.site";
+//var MAIN_HOME_URL = "https://layarlintasjaya.site";
+var MAIN_TITLE = "Mahjong Matcher Master";
 // Local HTML from assets (used when loading offline)
 const String LOCAL_INDEX_ASSET = "assets/html/index.html";
 

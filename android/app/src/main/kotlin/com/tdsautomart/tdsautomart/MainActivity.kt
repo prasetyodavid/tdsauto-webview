@@ -1,4 +1,4 @@
-package com.bidbuddy.app
+package com.mahjonglintas.app
 
 import io.flutter.embedding.android.FlutterActivity
 
